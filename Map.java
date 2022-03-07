@@ -117,17 +117,21 @@ public class Map extends JFrame implements ActionListener{
         repaint();
     }
 
-    public boolean testBord(int j){ //vérifie si le blob détecte les murs de la map
-        boolean test;
-    if(((new Vect(wallWidth, blobs.get(j).pos_y).distance(blobs.get(j).pos_x, blobs.get(j).pos_y)) <= blobs.get(j).view_range || new Vect(width-wallWidth, blobs.get(j).pos_y).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range || new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range || new Vect(blobs.get(j).pos_x, height-wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range)&& blobs.get(j).wallBounce == true){
-        test = true;
+    public int testBord(int j){ //vérifie si le blob détecte les murs de la map
+        if(new Vect(wallWidth, blobs.get(j).pos_y).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range && blobs.get(j).wallBounce == true){
+            return -1; /// mur de gauche
+        }
+        else if(new Vect(width-wallWidth, blobs.get(j).pos_y).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range && blobs.get(j).wallBounce == true){
+            return 1; //mur de droite
+        }
+        else if(new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range && blobs.get(j).wallBounce == true){
+            return 2; //mur du haut
+        }
+        else if (new Vect(blobs.get(j).pos_x, height-wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range && blobs.get(j).wallBounce == true){
+            return -2; //mur du bas
         }
         else{
-            test = false;
-        }
-        return test;
+            return 0; //pas de mur
+        }    
     }
-
-   
 }
-//new arrayList
