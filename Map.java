@@ -27,15 +27,15 @@ public class Map extends JFrame implements ActionListener{
 
 
     public Map (int w, int h){
-        width = w;
-        height = h;
-        wallWidth = width/20;
-        wallHeight = height/20;
+        width = w; //largeur de la map
+        height = h; //hauteur de la map
+        wallWidth = width/20; //largeur des bords map
+        wallHeight = height/20; //hauteur des bords map
         setBounds(0, 0, width, height);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        for (int i = 0; i < initBlobNumber; i++){
+        for (int i = 0; i < initBlobNumber; i++){ //initialise un tableau de initBlobNumber blobs chacun placés aléatoirement sur les bords de la map
             blobs.add(new Blob (blobIniSpeed, blobIniSize, blobIniView)) ;
             double rand = Math.random();
             if(rand<0.25){
@@ -59,52 +59,50 @@ public class Map extends JFrame implements ActionListener{
                 blobs.get(i).speedV = new Vect(0,-1); 
             }
         } 
-        timer = new Timer(100, this);
-        timer.start();
-        repaint();
+        timer = new Timer(100, this); // ttes les actions se feront les x ms
+        timer.start(); //commence la partie
+        repaint(); //actualise l'IDH
     }
 
     public void paint (Graphics g){
-        g.setColor(Color.pink);
+        g.setColor(Color.pink); //la map ext
         g.fillRect(0,0,width,height);
-        g.setColor(Color.blue);
+        g.setColor(Color.blue); //la map int
         g.fillRect(wallWidth,wallHeight,width-2*wallWidth,height-2*wallWidth);
 
 
-        for (int j = 0; j < blobs.size(); j++){
+        for (int j = 0; j < blobs.size(); j++){ //les blobs
             blobs.get(j).draw(g, Color.yellow);
         }
-        blobs.get(2).draw (g, Color.red);
+        blobs.get(2).draw (g, Color.red); //un certain blob pour les tests
 
     }
 
     @Override
-    public void actionPerformed(java.awt.event.ActionEvent e) {
+    public void actionPerformed(java.awt.event.ActionEvent e) { //tout ce qui se passe chaque x ms
         if (e.getSource() == timer){
             minute ++;
             
-            for (int j = 0; j < blobs.size(); j++){
+            for (int j = 0; j < blobs.size(); j++){ //déplacement des blobs qui n'ont pas dépassé les murs
                 if ( blobs.get(j).pos_x < wallWidth || blobs.get(j).pos_x > (width-wallWidth) || blobs.get(j).pos_y < wallHeight || blobs.get(j).pos_y > (height-wallHeight)){
                     blobs.get(j).wanderingStrength =0;
                     blobs.get(j).wallBounce = false;
-                }else if(testBord(j) == true){
+                }else if(testBord(j) == true){ //faire que les blobs soient repoussés par les murs
                     blobs.get(j).wanderingStrength =0;
                     blobs.get(j).speedV.x = -blobs.get(j).speedV.x;
                     blobs.get(j).newSpeedV.x = -blobs.get(j).newSpeedV.x;
                     blobs.get(j).wallBounce = false;
 
 
-                }else{
+                }else{ ////déplacement des blobs qui ont dépassé les murs
                     blobs.get(j).wanderingStrength =5;
                     blobs.get(j).wallBounce = true;
                 }
-                System.out.println(blobs.get(2).wallBounce +" "+new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y));
-                ;
-                ;
-                blobs.get(j).VectSpeed();
+                System.out.println(blobs.get(2).wallBounce +" "+new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y)); //pour des tests
+                blobs.get(j).VectSpeed(); //recalcule les forces appliquées au blob et son déplacement
             }
         }
-        if (minute == day*500){
+        if (minute == day*500){ // ce qui se passe à la fin de la journée
             
             for (int j =  blobs.size() - 1 ; j >= 0; j--){
                 if (blobs.get(j).pos_x < wallWidth || blobs.get(j).pos_x > (width-wallWidth) || blobs.get(j).pos_y < wallHeight || blobs.get(j).pos_y > (height-wallHeight)){
@@ -119,7 +117,7 @@ public class Map extends JFrame implements ActionListener{
         repaint();
     }
 
-    public boolean testBord(int j){
+    public boolean testBord(int j){ //vérifie si le blob détecte les murs de la map
         boolean test;
     if(((new Vect(wallWidth, blobs.get(j).pos_y).distance(blobs.get(j).pos_x, blobs.get(j).pos_y)) <= blobs.get(j).view_range || new Vect(width-wallWidth, blobs.get(j).pos_y).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range || new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range || new Vect(blobs.get(j).pos_x, height-wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y) <= blobs.get(j).view_range)&& blobs.get(j).wallBounce == true){
         test = true;
