@@ -12,7 +12,7 @@ public class Blob {
     //position du blob
     public double pos_x = 0;
     public double pos_y = 0;
-    public boolean wallBounce = false;
+    public boolean wallBounce = false;;
 
     // liste des vecteurs vitesse
     public Vect speedV = new Vect (0,0);
@@ -31,20 +31,20 @@ public class Blob {
         view_range = vr;
     }
 
-    public void VectSpeed(){
-        movement();
+    public void VectSpeed(){ //calcul la nouvelle direction et vitesse du blob
+        movement(); 
         computeNewVitesse();
         speedV.x = newSpeedV.x;
         speedV.y = newSpeedV.y;
         orientation = speedV.angle();
         
     }
-    public void movement (){
+    public void movement (){ //fait se déplacer le blob
         pos_x +=  speedV.x;
         pos_y +=  speedV.y;
     }
 
-    public void computeNewVitesse() {
+    public void computeNewVitesse() { //calcul la nouvelle vitesse du blob
         computeWanderingForce();
         newSpeedV = (speedV.times(steeringStrength)).vectAdd(wanderingForceV.times(wanderingStrength));
         newSpeedV.normalize();
@@ -52,7 +52,15 @@ public class Blob {
 
     }
 
-    public void computeWanderingForce() {
+    public void computeNewVitesse(Vect newForce, int newForceStrength) {
+        computeWanderingForce();
+        newSpeedV = (speedV.times(steeringStrength)).vectAdd(wanderingForceV.times(wanderingStrength).vectAdd(newForce.times(newForceStrength)));
+        newSpeedV.normalize();
+        newSpeedV = newSpeedV.times(speed);
+
+    }
+
+    public void computeWanderingForce() { //calcul la force aléatoire qui s'aplique au blob pour le faire se déplacer aléatoirement dans l'espace
         orientation += Math.PI/2;
         wanderingForceV.x += (Math.random()-0.5) * Math.cos(orientation);
         wanderingForceV.y += (Math.random()-0.5) * Math.sin(orientation);
@@ -60,7 +68,7 @@ public class Blob {
 
     }
 
-    public void draw (Graphics g, Color c){
+    public void draw (Graphics g, Color c){ //dessine un blob
         g.setColor(c);
         g.fillOval((int)(pos_x), (int)(pos_y), (int)size, (int)size);
     }
