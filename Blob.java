@@ -39,6 +39,16 @@ public class Blob {
         orientation = speedV.angle();
         
     }
+
+       public void VectSpeed(Vect newForce, int newForceStrength){ //calcul la nouvelle direction et vitesse du blob
+        movement(); 
+        computeNewVitesse(newForce, newForceStrength);
+        speedV.x = newSpeedV.x;
+        speedV.y = newSpeedV.y;
+        orientation = speedV.angle();
+        
+    }
+
     public void movement (){ //fait se déplacer le blob
         pos_x +=  speedV.x;
         pos_y +=  speedV.y;

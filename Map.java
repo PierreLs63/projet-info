@@ -87,19 +87,36 @@ public class Map extends JFrame implements ActionListener{
                 if ( blobs.get(j).pos_x < wallWidth || blobs.get(j).pos_x > (width-wallWidth) || blobs.get(j).pos_y < wallHeight || blobs.get(j).pos_y > (height-wallHeight)){
                     blobs.get(j).wanderingStrength =0;
                     blobs.get(j).wallBounce = false;
-                }else if(testBord(j) == true){ //faire que les blobs soient repoussés par les murs
+                    blobs.get(j).VectSpeed(); //recalcule les forces appliquées au blob et son déplacement
+
+                }else if(testBord(j) == -2){ //faire que les blobs soient repoussés par le mur du bas
                     blobs.get(j).wanderingStrength =0;
-                    blobs.get(j).speedV.x = -blobs.get(j).speedV.x;
-                    blobs.get(j).newSpeedV.x = -blobs.get(j).newSpeedV.x;
+                    blobs.get(j).VectSpeed(new Vect(0,-1), 100); //applique une force qui les repousse du mur
+                    blobs.get(j).wallBounce = false;
+
+                }else if(testBord(j) == 2){ //faire que les blobs soient repoussés par le mur du haut
+                    blobs.get(j).wanderingStrength =0;
+                    blobs.get(j).VectSpeed(new Vect(0,1), 100); //applique une force qui les repousse du mur
+                    blobs.get(j).wallBounce = false;
+
+                }else if(testBord(j) == -1){ //faire que les blobs soient repoussés par le mur de gauche
+                    blobs.get(j).wanderingStrength =0;
+                    blobs.get(j).VectSpeed(new Vect(1,0), 100); //applique une force qui les repousse du mur
+                    blobs.get(j).wallBounce = false;
+
+                }else if(testBord(j) == 1){ //faire que les blobs soient repoussés par le mur de droite
+                    blobs.get(j).wanderingStrength =0;
+                    blobs.get(j).VectSpeed(new Vect(-1,0), 100); //applique une force qui les repousse du mur
                     blobs.get(j).wallBounce = false;
 
 
                 }else{ ////déplacement des blobs qui ont dépassé les murs
                     blobs.get(j).wanderingStrength =5;
                     blobs.get(j).wallBounce = true;
+                    blobs.get(j).VectSpeed(); //recalcule les forces appliquées au blob et son déplacement
+
                 }
                 System.out.println(blobs.get(2).wallBounce +" "+new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y)); //pour des tests
-                blobs.get(j).VectSpeed(); //recalcule les forces appliquées au blob et son déplacement
             }
         }
         if (minute == day*500){ // ce qui se passe à la fin de la journée
