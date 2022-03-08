@@ -22,7 +22,8 @@ public class Map extends JFrame implements ActionListener{
     double blobIniSpeed = 3;
     double blobIniSize = 10;
     double blobIniView = 40;
-    ArrayList<Blob> blobs = new ArrayList<Blob>();   
+    ArrayList<Blob> blobs = new ArrayList<Blob>();
+    ArrayList<Food> foods = new ArrayList<Food>();  
 
 
 
@@ -63,7 +64,21 @@ public class Map extends JFrame implements ActionListener{
         timer.start(); //commence la partie
         repaint(); //actualise l'IDH
     }
-
+    public Vect attractFood(){
+        for(int j = 0;j<blobs.size();j++){
+            int index= -1;
+            float distMin= -1;
+            for(int i=0;i<foods.size();i++){
+                double dist = new Vect(blobs.get(j).pos_x,blobs.get(j).pos_y).distance(foods.get(i).pos_x,foods.get(i).pos_y);
+                if(dist<blobs.get(j).view_range){
+                    if(distMin== -1 || dist<distMin){
+                        index = i;
+                    }
+               } 
+            }
+        }
+        return new Vect(1,1);
+    }
     public void paint (Graphics g){
         g.setColor(Color.pink); //la map ext
         g.fillRect(0,0,width,height);
