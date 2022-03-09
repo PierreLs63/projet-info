@@ -23,6 +23,12 @@ public class Blob {
     public double orientation = 0;
     public double steeringStrength = 20;
 
+
+    dsqfjkgyefzqgyufdzqqiyugdslugfdsqsfduuihl
+    dsqfkyugsqfyusfdqgfsqdgyifsd
+    
+    qsdqs
+    sdfg
     public Blob(double sp, double si, double vr) {
         speed = sp;
         size = si;
