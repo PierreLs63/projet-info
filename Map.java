@@ -137,6 +137,15 @@ public class Map extends JFrame implements ActionListener{
                     blobs.get(j).VectSpeed(new Vect(-1,0), 100); //applique une force qui les repousse du mur
                     blobs.get(j).wallBounce = false;
 
+                }else if(testBlobPredator(j) !=  new Vect (0,0)){
+                    blobs.get(j).wanderingStrength =2;
+                    blobs.get(j).VectSpeed(testBlobPredator(j), 20);
+                    blobs.get(j).wallBounce = true;
+
+                }else if(testBlobTarget(j) !=  new Vect (0,0)){
+                    blobs.get(j).wanderingStrength =2;
+                    blobs.get(j).VectSpeed(testBlobTarget(j), 20);
+                    blobs.get(j).wallBounce = true;
 
                 }else{ ////déplacement des blobs qui ont dépassé les murs
                     blobs.get(j).wanderingStrength =5;
@@ -144,7 +153,7 @@ public class Map extends JFrame implements ActionListener{
                     blobs.get(j).VectSpeed(); //recalcule les forces appliquées au blob et son déplacement
 
                 }
-                System.out.println(blobs.get(2).wallBounce +" "+new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y)); //pour des tests
+                //System.out.println(blobs.get(2).wallBounce +" "+new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y)); //pour des tests
             }
         }
         if (minute == day*500){ // ce qui se passe à la fin de la journée
@@ -192,7 +201,7 @@ public class Map extends JFrame implements ActionListener{
         if (blobTarget.size() == 0) {
             return new Vect(0, 0);
         } else {
-            Blob target = blobTarget.get(1);
+            Blob target = blobTarget.get(0);
             for (Blob e : blobTarget) {
                 if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x,
                         e.pos_y) < new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(target.pos_x,
@@ -200,7 +209,7 @@ public class Map extends JFrame implements ActionListener{
                     target = e;
                 }
             }
-            return new Vect(target.pos_x - blobs.get(j).pos_x, target.pos_y - blobs.get(j).pos_y);
+            return new Vect(blobs.get(j).pos_x - target.pos_x , blobs.get(j).pos_y - target.pos_y);
         }
     }
 
@@ -208,14 +217,15 @@ public class Map extends JFrame implements ActionListener{
         ArrayList<Blob> blobPredator = new ArrayList<Blob>();
         for (Blob e : blobs) {
             if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x, e.pos_y) <= blobs.get(j).view_range
-                    && blobs.get(j) != e && (blobs.get(j).size - 0.2 * blobs.get(j).size) > e.size) {
+                    && blobs.get(j) != e && 0.8 * blobs.get(j).size > e.size) {
                 blobPredator.add(e);
             }
         }
+
         if (blobPredator.size() == 0) {
-            return new Vect(0, 0);
+            return new Vect(0,0);
         } else {
-            Blob predator = blobPredator.get(1);
+            Blob predator = blobPredator.get(0);
             for (Blob e : blobPredator) {
                 if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x,
                         e.pos_y) < new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(predator.pos_x,
@@ -223,7 +233,7 @@ public class Map extends JFrame implements ActionListener{
                     predator = e;
                 }
             }
-            return new Vect(blobs.get(j).pos_x - predator.pos_x, blobs.get(j).pos_y - predator.pos_y);
+            return new Vect( predator.pos_x - blobs.get(j).pos_x, predator.pos_y - blobs.get(j).pos_y);
         }
 
     }
