@@ -20,7 +20,7 @@ public class Blob {
     public Vect wanderingForceV = new Vect(0, 0);
 
     // parametres de deplacement
-    public double wanderingStrength = 0;
+    public double wanderingStrength = 20;
     public double orientation = 0;
     public double steeringStrength = 20;
 
