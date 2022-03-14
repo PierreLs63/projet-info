@@ -8,7 +8,7 @@ public class Blob {
     public double view_range;
     public double energy = 1000;
     public boolean alive = true;
-    public Color color = new Color(0, 0, 0);  
+    public Color color = new Color(0, 0, 0);
     // position du blob
     public double pos_x = 0;
     public double pos_y = 0;
@@ -83,20 +83,19 @@ public class Blob {
         g.setColor(c);
         g.fillOval((int) (pos_x), (int) (pos_y), (int) size, (int) size);
     }
-    public void definedColor(){
-        int r = (int)Math.round(speed)*30;
-        int g = (int)Math.round(size)*10;
-        int b = (int)Math.round(view_range)*5;
-        if(r>=255){
-            r=255;
+
+    public void definedColor() {
+        int r = (int) Math.round(speed) * 30;
+        int g = (int) Math.round(size) * 10;
+        int b = (int) Math.round(view_range) * 5;
+        if (r >= 255) {
+            r = 255;
+        } else if (g >= 255) {
+            g = 255;
+        } else if (b >= 255) {
+            b = 255;
         }
-        else if(g>=255){
-            g=255;
-        }
-        else if(b>=255){
-            b=255;
-        }
-         this.color = new Color(r,g,b);
+        this.color = new Color(r, g, b);
     }
 
 }
