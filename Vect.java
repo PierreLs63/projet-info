@@ -46,5 +46,13 @@ public class Vect {
         return distance;
     }
 
+    public boolean equals (Vect v){
+        boolean test = false;
+        if (v.x == x && v.y == y){
+            test = true;
+        }
+        return test;
+    }
+
 }
 
