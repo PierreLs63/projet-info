@@ -24,7 +24,8 @@ public class MapCopy extends JFrame implements ActionListener {
     double blobIniSize = 10;
     double blobIniView = 40;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
-
+    int initFoodNumber = 100;
+    ArrayList<Food> foods = new ArrayList<Food>(); 
     public MapCopy(int w, int h) {
         width = w; // largeur de la map
         height = h; // hauteur de la map
@@ -69,6 +70,9 @@ public class MapCopy extends JFrame implements ActionListener {
 
         for (int j = 0; j < blobs.size(); j++) { // les blobs
             blobs.get(j).draw(g, Color.yellow);
+        }
+        for (int i = 0;i<foods.size();i++){
+            foods.get(i).draw(g);
         }
         blobs.get(2).draw(g, Color.red); // un certain blob pour les tests
 
