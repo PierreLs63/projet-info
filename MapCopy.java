@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.Period;
+
 import javax.swing.Timer;
 
 public class MapCopy extends JFrame implements ActionListener {
@@ -148,4 +150,53 @@ public class MapCopy extends JFrame implements ActionListener {
             return 0; // pas de mur
         }
     }
+
+    public Vect testBlobTarget(int j) { // vérifie si le blob détecte un blob plus petit
+        ArrayList<Blob> blobTarget = new ArrayList<Blob>();
+        for (Blob e : blobs) {
+            if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x, e.pos_y) <= blobs.get(j).view_range
+                    && blobs.get(j) != e && blobs.get(j).size < (e.size - 0.2 * e.size)) {
+                blobTarget.add(e);
+
+            }
+        }
+        if (blobTarget.size() == 0) {
+            return new Vect(0, 0);
+        } else {
+            Blob target = blobTarget.get(1);
+            for (Blob e : blobTarget) {
+                if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x,
+                        e.pos_y) < new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(target.pos_x,
+                                target.pos_y)) {
+                    target = e;
+                }
+            }
+            return new Vect(target.pos_x - blobs.get(j).pos_x, target.pos_y - blobs.get(j).pos_y);
+        }
+    }
+
+    public Vect testBlobPredator(int j) { // vérifie si le blob détecte un blob plus grand
+        ArrayList<Blob> blobPredator = new ArrayList<Blob>();
+        for (Blob e : blobs) {
+            if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x, e.pos_y) <= blobs.get(j).view_range
+                    && blobs.get(j) != e && (blobs.get(j).size - 0.2 * blobs.get(j).size) > e.size) {
+                blobPredator.add(e);
+            }
+        }
+        if (blobPredator.size() == 0) {
+            return new Vect(0, 0);
+        } else {
+            Blob predator = blobPredator.get(1);
+            for (Blob e : blobPredator) {
+                if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x,
+                        e.pos_y) < new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(predator.pos_x,
+                                predator.pos_y)) {
+                    predator = e;
+                }
+            }
+            return new Vect(blobs.get(j).pos_x - predator.pos_x, blobs.get(j).pos_y - predator.pos_y);
+        }
+
+    }
+
 }
