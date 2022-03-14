@@ -23,6 +23,8 @@ public class Map extends JFrame implements ActionListener{
     double blobIniSize = 10;
     double blobIniView = 40;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
+    //foods
+    int initFoodNumber = 100;
     ArrayList<Food> foods = new ArrayList<Food>();  
 
 
@@ -82,6 +84,11 @@ public class Map extends JFrame implements ActionListener{
         else{
             return new Vect(0,0);
         }
+    }
+    public void initFood(){
+        for(int i=0;i<initFoodNumber;i++){
+            foods.add(new Food(Math.random()*(width-wallWidth-10),Math.random()*(height-wallHeight-10)));
+        } 
     }
     public void paint (Graphics g){
         g.setColor(Color.pink); //la map ext
