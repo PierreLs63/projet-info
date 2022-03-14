@@ -64,20 +64,24 @@ public class Map extends JFrame implements ActionListener{
         timer.start(); //commence la partie
         repaint(); //actualise l'IDH
     }
-    public Vect attractFood(){
-        for(int j = 0;j<blobs.size();j++){
-            int index= -1;
-            float distMin= -1;
+    public Vect attractFood(int blobIndex){
+        int index= -1;
+        double distMin= -1;
             for(int i=0;i<foods.size();i++){
-                double dist = new Vect(blobs.get(j).pos_x,blobs.get(j).pos_y).distance(foods.get(i).pos_x,foods.get(i).pos_y);
-                if(dist<blobs.get(j).view_range){
+                double dist = new Vect(blobs.get(blobIndex).pos_x,blobs.get(blobIndex).pos_y).distance(foods.get(i).pos_x,foods.get(i).pos_y);
+                if(dist<blobs.get(blobIndex).view_range){
                     if(distMin== -1 || dist<distMin){
                         index = i;
+                        distMin=dist;
                     }
                } 
             }
+        if(index>0){
+            return new Vect(foods.get(index).pos_x-blobs.get(index).pos_x,foods.get(index).pos_y-blobs.get(index).pos_y);
         }
-        return new Vect(1,1);
+        else{
+            return new Vect(0,0);
+        }
     }
     public void paint (Graphics g){
         g.setColor(Color.pink); //la map ext
