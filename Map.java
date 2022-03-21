@@ -154,10 +154,10 @@ public class Map extends JFrame implements ActionListener {
         boolean test = false;
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
-                e.pos_y) <= unBlob.view_range
-                && unBlob != e && 0.8 * unBlob.size > e.size) {
+                    e.pos_y) <= unBlob.view_range
+                    && unBlob != e && 0.8 * unBlob.size > e.size) {
                 blobPredator.add(e);
-            }     
+            }
         }
         if (blobPredator.size() == 0 || test == true) {
             return new Vect(0, 0);
@@ -175,23 +175,33 @@ public class Map extends JFrame implements ActionListener {
         }
     }
 
-    public void eatBlob (Blob unBlob){
+    public void eatBlob(Blob unBlob) {
+        int i = -1;
         for (Blob e : blobs) {
-            if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size && e.size*0.8>unBlob.size && e != unBlob) {
+            i++;
+            System.out.println("test6");
+
+            if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size && unBlob.size * 0.8 > e.size
+                    && e != unBlob) {
                 System.out.println("test");
-                blobs.remove(unBlob);
-                e.foodB++;
-                e.energy = e.energy + 500;
+                blobs.remove(i);
+                System.out.println("test2");
+                unBlob.foodB++;
+                System.out.println("test3");
+                unBlob.energy = unBlob.energy + 500;
+                System.out.println("test4");
+
             }
+            System.out.println("test5");
         }
     }
 
     public void moveBlobs(Blob unBlob) {
         if (unBlob.pos_x < wallWidth || unBlob.pos_x > (width - wallWidth)
                 || unBlob.pos_y < wallHeight || unBlob.pos_y > (height - wallHeight)) {
-                    unBlob.wanderingStrength = 0;
-                    unBlob.wallBounce = false;
-                    unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
+            unBlob.wanderingStrength = 0;
+            unBlob.wallBounce = false;
+            unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
 
         } else if (testBord(unBlob) == -2) { // faire que les blobs soient repoussés par le mur du bas
             unBlob.wanderingStrength = 0;
@@ -259,7 +269,7 @@ public class Map extends JFrame implements ActionListener {
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
         if (e.getSource() == timer) {
             minute++;
-            for (Blob unBlob : blobs){
+            for (Blob unBlob : blobs) {
                 if (unBlob.energy > 0) {
                     moveBlobs(unBlob);
                 }
