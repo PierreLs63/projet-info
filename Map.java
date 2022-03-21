@@ -20,7 +20,7 @@ public class Map extends JFrame implements ActionListener {
     int initBlobNumber = 10;
     double blobIniSpeed = 3;
     double blobIniSize = 10;
-    double blobIniView = 40;
+    double blobIniView = 100;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
     // foods
     int initFoodNumber = 20;
@@ -75,6 +75,8 @@ public class Map extends JFrame implements ActionListener {
                 blobs.get(i).speedV = new Vect(0, -1);
             }
         }
+        blobs.get(2).speed = 10.1;
+
     }
 
     public int testBord(Blob unBlob) { // vérifie si le blob détecte les murs de la map
@@ -177,13 +179,13 @@ public class Map extends JFrame implements ActionListener {
 
     public Blob eatBlob(Blob unBlob) {
         for (Blob e : blobs) {
-            if (e != unBlob && new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size && unBlob.size * 0.8 > e.size) {
+            if (e != unBlob && new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size
+                    && unBlob.size * 0.8 > e.size) {
                 unBlob.foodB++;
                 unBlob.energy = unBlob.energy + 500;
                 return e;
             }
         }
-
         return null;
     }
 
@@ -235,9 +237,6 @@ public class Map extends JFrame implements ActionListener {
             unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
 
         }
-        // System.out.println(blobs.get(2).wallBounce +" "+new Vect(unBlob.pos_x,
-        // wallHeight).distance(unBlob.pos_x, unBlob.pos_y)); //pour des
-        // tests
     }
 
     public void paint(Graphics g) {
@@ -287,19 +286,11 @@ public class Map extends JFrame implements ActionListener {
                     blobsToRemove.add(unBlob);
                 }
             }
-
-            System.out.println(blobsToRemove.size());
-
             while (blobsToRemove.size() > 0) {
                 blobs.remove(blobsToRemove.get(0));
                 blobsToRemove.remove(0);
             }
-
-            System.out.println("Fin");
-            timer.stop();
-
             day++;
-
         }
         repaint();
     }

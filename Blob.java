@@ -6,7 +6,7 @@ public class Blob {
     public double speed;
     public double size;
     public double view_range;
-    public double energy = 1000;
+    public double energy = 10000;
     public boolean alive = true;
     public Color color = new Color(0, 0, 0);
     public int foodB = 0;
