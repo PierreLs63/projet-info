@@ -57,6 +57,9 @@ public class MapCopy extends JFrame implements ActionListener {
                 blobs.get(i).speedV = new Vect(0, -1);
             }
         }
+        for(int i =0;i<initFoodNumber;i++){
+            foods.add(new Food(Math.random()*width,Math.random()*height));
+        }
         timer = new Timer(100, this); // ttes les actions se feront les x ms
         timer.start(); // commence la partie
         repaint(); // actualise l'IDH
