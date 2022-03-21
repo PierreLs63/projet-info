@@ -176,19 +176,16 @@ public class Map extends JFrame implements ActionListener {
     }
 
     public void eatBlob(Blob unBlob) {
-        int i = -1;
         for (Blob e : blobs) {
-            i++;
             System.out.println("test6");
 
-            if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size && unBlob.size * 0.8 > e.size
-                    && e != unBlob) {
+            if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size && unBlob.size * 0.8 > e.size) {
                 System.out.println("test");
-                blobs.remove(i);
-                System.out.println("test2");
                 unBlob.foodB++;
-                System.out.println("test3");
+                System.out.println("test2");
                 unBlob.energy = unBlob.energy + 500;
+                System.out.println("test3");
+                blobs.remove(e);
                 System.out.println("test4");
 
             }
