@@ -77,38 +77,38 @@ public class Map extends JFrame implements ActionListener {
         }
     }
 
-    public int testBord(int j) { // vérifie si le blob détecte les murs de la map
-        if (new Vect(wallWidth, blobs.get(j).pos_y).distance(blobs.get(j).pos_x,
-                blobs.get(j).pos_y) <= blobs.get(j).view_range && blobs.get(j).wallBounce == true) {
+    public int testBord(Blob unBlob) { // vérifie si le blob détecte les murs de la map
+        if (new Vect(wallWidth, unBlob.pos_y).distance(unBlob.pos_x,
+                unBlob.pos_y) <= unBlob.view_range && unBlob.wallBounce == true) {
             return -1; /// mur de gauche
-        } else if (new Vect(width - wallWidth, blobs.get(j).pos_y).distance(blobs.get(j).pos_x,
-                blobs.get(j).pos_y) <= blobs.get(j).view_range && blobs.get(j).wallBounce == true) {
+        } else if (new Vect(width - wallWidth, unBlob.pos_y).distance(unBlob.pos_x,
+                unBlob.pos_y) <= unBlob.view_range && unBlob.wallBounce == true) {
             return 1; // mur de droite
-        } else if (new Vect(blobs.get(j).pos_x, wallHeight).distance(blobs.get(j).pos_x,
-                blobs.get(j).pos_y) <= blobs.get(j).view_range && blobs.get(j).wallBounce == true) {
+        } else if (new Vect(unBlob.pos_x, wallHeight).distance(unBlob.pos_x,
+                unBlob.pos_y) <= unBlob.view_range && unBlob.wallBounce == true) {
             return 2; // mur du haut
-        } else if (new Vect(blobs.get(j).pos_x, height - wallHeight).distance(blobs.get(j).pos_x,
-                blobs.get(j).pos_y) <= blobs.get(j).view_range && blobs.get(j).wallBounce == true) {
+        } else if (new Vect(unBlob.pos_x, height - wallHeight).distance(unBlob.pos_x,
+                unBlob.pos_y) <= unBlob.view_range && unBlob.wallBounce == true) {
             return -2; // mur du bas
         } else {
             return 0; // pas de mur
         }
     }
 
-    public Vect attractFood(int blobIndex) {
+    public Vect attractFood(Blob unBlob) {
 
         int index = -1;
         double distMin = -1;
         for (int i = 0; i < foods.size(); i++) {
-            double dist = new Vect(blobs.get(blobIndex).pos_x, blobs.get(blobIndex).pos_y).distance(foods.get(i).pos_x,
+            double dist = new Vect(unBlob.pos_x, unBlob.pos_y).distance(foods.get(i).pos_x,
                     foods.get(i).pos_y);
 
-            if (dist < blobs.get(blobIndex).size) {
+            if (dist < unBlob.size) {
                 foods.remove(i);
-                blobs.get(blobIndex).foodB++;
+                unBlob.foodB++;
             }
 
-            else if (dist < blobs.get(blobIndex).view_range) {
+            else if (dist < unBlob.view_range) {
                 if (distMin == -1 || dist < distMin) {
                     index = i;
                     distMin = dist;
@@ -116,19 +116,19 @@ public class Map extends JFrame implements ActionListener {
             }
         }
         if (index >= 0) {
-            return new Vect(foods.get(index).pos_x - blobs.get(blobIndex).pos_x,
-                    foods.get(index).pos_y - blobs.get(blobIndex).pos_y);
+            return new Vect(foods.get(index).pos_x - unBlob.pos_x,
+                    foods.get(index).pos_y - unBlob.pos_y);
         } else {
             return new Vect(0, 0);
         }
     }
 
-    public Vect testBlobTarget(int j) { // vérifie si le blob détecte un blob plus petit
+    public Vect testBlobTarget(Blob unBlob) { // vérifie si le blob détecte un blob plus petit
         ArrayList<Blob> blobTarget = new ArrayList<Blob>();
         for (Blob e : blobs) {
-            if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x,
-                    e.pos_y) <= blobs.get(j).view_range
-                    && blobs.get(j) != e && blobs.get(j).size < (e.size - 0.2 * e.size)) {
+            if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
+                    e.pos_y) <= unBlob.view_range
+                    && unBlob != e && unBlob.size < (e.size - 0.2 * e.size)) {
                 blobTarget.add(e);
 
             }
@@ -139,23 +139,23 @@ public class Map extends JFrame implements ActionListener {
         } else {
             Blob target = blobTarget.get(0);
             for (Blob e : blobTarget) {
-                if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x,
-                        e.pos_y) < new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(target.pos_x,
+                if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
+                        e.pos_y) < new Vect(unBlob.pos_x, unBlob.pos_y).distance(target.pos_x,
                                 target.pos_y)) {
                     target = e;
                 }
             }
-            return new Vect(blobs.get(j).pos_x - target.pos_x, blobs.get(j).pos_y - target.pos_y);
+            return new Vect(unBlob.pos_x - target.pos_x, unBlob.pos_y - target.pos_y);
         }
     }
 
-    public Vect testBlobPredator(int j) { // vérifie si le blob détecte un blob plus grand
+    public Vect testBlobPredator(Blob unBlob) { // vérifie si le blob détecte un blob plus grand
         ArrayList<Blob> blobPredator = new ArrayList<Blob>();
         boolean test = false;
         for (Blob e : blobs) {
-            if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x,
-                e.pos_y) <= blobs.get(j).view_range
-                && blobs.get(j) != e && 0.8 * blobs.get(j).size > e.size) {
+            if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
+                e.pos_y) <= unBlob.view_range
+                && unBlob != e && 0.8 * unBlob.size > e.size) {
                 blobPredator.add(e);
             }     
         }
@@ -164,79 +164,78 @@ public class Map extends JFrame implements ActionListener {
         } else {
             Blob predator = blobPredator.get(0);
             for (Blob e : blobPredator) {
-                if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x,
-                        e.pos_y) < new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(predator.pos_x,
+                if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
+                        e.pos_y) < new Vect(unBlob.pos_x, unBlob.pos_y).distance(predator.pos_x,
                                 predator.pos_y)) {
                     predator = e;
                 }
             }
-            return new Vect(predator.pos_x - blobs.get(j).pos_x, predator.pos_y - blobs.get(j).pos_y);
+            return new Vect(predator.pos_x - unBlob.pos_x, predator.pos_y - unBlob.pos_y);
 
         }
     }
 
-    public void eatBlob (int j){
-        int tist =-1;
+    public void eatBlob (Blob unBlob){
         for (Blob e : blobs) {
-            if (new Vect(blobs.get(j).pos_x, blobs.get(j).pos_y).distance(e.pos_x, e.pos_y) <= e.size) {
-                tist = j;
+            if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size && e.size*0.8>unBlob.size && e != unBlob) {
+                System.out.println("test");
+                blobs.remove(unBlob);
                 e.foodB++;
-                e.energy += 500;
+                e.energy = e.energy + 500;
             }
         }
-        blobs.remove(tist);
     }
 
-    public void moveBlobs(int j) {
-        if (blobs.get(j).pos_x < wallWidth || blobs.get(j).pos_x > (width - wallWidth)
-                || blobs.get(j).pos_y < wallHeight || blobs.get(j).pos_y > (height - wallHeight)) {
-            blobs.get(j).wanderingStrength = 0;
-            blobs.get(j).wallBounce = false;
-            blobs.get(j).VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
+    public void moveBlobs(Blob unBlob) {
+        if (unBlob.pos_x < wallWidth || unBlob.pos_x > (width - wallWidth)
+                || unBlob.pos_y < wallHeight || unBlob.pos_y > (height - wallHeight)) {
+                    unBlob.wanderingStrength = 0;
+                    unBlob.wallBounce = false;
+                    unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
 
-        } else if (testBord(j) == -2) { // faire que les blobs soient repoussés par le mur du bas
-            blobs.get(j).wanderingStrength = 0;
-            blobs.get(j).VectSpeed(new Vect(0, -1), 100); // applique une force qui les repousse du mur
-            blobs.get(j).wallBounce = false;
+        } else if (testBord(unBlob) == -2) { // faire que les blobs soient repoussés par le mur du bas
+            unBlob.wanderingStrength = 0;
+            unBlob.VectSpeed(new Vect(0, -1), 100); // applique une force qui les repousse du mur
+            unBlob.wallBounce = false;
 
-        } else if (testBord(j) == 2) { // faire que les blobs soient repoussés par le mur du haut
-            blobs.get(j).wanderingStrength = 0;
-            blobs.get(j).VectSpeed(new Vect(0, 1), 100); // applique une force qui les repousse du mur
-            blobs.get(j).wallBounce = false;
+        } else if (testBord(unBlob) == 2) { // faire que les blobs soient repoussés par le mur du haut
+            unBlob.wanderingStrength = 0;
+            unBlob.VectSpeed(new Vect(0, 1), 100); // applique une force qui les repousse du mur
+            unBlob.wallBounce = false;
 
-        } else if (testBord(j) == -1) { // faire que les blobs soient repoussés par le mur de gauche
-            blobs.get(j).wanderingStrength = 0;
-            blobs.get(j).VectSpeed(new Vect(1, 0), 100); // applique une force qui les repousse du mur
-            blobs.get(j).wallBounce = false;
+        } else if (testBord(unBlob) == -1) { // faire que les blobs soient repoussés par le mur de gauche
+            unBlob.wanderingStrength = 0;
+            unBlob.VectSpeed(new Vect(1, 0), 100); // applique une force qui les repousse du mur
+            unBlob.wallBounce = false;
 
-        } else if (testBord(j) == 1) { // faire que les blobs soient repoussés par le mur de droite
-            blobs.get(j).wanderingStrength = 0;
-            blobs.get(j).VectSpeed(new Vect(-1, 0), 100); // applique une force qui les repousse du mur
-            blobs.get(j).wallBounce = false;
+        } else if (testBord(unBlob) == 1) { // faire que les blobs soient repoussés par le mur de droite
+            unBlob.wanderingStrength = 0;
+            unBlob.VectSpeed(new Vect(-1, 0), 100); // applique une force qui les repousse du mur
+            unBlob.wallBounce = false;
 
-        } else if (!attractFood(j).equals(new Vect(0, 0))) {
-            blobs.get(j).wanderingStrength = 2;
-            blobs.get(j).VectSpeed(attractFood(j), 20);
-            blobs.get(j).wallBounce = true;
+        } else if (!attractFood(unBlob).equals(new Vect(0, 0))) {
+            unBlob.wanderingStrength = 2;
+            unBlob.VectSpeed(attractFood(unBlob), 20);
+            unBlob.wallBounce = true;
 
-        } else if (!testBlobPredator(j).equals(new Vect(0, 0))) { // faire que les blobs fuient ceux plus gros
-            blobs.get(j).wanderingStrength = 2;
-            blobs.get(j).VectSpeed(testBlobPredator(j), 20);
-            blobs.get(j).wallBounce = true;
+        } else if (!testBlobPredator(unBlob).equals(new Vect(0, 0))) { // faire que les blobs fuient ceux plus gros
+            unBlob.wanderingStrength = 2;
+            unBlob.VectSpeed(testBlobPredator(unBlob), 20);
+            unBlob.wallBounce = true;
 
-        } else if (!testBlobTarget(j).equals(new Vect(0, 0))) {// faire que les blobs poursuivent ceux plus petits
-            blobs.get(j).wanderingStrength = 2;
-            blobs.get(j).VectSpeed(testBlobTarget(j), 20);
-            blobs.get(j).wallBounce = true;
+        } else if (!testBlobTarget(unBlob).equals(new Vect(0, 0))) {// faire que les blobs poursuivent ceux plus petits
+            unBlob.wanderingStrength = 2;
+            unBlob.VectSpeed(testBlobTarget(unBlob), 20);
+            unBlob.wallBounce = true;
 
         } else { //// déplacement des blobs qui ont dépassé les murs
-            blobs.get(j).wanderingStrength = 5;
-            blobs.get(j).wallBounce = true;
-            blobs.get(j).VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
+            unBlob.wanderingStrength = 5;
+            unBlob.wallBounce = true;
+            unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
 
         }
-        // System.out.println(blobs.get(2).wallBounce +" "+new Vect(blobs.get(j).pos_x,
-        // wallHeight).distance(blobs.get(j).pos_x, blobs.get(j).pos_y)); //pour des
+        // System.out.println(blobs.get(2).wallBounce +" "+new Vect(unBlob.pos_x,
+        // wallHeight).distance(unBlob.pos_x, unBlob.pos_y)); //pour des
         // tests
     }
 
@@ -246,13 +245,13 @@ public class Map extends JFrame implements ActionListener {
         g.setColor(Color.blue); // la map int
         g.fillRect(wallWidth, wallHeight, width - 2 * wallWidth, height - 2 * wallWidth);
 
-        for (int j = 0; j < blobs.size(); j++) { // les blobs
-            blobs.get(j).draw(g, Color.yellow);
+        for (Blob unBlob : blobs) { // les blobs
+            unBlob.draw(g, Color.yellow);
         }
         blobs.get(2).draw(g, Color.red); // un certain blob pour les tests
 
-        for (int j = 0; j < foods.size(); j++) { // la nourriture
-            foods.get(j).draw(g, Color.green);
+        for (Food miam : foods) { // la nourriture
+            miam.draw(g, Color.green);
         }
     }
 
@@ -260,23 +259,23 @@ public class Map extends JFrame implements ActionListener {
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
         if (e.getSource() == timer) {
             minute++;
-            for (int j = 0; j < blobs.size(); j++) {
-                if (blobs.get(j).energy > 0) {
-                    moveBlobs(j);
+            for (Blob unBlob : blobs){
+                if (unBlob.energy > 0) {
+                    moveBlobs(unBlob);
                 }
-                blobs.get(j).energy = blobs.get(j).energy - 0.05 * blobs.get(j).size - 0.05 * blobs.get(j).speed
-                        - 0.05 * blobs.get(j).view_range;
+                unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * unBlob.speed
+                        - 0.05 * unBlob.view_range;
                 System.out.println(blobs.get(2).energy);
-                //eatBlob(j);
+                eatBlob(unBlob);
             }
         }
         if (minute == day * 500) { // ce qui se passe à la fin de la journée
 
-            for (int j = blobs.size() - 1; j >= 0; j--) {
-                if (blobs.get(j).pos_x < wallWidth || blobs.get(j).pos_x > (width - wallWidth)
-                        || blobs.get(j).pos_y < wallHeight || blobs.get(j).pos_y > (height - wallHeight)) {
+            for (Blob unBlob : blobs) {
+                if (unBlob.pos_x < wallWidth || unBlob.pos_x > (width - wallWidth)
+                        || unBlob.pos_y < wallHeight || unBlob.pos_y > (height - wallHeight)) {
                 } else {
-                    blobs.remove(j);
+                    blobs.remove(unBlob);
                 }
             }
             day++;
