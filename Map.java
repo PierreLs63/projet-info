@@ -23,7 +23,7 @@ public class Map extends JFrame implements ActionListener {
     double blobIniView = 40;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
     // foods
-    int initFoodNumber = 100;
+    int initFoodNumber = 20;
     ArrayList<Food> foods = new ArrayList<Food>();
 
     public Map(int w, int h) {
@@ -39,6 +39,8 @@ public class Map extends JFrame implements ActionListener {
                                                    // aléatoirement sur les bords de la map
             setBlobs(i);
         }
+            initFood();
+
 
         blobs.get(2).size = 20;
         timer = new Timer(100, this); // ttes les actions se feront les x ms
@@ -47,6 +49,7 @@ public class Map extends JFrame implements ActionListener {
     }
 
     public Vect attractFood(int blobIndex) {
+
         int index = -1;
         double distMin = -1;
         for (int i = 0; i < foods.size(); i++) {
@@ -59,9 +62,9 @@ public class Map extends JFrame implements ActionListener {
                 }
             }
         }
-        if (index > 0) {
-            return new Vect(foods.get(index).pos_x - blobs.get(index).pos_x,
-                    foods.get(index).pos_y - blobs.get(index).pos_y);
+        if (index >= 0) {
+            return new Vect(foods.get(index).pos_x - blobs.get(blobIndex).pos_x,
+                foods.get(index).pos_y - blobs.get(blobIndex).pos_y);
         } else {
             return new Vect(0, 0);
         }
@@ -69,7 +72,7 @@ public class Map extends JFrame implements ActionListener {
 
     public void initFood() {
         for (int i = 0; i < initFoodNumber; i++) {
-            foods.add(new Food(Math.random() * (width - wallWidth - 10), Math.random() * (height - wallHeight - 10)));
+            foods.add(new Food(Math.random() * (width - 2.5*wallWidth )+wallWidth, Math.random() * (height - 2.5*wallHeight)+wallHeight));
         }
     }
 
@@ -84,6 +87,9 @@ public class Map extends JFrame implements ActionListener {
         }
         blobs.get(2).draw(g, Color.red); // un certain blob pour les tests
 
+        for (int j = 0; j < foods.size(); j++) { // la nourriture
+            foods.get(j).draw(g, Color.green);
+        }
     }
 
     public int testBord(int j) { // vérifie si le blob détecte les murs de la map
@@ -131,17 +137,22 @@ public class Map extends JFrame implements ActionListener {
             blobs.get(j).VectSpeed(new Vect(-1, 0), 100); // applique une force qui les repousse du mur
             blobs.get(j).wallBounce = false;
 
-        } else if (testBlobPredator(j) != new Vect(0, 0)) { // faire que les blobs fuient ceux plus gros
+        }else if (!attractFood(j).equals(new Vect(0, 0))){
+            blobs.get(j).wanderingStrength = 2;
+            blobs.get(j).VectSpeed(attractFood(j), 20);
+            blobs.get(j).wallBounce = true;
+
+        } else if (!testBlobPredator(j).equals(new Vect(0, 0))) { // faire que les blobs fuient ceux plus gros
             blobs.get(j).wanderingStrength = 2;
             blobs.get(j).VectSpeed(testBlobPredator(j), 20);
             blobs.get(j).wallBounce = true;
 
-        } else if (testBlobTarget(j) != new Vect(0, 0)) {// faire que les blobs poursuivent ceux plus petits
+        } else if (!testBlobTarget(j).equals(new Vect(0, 0))) {// faire que les blobs poursuivent ceux plus petits
             blobs.get(j).wanderingStrength = 2;
             blobs.get(j).VectSpeed(testBlobTarget(j), 20);
             blobs.get(j).wallBounce = true;
 
-        } else { //// déplacement des blobs qui ont dépassé les murs
+        }else { //// déplacement des blobs qui ont dépassé les murs
             blobs.get(j).wanderingStrength = 5;
             blobs.get(j).wallBounce = true;
             blobs.get(j).VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
@@ -206,7 +217,7 @@ public class Map extends JFrame implements ActionListener {
                 blobPredator.add(e);
             }
         }
-
+        System.out.println(blobPredator.size());
         if (blobPredator.size() == 0) {
             return new Vect(0, 0);
         } else {
@@ -219,6 +230,7 @@ public class Map extends JFrame implements ActionListener {
                 }
             }
             return new Vect(predator.pos_x - blobs.get(j).pos_x, predator.pos_y - blobs.get(j).pos_y);
+            
         }
 
     }
@@ -228,7 +240,11 @@ public class Map extends JFrame implements ActionListener {
         if (e.getSource() == timer) {
             minute++;
             for (int j = 0; j < blobs.size(); j++) {
-                moveBlobs(j);
+                if (blobs.get(j).energy >0){
+                    moveBlobs(j);
+                }
+                blobs.get(j).energy = blobs.get(j).energy - 0.05*blobs.get(j).size - 0.05*blobs.get(j).speed - 0.05*blobs.get(j).view_range;
+                System.out.println(blobs.get(2).energy);   
             }
         }
         if (minute == day * 500) { // ce qui se passe à la fin de la journée
