@@ -175,22 +175,16 @@ public class Map extends JFrame implements ActionListener {
         }
     }
 
-    public void eatBlob(Blob unBlob) {
+    public Blob eatBlob(Blob unBlob) {
         for (Blob e : blobs) {
-            System.out.println("test6");
-
-            if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size && unBlob.size * 0.8 > e.size) {
-                System.out.println("test");
+            if (e != unBlob && new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size && unBlob.size * 0.8 > e.size) {
                 unBlob.foodB++;
-                System.out.println("test2");
                 unBlob.energy = unBlob.energy + 500;
-                System.out.println("test3");
-                blobs.remove(e);
-                System.out.println("test4");
-
+                return e;
             }
-            System.out.println("test5");
         }
+
+        return null;
     }
 
     public void moveBlobs(Blob unBlob) {
@@ -266,6 +260,7 @@ public class Map extends JFrame implements ActionListener {
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
         if (e.getSource() == timer) {
             minute++;
+            ArrayList<Blob> blobsEaten = new ArrayList<>();
             for (Blob unBlob : blobs) {
                 if (unBlob.energy > 0) {
                     moveBlobs(unBlob);
@@ -273,18 +268,36 @@ public class Map extends JFrame implements ActionListener {
                 unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * unBlob.speed
                         - 0.05 * unBlob.view_range;
                 System.out.println(blobs.get(2).energy);
-                eatBlob(unBlob);
+                Blob blobEaten = eatBlob(unBlob);
+                if (blobEaten != null)
+                    blobsEaten.add(eatBlob(unBlob));
+            }
+
+            while (blobsEaten.size() > 0) {
+                blobs.remove(blobsEaten.get(0));
+                blobsEaten.remove(0);
             }
         }
         if (minute == day * 500) { // ce qui se passe à la fin de la journée
 
+            ArrayList<Blob> blobsToRemove = new ArrayList<>();
             for (Blob unBlob : blobs) {
-                if (unBlob.pos_x < wallWidth || unBlob.pos_x > (width - wallWidth)
-                        || unBlob.pos_y < wallHeight || unBlob.pos_y > (height - wallHeight)) {
-                } else {
-                    blobs.remove(unBlob);
+                if (unBlob.pos_x >= wallWidth && unBlob.pos_x <= (width - wallWidth)
+                        && unBlob.pos_y >= wallHeight && unBlob.pos_y <= (height - wallHeight)) {
+                    blobsToRemove.add(unBlob);
                 }
             }
+
+            System.out.println(blobsToRemove.size());
+
+            while (blobsToRemove.size() > 0) {
+                blobs.remove(blobsToRemove.get(0));
+                blobsToRemove.remove(0);
+            }
+
+            System.out.println("Fin");
+            timer.stop();
+
             day++;
 
         }
