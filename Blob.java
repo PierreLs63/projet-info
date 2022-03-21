@@ -9,6 +9,7 @@ public class Blob {
     public double energy = 1000;
     public boolean alive = true;
     public Color color = new Color(0, 0, 0);
+    public int foodB = 0;
     // position du blob
     public double pos_x = 0;
     public double pos_y = 0;

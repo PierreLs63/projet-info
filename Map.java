@@ -131,12 +131,12 @@ public class Map extends JFrame implements ActionListener {
             blobs.get(j).VectSpeed(new Vect(-1, 0), 100); // applique une force qui les repousse du mur
             blobs.get(j).wallBounce = false;
 
-        } else if (testBlobPredator(j) != new Vect(0, 0)) {
+        } else if (testBlobPredator(j) != new Vect(0, 0)) { // faire que les blobs fuient ceux plus gros
             blobs.get(j).wanderingStrength = 2;
             blobs.get(j).VectSpeed(testBlobPredator(j), 20);
             blobs.get(j).wallBounce = true;
 
-        } else if (testBlobTarget(j) != new Vect(0, 0)) {
+        } else if (testBlobTarget(j) != new Vect(0, 0)) {// faire que les blobs poursuivent ceux plus petits
             blobs.get(j).wanderingStrength = 2;
             blobs.get(j).VectSpeed(testBlobTarget(j), 20);
             blobs.get(j).wallBounce = true;
