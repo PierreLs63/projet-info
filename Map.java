@@ -22,9 +22,14 @@ public class Map extends JFrame implements ActionListener {
     double blobIniSize = 10;
     double blobIniView = 100;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
+
     // foods
     int initFoodNumber = 20;
     ArrayList<Food> foods = new ArrayList<Food>();
+
+    //IHM
+    private Image dbImage;
+    private Graphics dbg;
 
     public Map(int w, int h) {
         width = w; // largeur de la map
@@ -239,7 +244,7 @@ public class Map extends JFrame implements ActionListener {
         }
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent (Graphics g){
         g.setColor(Color.pink); // la map ext
         g.fillRect(0, 0, width, height);
         g.setColor(Color.blue); // la map int
@@ -253,6 +258,13 @@ public class Map extends JFrame implements ActionListener {
         for (Food miam : foods) { // la nourriture
             miam.draw(g, Color.green);
         }
+    }
+
+    public void paint(Graphics g) {
+        dbImage = createImage (width, height);
+        dbg = dbImage.getGraphics();
+        paintComponent(dbg);
+        g.drawImage(dbImage, 0, 0, this);
     }
 
     @Override
