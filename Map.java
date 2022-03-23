@@ -215,7 +215,7 @@ public class Map extends JFrame implements ActionListener {
                 unBlob.foodAttrationForce = 0;
                 unBlob.targetAttrationForce = 0;
                 unBlob.predatorRepulsionForce = 0;
-                unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
+                unBlob.VectSpeed(new Vect(unBlob.pos_x-width/2,unBlob.pos_y-height/2),-5); // recalcule les forces appliquées au blob et son déplacement
 
             } else if (testBord(unBlob) == -2) { // faire que les blobs soient repoussés par le mur du bas
                 unBlob.wanderingStrength = 0;
@@ -263,7 +263,6 @@ public class Map extends JFrame implements ActionListener {
 
             }
         } else {
-
             if (!isSafe(unBlob)) {
                 List<Double> test = Arrays
                     .asList(new Double[] { unBlob.pos_x, width - unBlob.pos_x, unBlob.pos_y, height - unBlob.pos_y });
@@ -322,9 +321,6 @@ public class Map extends JFrame implements ActionListener {
                 }
                 unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * unBlob.speed
                         - 0.05 * unBlob.view_range;
-                System.out.println(blobs.get(2).energy);
-                System.out.println(blobs.get(2).foodB);
-
                 Blob blobEaten = eatBlob(unBlob);
                 if (blobEaten != null)
                     blobsEaten.add(eatBlob(unBlob));
@@ -337,8 +333,10 @@ public class Map extends JFrame implements ActionListener {
         }
         if (minute == day * 200) { // ce qui se passe à la fin de la journée
 
+            initFood();
             ArrayList<Blob> blobsToRemove = new ArrayList<>();
             for (Blob unBlob : blobs) {
+                unBlob.wallBounce = false;
                 unBlob.foodB = 0;
                 unBlob.energy = unBlob.energyIni;
                 if (unBlob.pos_x >= wallWidth && unBlob.pos_x <= (width - wallWidth)
@@ -351,6 +349,7 @@ public class Map extends JFrame implements ActionListener {
                 blobsToRemove.remove(0);
             }
             day++;
+            System.out.println("day "+day);
         }
         repaint();
     }
