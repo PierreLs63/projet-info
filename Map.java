@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.Timer;
@@ -10,6 +13,7 @@ public class Map extends JFrame implements ActionListener {
     int height;
     int wallWidth;
     int wallHeight;
+    int wallRepulsionForce = 1000;
 
     // temps
     Timer timer;
@@ -27,7 +31,7 @@ public class Map extends JFrame implements ActionListener {
     int initFoodNumber = 20;
     ArrayList<Food> foods = new ArrayList<Food>();
 
-    //IHM
+    // IHM
     private Image dbImage;
     private Graphics dbg;
 
@@ -61,6 +65,7 @@ public class Map extends JFrame implements ActionListener {
     public void initBlob() {
         for (int i = 0; i < initBlobNumber; i++) {
             blobs.add(new Blob(blobIniSpeed, blobIniSize, blobIniView));
+            blobs.get(i).energy = blobs.get(i).energyIni;
             double rand = Math.random();
             if (rand < 0.25) {
                 blobs.get(i).pos_x = 0 + blobs.get(i).size;
@@ -86,16 +91,16 @@ public class Map extends JFrame implements ActionListener {
 
     public int testBord(Blob unBlob) { // vérifie si le blob détecte les murs de la map
         if (new Vect(wallWidth, unBlob.pos_y).distance(unBlob.pos_x,
-                unBlob.pos_y) <= unBlob.view_range && unBlob.wallBounce == true) {
+                unBlob.pos_y) <= 10 && unBlob.wallBounce == true) {
             return -1; /// mur de gauche
         } else if (new Vect(width - wallWidth, unBlob.pos_y).distance(unBlob.pos_x,
-                unBlob.pos_y) <= unBlob.view_range && unBlob.wallBounce == true) {
+                unBlob.pos_y) <= 10 && unBlob.wallBounce == true) {
             return 1; // mur de droite
         } else if (new Vect(unBlob.pos_x, wallHeight).distance(unBlob.pos_x,
-                unBlob.pos_y) <= unBlob.view_range && unBlob.wallBounce == true) {
+                unBlob.pos_y) <= 10 && unBlob.wallBounce == true) {
             return 2; // mur du haut
         } else if (new Vect(unBlob.pos_x, height - wallHeight).distance(unBlob.pos_x,
-                unBlob.pos_y) <= unBlob.view_range && unBlob.wallBounce == true) {
+                unBlob.pos_y) <= 10 && unBlob.wallBounce == true) {
             return -2; // mur du bas
         } else {
             return 0; // pas de mur
@@ -194,57 +199,96 @@ public class Map extends JFrame implements ActionListener {
         return null;
     }
 
-    public void moveBlobs(Blob unBlob) {
-        if (unBlob.pos_x < wallWidth || unBlob.pos_x > (width - wallWidth)
-                || unBlob.pos_y < wallHeight || unBlob.pos_y > (height - wallHeight)) {
-            unBlob.wanderingStrength = 0;
-            unBlob.wallBounce = false;
-            unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
-
-        } else if (testBord(unBlob) == -2) { // faire que les blobs soient repoussés par le mur du bas
-            unBlob.wanderingStrength = 0;
-            unBlob.VectSpeed(new Vect(0, -1), 100); // applique une force qui les repousse du mur
-            unBlob.wallBounce = false;
-
-        } else if (testBord(unBlob) == 2) { // faire que les blobs soient repoussés par le mur du haut
-            unBlob.wanderingStrength = 0;
-            unBlob.VectSpeed(new Vect(0, 1), 100); // applique une force qui les repousse du mur
-            unBlob.wallBounce = false;
-
-        } else if (testBord(unBlob) == -1) { // faire que les blobs soient repoussés par le mur de gauche
-            unBlob.wanderingStrength = 0;
-            unBlob.VectSpeed(new Vect(1, 0), 100); // applique une force qui les repousse du mur
-            unBlob.wallBounce = false;
-
-        } else if (testBord(unBlob) == 1) { // faire que les blobs soient repoussés par le mur de droite
-            unBlob.wanderingStrength = 0;
-            unBlob.VectSpeed(new Vect(-1, 0), 100); // applique une force qui les repousse du mur
-            unBlob.wallBounce = false;
-
-        } else if (!attractFood(unBlob).equals(new Vect(0, 0))) {
-            unBlob.wanderingStrength = 2;
-            unBlob.VectSpeed(attractFood(unBlob), 20);
-            unBlob.wallBounce = true;
-
-        } else if (!testBlobPredator(unBlob).equals(new Vect(0, 0))) { // faire que les blobs fuient ceux plus gros
-            unBlob.wanderingStrength = 2;
-            unBlob.VectSpeed(testBlobPredator(unBlob), 20);
-            unBlob.wallBounce = true;
-
-        } else if (!testBlobTarget(unBlob).equals(new Vect(0, 0))) {// faire que les blobs poursuivent ceux plus petits
-            unBlob.wanderingStrength = 2;
-            unBlob.VectSpeed(testBlobTarget(unBlob), 20);
-            unBlob.wallBounce = true;
-
-        } else { //// déplacement des blobs qui ont dépassé les murs
-            unBlob.wanderingStrength = 5;
-            unBlob.wallBounce = true;
-            unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
-
-        }
+    public boolean isSafe(Blob unBlob) {
+        return (unBlob.pos_x < wallWidth || unBlob.pos_x > (width - wallWidth)
+                || unBlob.pos_y < wallHeight || unBlob.pos_y > (height - wallHeight));
     }
 
-    public void paintComponent (Graphics g){
+    public void moveBlobs(Blob unBlob) {
+        if (unBlob.foodB == 1 && unBlob.energy >= unBlob.energyIni / 3 || unBlob.foodB == 0) { // déplacement des blobs
+                                                                                               // qui ont moins de 2
+                                                                                               // npurriture et encore
+                                                                                               // 2/3 de leur énergie
+            if (isSafe(unBlob)) {
+                unBlob.wanderingStrength = 0;
+                unBlob.wallBounce = false;
+                unBlob.foodAttrationForce = 0;
+                unBlob.targetAttrationForce = 0;
+                unBlob.predatorRepulsionForce = 0;
+                unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
+
+            } else if (testBord(unBlob) == -2) { // faire que les blobs soient repoussés par le mur du bas
+                unBlob.wanderingStrength = 0;
+                unBlob.VectSpeed(new Vect(0, -1), wallRepulsionForce); // applique une force qui les repousse du mur
+                unBlob.wallBounce = false;
+
+            } else if (testBord(unBlob) == 2) { // faire que les blobs soient repoussés par le mur du haut
+                unBlob.wanderingStrength = 0;
+                unBlob.VectSpeed(new Vect(0, 1), wallRepulsionForce); // applique une force qui les repousse du mur
+                unBlob.wallBounce = false;
+
+            } else if (testBord(unBlob) == -1) { // faire que les blobs soient repoussés par le mur de gauche
+                unBlob.wanderingStrength = 0;
+                unBlob.VectSpeed(new Vect(1, 0), wallRepulsionForce); // applique une force qui les repousse du mur
+                unBlob.wallBounce = false;
+
+            } else if (testBord(unBlob) == 1) { // faire que les blobs soient repoussés par le mur de droite
+                unBlob.wanderingStrength = 0;
+                unBlob.VectSpeed(new Vect(-1, 0), wallRepulsionForce); // applique une force qui les repousse du mur
+                unBlob.wallBounce = false;
+
+            } else if (!attractFood(unBlob).equals(new Vect(0, 0))) {
+                unBlob.wanderingStrength = 2;
+                unBlob.VectSpeed(attractFood(unBlob), unBlob.foodAttrationForce);
+                unBlob.wallBounce = true;
+
+            } else if (!testBlobPredator(unBlob).equals(new Vect(0, 0))) { // faire que les blobs fuient ceux plus gros
+                unBlob.wanderingStrength = 2;
+                unBlob.VectSpeed(testBlobPredator(unBlob), unBlob.predatorRepulsionForce);
+                unBlob.wallBounce = true;
+
+            } else if (!testBlobTarget(unBlob).equals(new Vect(0, 0))) {// faire que les blobs poursuivent ceux plus
+                                                                        // petits
+                unBlob.wanderingStrength = 2;
+                unBlob.VectSpeed(testBlobTarget(unBlob), unBlob.targetAttrationForce);
+                unBlob.wallBounce = true;
+
+            } else { //// déplacement des blobs qui ont dépassé les murs
+                unBlob.wanderingStrength = 5;
+                unBlob.wallBounce = true;
+                unBlob.foodAttrationForce = 20;
+                unBlob.targetAttrationForce = 30;
+                unBlob.predatorRepulsionForce = 30;
+                unBlob.VectSpeed(); // recalcule les forces appliquées au blob et son déplacement
+
+            }
+        } else {
+
+            if (!isSafe(unBlob)) {
+                List<Double> test = Arrays
+                    .asList(new Double[] { unBlob.pos_x, width - unBlob.pos_x, unBlob.pos_y, height - unBlob.pos_y });
+                int index = test.indexOf(Collections.min(test));
+                switch (index) {
+                    case 0:
+                        unBlob.VectSpeed(new Vect(-1, 0), 20);
+                        break;
+                    case 1:
+                        unBlob.VectSpeed(new Vect(1, 0), 20);
+                        break;
+                    case 2:
+                        unBlob.VectSpeed(new Vect(0, -1), 20);
+                        break;
+                    case 3:
+                        unBlob.VectSpeed(new Vect(0, 1), 20);
+                        break;
+                }
+            }
+
+        }
+
+    }
+
+    public void paintComponent(Graphics g) {
         g.setColor(Color.pink); // la map ext
         g.fillRect(0, 0, width, height);
         g.setColor(Color.blue); // la map int
@@ -261,7 +305,7 @@ public class Map extends JFrame implements ActionListener {
     }
 
     public void paint(Graphics g) {
-        dbImage = createImage (width, height);
+        dbImage = createImage(width, height);
         dbg = dbImage.getGraphics();
         paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
@@ -279,6 +323,8 @@ public class Map extends JFrame implements ActionListener {
                 unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * unBlob.speed
                         - 0.05 * unBlob.view_range;
                 System.out.println(blobs.get(2).energy);
+                System.out.println(blobs.get(2).foodB);
+
                 Blob blobEaten = eatBlob(unBlob);
                 if (blobEaten != null)
                     blobsEaten.add(eatBlob(unBlob));
@@ -289,10 +335,12 @@ public class Map extends JFrame implements ActionListener {
                 blobsEaten.remove(0);
             }
         }
-        if (minute == day * 500) { // ce qui se passe à la fin de la journée
+        if (minute == day * 200) { // ce qui se passe à la fin de la journée
 
             ArrayList<Blob> blobsToRemove = new ArrayList<>();
             for (Blob unBlob : blobs) {
+                unBlob.foodB = 0;
+                unBlob.energy = unBlob.energyIni;
                 if (unBlob.pos_x >= wallWidth && unBlob.pos_x <= (width - wallWidth)
                         && unBlob.pos_y >= wallHeight && unBlob.pos_y <= (height - wallHeight)) {
                     blobsToRemove.add(unBlob);

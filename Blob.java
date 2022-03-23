@@ -6,10 +6,12 @@ public class Blob {
     public double speed;
     public double size;
     public double view_range;
-    public double energy = 10000;
+    public double energy;
+    public double energyIni = 1000;
     public boolean alive = true;
     public Color color = new Color(0, 0, 0);
     public int foodB = 0;
+
     // position du blob
     public double pos_x = 0;
     public double pos_y = 0;
@@ -24,6 +26,9 @@ public class Blob {
     public double wanderingStrength = 20;
     public double orientation = 0;
     public double steeringStrength = 20;
+    public int foodAttrationForce;
+    public int predatorRepulsionForce;
+    public int targetAttrationForce;
 
     public Blob(double sp, double si, double vr) {
         speed = sp;
