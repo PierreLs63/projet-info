@@ -45,10 +45,10 @@ public class Map extends JFrame implements ActionListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        initBlob(); // initialise un tableau de blob chacun placés
-                    // aléatoirement sur les bords de la map
-        initFood(); // initialise un tableau de food chacun placés
-                    // aléatoirement sur la map
+        iniBlob(); // initialise un tableau de blob chacun placés
+                   // aléatoirement sur les bords de la map
+        iniFood(); // initialise un tableau de food chacun placés
+                   // aléatoirement sur la map
 
         blobs.get(2).size = 20;
         timer = new Timer(50, this); // ttes les actions se feront les x ms
@@ -56,14 +56,14 @@ public class Map extends JFrame implements ActionListener {
         repaint(); // actualise l'IDH
     }
 
-    public void initFood() {
+    public void iniFood() {
         for (int i = 0; i < initFoodNumber; i++) {
             foods.add(new Food(Math.random() * (width - 2.5 * wallWidth) + wallWidth,
                     Math.random() * (height - 2.5 * wallHeight) + wallHeight));
         }
     }
 
-    public void initBlob() {
+    public void iniBlob() {
         for (int i = 0; i < initBlobNumber; i++) {
             blobs.add(new Blob(blobIniSpeed, blobIniSize, blobIniView));
             blobs.get(i).energy = blobs.get(i).energyIni;
@@ -200,6 +200,38 @@ public class Map extends JFrame implements ActionListener {
         return null;
     }
 
+    public void whipeBlobs() {
+
+        ArrayList<Blob> blobsToRemove = new ArrayList<>();
+
+        for (Blob unBlob : blobs) {
+            unBlob.wallBounce = false;
+            unBlob.foodB = 0;
+            unBlob.energy = unBlob.energyIni;
+            if (unBlob.pos_x >= wallWidth && unBlob.pos_x <= (width - wallWidth)
+                    && unBlob.pos_y >= wallHeight && unBlob.pos_y <= (height - wallHeight)) {
+                blobsToRemove.add(unBlob);
+            }
+        }
+        while (blobsToRemove.size() > 0) {
+            blobs.remove(blobsToRemove.get(0));
+            blobsToRemove.remove(0);
+        }
+    }
+
+    public void resetFood() {
+        ArrayList<Food> foodsToRemove = new ArrayList<>();
+
+        for (Food miam : foods) {
+            foodsToRemove.add(miam);
+        }
+        while (foodsToRemove.size() > 0) {
+            foods.remove(foodsToRemove.get(0));
+            foodsToRemove.remove(0);
+        }
+        iniFood();
+    }
+
     public boolean isSafe(Blob unBlob) {
         return (unBlob.pos_x < wallWidth || unBlob.pos_x > (width - wallWidth)
                 || unBlob.pos_y < wallHeight || unBlob.pos_y > (height - wallHeight));
@@ -216,7 +248,11 @@ public class Map extends JFrame implements ActionListener {
                 unBlob.foodAttrationForce = 0;
                 unBlob.targetAttrationForce = 0;
                 unBlob.predatorRepulsionForce = 0;
-                unBlob.VectSpeed(new Vect(unBlob.pos_x-width/2,unBlob.pos_y-height/2),-5); // recalcule les forces appliquées au blob et son déplacement
+                unBlob.VectSpeed(new Vect(unBlob.pos_x - width / 2, unBlob.pos_y - height / 2), -5); // recalcule les
+                                                                                                     // forces
+                                                                                                     // appliquées au
+                                                                                                     // blob et son
+                                                                                                     // déplacement
 
             } else if (testBord(unBlob) == -2) { // faire que les blobs soient repoussés par le mur du bas
                 unBlob.wanderingStrength = 0;
@@ -266,7 +302,8 @@ public class Map extends JFrame implements ActionListener {
         } else {
             if (!isSafe(unBlob)) {
                 List<Double> test = Arrays
-                    .asList(new Double[] { unBlob.pos_x, width - unBlob.pos_x, unBlob.pos_y, height - unBlob.pos_y });
+                        .asList(new Double[] { unBlob.pos_x, width - unBlob.pos_x, unBlob.pos_y,
+                                height - unBlob.pos_y });
                 int index = test.indexOf(Collections.min(test));
                 switch (index) {
                     case 0:
@@ -333,23 +370,10 @@ public class Map extends JFrame implements ActionListener {
         }
         if (minute == day * 200) { // ce qui se passe à la fin de la journée
 
-            initFood();
-            ArrayList<Blob> blobsToRemove = new ArrayList<>();
-            for (Blob unBlob : blobs) {
-                unBlob.wallBounce = false;
-                unBlob.foodB = 0;
-                unBlob.energy = unBlob.energyIni;
-                if (unBlob.pos_x >= wallWidth && unBlob.pos_x <= (width - wallWidth)
-                        && unBlob.pos_y >= wallHeight && unBlob.pos_y <= (height - wallHeight)) {
-                    blobsToRemove.add(unBlob);
-                }
-            }
-            while (blobsToRemove.size() > 0) {
-                blobs.remove(blobsToRemove.get(0));
-                blobsToRemove.remove(0);
-            }
+            whipeBlobs();
+            resetFood();
             day++;
-            System.out.println("day "+day);
+            System.out.println("day " + day);
         }
         repaint();
     }
