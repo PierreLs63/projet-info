@@ -23,9 +23,9 @@ public class Blob {
     public Vect wanderingForceV = new Vect(0, 0);
 
     // parametres de deplacement
-    public double wanderingStrength = 20;
+    public double wanderingStrength;
     public double orientation = 0;
-    public double steeringStrength = 20;
+    public double steeringStrength = 10;
     public int foodAttrationForce;
     public int predatorRepulsionForce;
     public int targetAttrationForce;
@@ -87,6 +87,7 @@ public class Blob {
 
     public void draw(Graphics g, Color c) { // dessine un blob
         g.setColor(c);
+        //definedColor();
         g.fillOval((int) (pos_x), (int) (pos_y), (int) size, (int) size);
     }
 

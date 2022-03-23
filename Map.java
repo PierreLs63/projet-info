@@ -26,6 +26,7 @@ public class Map extends JFrame implements ActionListener {
     double blobIniSize = 10;
     double blobIniView = 100;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
+    public double wanderingStrengthInit = 4;
 
     // foods
     int initFoodNumber = 20;
@@ -238,18 +239,18 @@ public class Map extends JFrame implements ActionListener {
                 unBlob.wallBounce = false;
 
             } else if (!attractFood(unBlob).equals(new Vect(0, 0))) {
-                unBlob.wanderingStrength = 2;
+                unBlob.wanderingStrength = wanderingStrengthInit;
                 unBlob.VectSpeed(attractFood(unBlob), unBlob.foodAttrationForce);
                 unBlob.wallBounce = true;
 
             } else if (!testBlobPredator(unBlob).equals(new Vect(0, 0))) { // faire que les blobs fuient ceux plus gros
-                unBlob.wanderingStrength = 2;
+                unBlob.wanderingStrength = wanderingStrengthInit;
                 unBlob.VectSpeed(testBlobPredator(unBlob), unBlob.predatorRepulsionForce);
                 unBlob.wallBounce = true;
 
             } else if (!testBlobTarget(unBlob).equals(new Vect(0, 0))) {// faire que les blobs poursuivent ceux plus
                                                                         // petits
-                unBlob.wanderingStrength = 2;
+                unBlob.wanderingStrength = wanderingStrengthInit;
                 unBlob.VectSpeed(testBlobTarget(unBlob), unBlob.targetAttrationForce);
                 unBlob.wallBounce = true;
 
@@ -296,7 +297,6 @@ public class Map extends JFrame implements ActionListener {
         for (Blob unBlob : blobs) { // les blobs
             unBlob.draw(g, Color.yellow);
         }
-        blobs.get(2).draw(g, Color.red); // un certain blob pour les tests
 
         for (Food miam : foods) { // la nourriture
             miam.draw(g, Color.green);
