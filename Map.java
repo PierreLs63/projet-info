@@ -188,16 +188,26 @@ public class Map extends JFrame implements ActionListener {
         }
     }
 
-    public Blob eatBlob(Blob unBlob) {
-        for (Blob e : blobs) {
-            if (e != unBlob && new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size
-                    && unBlob.size * 0.8 > e.size) {
-                unBlob.foodB++;
-                unBlob.energy = unBlob.energy + 500;
-                return e;
+    public void eatBlob() {
+        ArrayList<Blob> blobsEaten = new ArrayList<>();
+
+        for (Blob unBlob : blobs) {
+            for (Blob e : blobs) {
+                if (e != unBlob && new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size
+                        && unBlob.size * 0.8 > e.size) {
+                    unBlob.foodB++;
+                    unBlob.energy = unBlob.energy + 500;
+                    blobsEaten.add(e);
+
+                }
+
             }
+
         }
-        return null;
+        while (blobsEaten.size() > 0) {
+            blobs.remove(blobsEaten.get(0));
+            blobsEaten.remove(0);
+        }
     }
 
     public void whipeBlobs() {
@@ -351,22 +361,16 @@ public class Map extends JFrame implements ActionListener {
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
         if (e.getSource() == timer) {
             minute++;
-            ArrayList<Blob> blobsEaten = new ArrayList<>();
             for (Blob unBlob : blobs) {
                 if (unBlob.energy > 0) {
                     moveBlobs(unBlob);
                 }
                 unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * Math.log(unBlob.speed)
                         - 0.002 * unBlob.viewRange;
-                Blob blobEaten = eatBlob(unBlob);
-                if (blobEaten != null)
-                    blobsEaten.add(eatBlob(unBlob));
+
             }
 
-            while (blobsEaten.size() > 0) {
-                blobs.remove(blobsEaten.get(0));
-                blobsEaten.remove(0);
-            }
+            eatBlob();
 
         }
         if (minute == day * 200) { // ce qui se passe à la fin de la journée
