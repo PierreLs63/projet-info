@@ -121,7 +121,7 @@ public class MapCopy extends JFrame implements ActionListener {
                 unBlob.foodB++;
             }
 
-            else if (dist < unBlob.view_range) {
+            else if (dist < unBlob.viewRange) {
                 if (distMin == -1 || dist < distMin) {
                     index = i;
                     distMin = dist;
@@ -140,7 +140,7 @@ public class MapCopy extends JFrame implements ActionListener {
         ArrayList<Blob> blobTarget = new ArrayList<Blob>();
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
-                    e.pos_y) <= unBlob.view_range
+                    e.pos_y) <= unBlob.viewRange
                     && unBlob != e && unBlob.size < (e.size - 0.2 * e.size)) {
                 blobTarget.add(e);
 
@@ -167,7 +167,7 @@ public class MapCopy extends JFrame implements ActionListener {
         boolean test = false;
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
-                    e.pos_y) <= unBlob.view_range
+                    e.pos_y) <= unBlob.viewRange
                     && unBlob != e && 0.8 * unBlob.size > e.size) {
                 blobPredator.add(e);
             }
@@ -320,7 +320,7 @@ public class MapCopy extends JFrame implements ActionListener {
                     moveBlobs(unBlob);
                 }
                 unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * unBlob.speed
-                        - 0.05 * unBlob.view_range;
+                        - 0.001 * unBlob.viewRange;
                 Blob blobEaten = eatBlob(unBlob);
                 if (blobEaten != null)
                     blobsEaten.add(eatBlob(unBlob));
@@ -330,6 +330,7 @@ public class MapCopy extends JFrame implements ActionListener {
                 blobs.remove(blobsEaten.get(0));
                 blobsEaten.remove(0);
             }
+            System.out.println(blobs.get(2).viewRange);
         }
         if (minute == day * 200) { // ce qui se passe à la fin de la journée
 

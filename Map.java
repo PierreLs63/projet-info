@@ -22,11 +22,11 @@ public class Map extends JFrame implements ActionListener {
 
     // blobs
     int initBlobNumber = 10;
-    double blobIniSpeed = 3;
+    double blobIniSpeed = 20;
     double blobIniSize = 10;
-    double blobIniView = 100;
+    double blobIniView = 50;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
-    public double wanderingStrengthInit = 4;
+    public double wanderingStrengthInit = 2;
 
     // foods
     int initFoodNumber = 20;
@@ -86,7 +86,7 @@ public class Map extends JFrame implements ActionListener {
                 blobs.get(i).speedV = new Vect(0, -1);
             }
         }
-        blobs.get(2).speed = 10.1;
+        blobs.get(2).speed = 1000;
 
     }
 
@@ -121,7 +121,7 @@ public class Map extends JFrame implements ActionListener {
                 unBlob.foodB++;
             }
 
-            else if (dist < unBlob.view_range) {
+            else if (dist < unBlob.viewRange) {
                 if (distMin == -1 || dist < distMin) {
                     index = i;
                     distMin = dist;
@@ -140,7 +140,7 @@ public class Map extends JFrame implements ActionListener {
         ArrayList<Blob> blobTarget = new ArrayList<Blob>();
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
-                    e.pos_y) <= unBlob.view_range
+                    e.pos_y) <= unBlob.viewRange
                     && unBlob != e && unBlob.size < (e.size - 0.2 * e.size)) {
                 blobTarget.add(e);
 
@@ -167,7 +167,7 @@ public class Map extends JFrame implements ActionListener {
         boolean test = false;
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
-                    e.pos_y) <= unBlob.view_range
+                    e.pos_y) <= unBlob.viewRange
                     && unBlob != e && 0.8 * unBlob.size > e.size) {
                 blobPredator.add(e);
             }
@@ -356,8 +356,8 @@ public class Map extends JFrame implements ActionListener {
                 if (unBlob.energy > 0) {
                     moveBlobs(unBlob);
                 }
-                unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * unBlob.speed
-                        - 0.05 * unBlob.view_range;
+                unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * Math.log(unBlob.speed)
+                        - 0.002 * unBlob.viewRange;
                 Blob blobEaten = eatBlob(unBlob);
                 if (blobEaten != null)
                     blobsEaten.add(eatBlob(unBlob));
@@ -367,6 +367,7 @@ public class Map extends JFrame implements ActionListener {
                 blobs.remove(blobsEaten.get(0));
                 blobsEaten.remove(0);
             }
+
         }
         if (minute == day * 200) { // ce qui se passe à la fin de la journée
 

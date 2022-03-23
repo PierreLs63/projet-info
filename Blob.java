@@ -5,7 +5,7 @@ public class Blob {
     // Caractéristiques du blob
     public double speed;
     public double size;
-    public double view_range;
+    public double viewRange;
     public double energy;
     public double energyIni = 1000;
     public boolean alive = true;
@@ -33,7 +33,7 @@ public class Blob {
     public Blob(double sp, double si, double vr) {
         speed = sp;
         size = si;
-        view_range = vr;
+        viewRange = vr;
     }
 
     public void VectSpeed() { // calcul la nouvelle direction et vitesse du blob
@@ -63,7 +63,7 @@ public class Blob {
         computeWanderingForce();
         newSpeedV = (speedV.times(steeringStrength)).vectAdd(wanderingForceV.times(wanderingStrength));
         newSpeedV.normalize();
-        newSpeedV = newSpeedV.times(speed);
+        newSpeedV = newSpeedV.times(Math.log(speed));
 
     }
 
@@ -72,7 +72,7 @@ public class Blob {
         newSpeedV = (speedV.times(steeringStrength))
                 .vectAdd(wanderingForceV.times(wanderingStrength).vectAdd(newForce.times(newForceStrength)));
         newSpeedV.normalize();
-        newSpeedV = newSpeedV.times(speed);
+        newSpeedV = newSpeedV.times(Math.log(speed));
 
     }
 
@@ -94,7 +94,7 @@ public class Blob {
     public void definedColor() {
         int r = (int) Math.round(speed) * 30;
         int g = (int) Math.round(size) * 10;
-        int b = (int) Math.round(view_range) * 5;
+        int b = (int) Math.round(viewRange) * 5;
         if (r >= 255) {
             r = 255;
         } else if (g >= 255) {
