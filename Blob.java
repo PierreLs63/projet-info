@@ -34,6 +34,7 @@ public class Blob {
         speed = sp;
         size = si;
         viewRange = vr;
+        color = definedColor();
     }
 
     public void VectSpeed() { // calcul la nouvelle direction et vitesse du blob
@@ -91,7 +92,7 @@ public class Blob {
         g.fillOval((int) (pos_x), (int) (pos_y), (int) size, (int) size);
     }
 
-    public void definedColor() {
+    public Color definedColor() {
         int r = (int) Math.round(speed) * 30;
         int g = (int) Math.round(size) * 10;
         int b = (int) Math.round(viewRange) * 5;
@@ -102,7 +103,7 @@ public class Blob {
         } else if (b >= 255) {
             b = 255;
         }
-        this.color = new Color(r, g, b);
+        return new Color(r, g, b);
     }
 
 }

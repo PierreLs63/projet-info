@@ -342,7 +342,7 @@ public class Map extends JFrame implements ActionListener {
         g.fillRect(wallWidth, wallHeight, width - 2 * wallWidth, height - 2 * wallWidth);
 
         for (Blob unBlob : blobs) { // les blobs
-            unBlob.draw(g, Color.yellow);
+            unBlob.draw(g, unBlob.color);
         }
 
         for (Food miam : foods) { // la nourriture
