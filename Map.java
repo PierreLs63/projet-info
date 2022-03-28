@@ -9,33 +9,38 @@ import javax.swing.Timer;
 
 public class Map extends JFrame implements ActionListener {
     // variables du terrain
-    int width;
-    int height;
-    int wallWidth;
-    int wallHeight;
-    int wallRepulsionForce = 1000;
+    public int width;
+    public int height;
+    public int wallWidth;
+    public int wallHeight;
+    public int wallRepulsionForce = 1000;
 
     // temps
-    Timer timer;
-    int day = 1;
-    int minute = 0;
-    int dayDuration = 500;
+    public Timer timer;
+    public int day = 1;
+    public int minute = 0;
+    public int dayDuration = 500;
 
 
     // blobs
-    int initBlobNumber = 10;
-    double blobIniSpeed = 20;
-    double blobIniSize = 10;
-    double blobIniView = 50;
-    double energyIni = 500;
-    ArrayList<Blob> blobs = new ArrayList<Blob>();
+    public int initBlobNumber = 10;
+    public double blobIniSpeed = 20;
+    public double blobIniSize = 10;
+    public double blobIniView = 50;
+    public double energyIni = 500;
+    public ArrayList<Blob> blobs = new ArrayList<Blob>();
     public double wanderingStrengthInit = 2;
-    public double amplitudeVariation = 50.0;
+
+    // Coefs de variation
+    public double amplitudeVariationSize = 50;
+    public double amplitudeVariationSpeed = 100;
+    public double amplitudeVariationEnergy = 10;
+    public double amplitudeVariationView = 15;
     public double chanceVariation = 1.0;// entre 0 est 1
 
     // foods
-    int initFoodNumber = 20;
-    ArrayList<Food> foods = new ArrayList<Food>();
+    public int initFoodNumber = 10;
+    public ArrayList<Food> foods = new ArrayList<Food>();
 
     // IHM
     private Image dbImage;
@@ -92,7 +97,7 @@ public class Map extends JFrame implements ActionListener {
                 blobs.get(i).speedV = new Vect(0, -1);
             }
         }
-        blobs.get(2).speed = 1000;
+        //blobs.get(2).speed = 1000;
 
     }
 
@@ -147,7 +152,7 @@ public class Map extends JFrame implements ActionListener {
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
                     e.pos_y) <= unBlob.viewRange
-                    && unBlob != e && unBlob.size < (e.size - 0.2 * e.size)) {
+                    && unBlob != e && unBlob.size < (0.8 * e.size) ) {
                 blobTarget.add(e);
 
             }
@@ -174,7 +179,7 @@ public class Map extends JFrame implements ActionListener {
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
                     e.pos_y) <= unBlob.viewRange
-                    && unBlob != e && 0.8 * unBlob.size > e.size) {
+                    && unBlob != e && 0.8 * unBlob.size > e.size && !isSafe(e)) {
                 blobPredator.add(e);
             }
         }
@@ -200,7 +205,7 @@ public class Map extends JFrame implements ActionListener {
         for (Blob unBlob : blobs) {
             for (Blob e : blobs) {
                 if (e != unBlob && new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= unBlob.size
-                        && unBlob.size * 0.8 > e.size) {
+                        && unBlob.size * 0.8 > e.size && !isSafe(unBlob) && !isSafe(e)) {
                     unBlob.foodB++;
                     unBlob.energy = unBlob.energy + 500;
                     blobsEaten.add(e);
@@ -365,19 +370,19 @@ public class Map extends JFrame implements ActionListener {
     public Blob newBlob(Blob parent){
         double size = parent.size;
         if(Math.random()<chanceVariation){
-            size += (amplitudeVariation/size)*(Math.random()-0.5)*2;
+            size += (amplitudeVariationSize/size)*(Math.random()-0.5)*2;
         }
         double speed = parent.speed;
         if(Math.random()<chanceVariation){
-            speed += (amplitudeVariation/speed)*(Math.random()-0.5)*2;
+            speed += (amplitudeVariationSpeed/speed)*(Math.random()-0.5)*2;
         }
         double viewRange = parent.viewRange;
         if(Math.random()<chanceVariation){
-            viewRange += (amplitudeVariation/viewRange)*(Math.random()-0.5)*2;
+            viewRange += (amplitudeVariationView/viewRange)*(Math.random()-0.5)*2;
         }
         double energyIni = parent.energyIni;
         if(Math.random()<chanceVariation){
-            energyIni += (amplitudeVariation/energyIni)*(Math.random()-0.5)*2;
+            energyIni += (amplitudeVariationEnergy/energyIni)*(Math.random()-0.5)*2;
         }
         return new Blob(speed,size,viewRange,energyIni);
     }
