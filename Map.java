@@ -359,6 +359,7 @@ public class Map extends JFrame implements ActionListener {
         paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
     }
+
     public Blob newBlob(Blob parent){
         double size = parent.size;
         if(Math.random()<chanceVariation){
@@ -378,12 +379,14 @@ public class Map extends JFrame implements ActionListener {
         }
         return new Blob(speed,size,viewRange,energyIni);
     }
+
     public void newGeneration(){
         int nb=blobs.size();
         for(int i=0;i<nb;i++){
             blobs.add(blobs.get(i));
         }
     }
+
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
         if (e.getSource() == timer) {
@@ -404,6 +407,7 @@ public class Map extends JFrame implements ActionListener {
 
             whipeBlobs();
             resetFood();
+            newGeneration();
             day++;
             System.out.println("day " + day);
         }
