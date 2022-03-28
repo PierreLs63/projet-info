@@ -97,12 +97,12 @@ public class Blob {
     public Color definedColor() {
         int r = (int) Math.round(speed) * 30;
         int g = (int) Math.round(size) * 10;
-        int b = (int) Math.round(viewRange) * 5;
+        int b = (int) Math.round(viewRange) * 20;
         if (r >= 255) {
             r = 255;
-        } else if (g >= 255) {
+        }if (g >= 255) {
             g = 255;
-        } else if (b >= 255) {
+        }if (b >= 255) {
             b = 255;
         }
         return new Color(r, g, b);

@@ -20,7 +20,7 @@ public class Map extends JFrame implements ActionListener {
     int day = 1;
     int minute = 0;
 
-    
+
     // blobs
     int initBlobNumber = 10;
     double blobIniSpeed = 20;
@@ -29,7 +29,7 @@ public class Map extends JFrame implements ActionListener {
     double energyIni = 1000;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
     public double wanderingStrengthInit = 2;
-    public double amplitudeVariation = 1.0;
+    public double amplitudeVariation = 10.0;
     public double chanceVariation = 1.0;// entre 0 est 1
 
     // foods
@@ -387,6 +387,7 @@ public class Map extends JFrame implements ActionListener {
                 Blob blobC=newBlob(el);
                 blobC.pos_x=el.pos_x;
                 blobC.pos_y=el.pos_y;
+                blobC.energy=blobC.energyIni;
                 blobsTemp.add(blobC);
             }
             el.foodB=0;
