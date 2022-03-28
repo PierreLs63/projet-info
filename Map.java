@@ -381,10 +381,15 @@ public class Map extends JFrame implements ActionListener {
     }
 
     public void newGeneration(){
-        int nb=blobs.size();
-        for(int i=0;i<nb;i++){
-            blobs.add(blobs.get(i));
+        ArrayList<Blob> blobsTemp = new ArrayList<Blob>();
+        for(Blob el:blobs){
+            if(el.foodB==2){
+                blobsTemp.add(newBlob(el));
+            }
         }
+        for(Blob el:blobsTemp){
+            blobs.add(el);
+        }   
     }
 
     @Override
