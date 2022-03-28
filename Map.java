@@ -19,6 +19,7 @@ public class Map extends JFrame implements ActionListener {
     Timer timer;
     int day = 1;
     int minute = 0;
+    int dayDuration = 500;
 
 
     // blobs
@@ -26,10 +27,10 @@ public class Map extends JFrame implements ActionListener {
     double blobIniSpeed = 20;
     double blobIniSize = 10;
     double blobIniView = 50;
-    double energyIni = 1000;
+    double energyIni = 500;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
     public double wanderingStrengthInit = 2;
-    public double amplitudeVariation = 10.0;
+    public double amplitudeVariation = 50.0;
     public double chanceVariation = 1.0;// entre 0 est 1
 
     // foods
@@ -47,6 +48,7 @@ public class Map extends JFrame implements ActionListener {
         wallHeight = height / 20; // hauteur des bords map
         setBounds(0, 0, width, height);
         setVisible(true);
+        setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         iniBlob(); // initialise un tableau de blob chacun placés
@@ -55,7 +57,7 @@ public class Map extends JFrame implements ActionListener {
                    // aléatoirement sur la map
 
         blobs.get(2).size = 20;
-        timer = new Timer(50, this); // ttes les actions se feront les x ms
+        timer = new Timer(10, this); // ttes les actions se feront les x ms
         timer.start(); // commence la partie
         repaint(); // actualise l'IDH
     }
@@ -197,7 +199,7 @@ public class Map extends JFrame implements ActionListener {
 
         for (Blob unBlob : blobs) {
             for (Blob e : blobs) {
-                if (e != unBlob && new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= e.size
+                if (e != unBlob && new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x, e.pos_y) <= unBlob.size
                         && unBlob.size * 0.8 > e.size) {
                     unBlob.foodB++;
                     unBlob.energy = unBlob.energy + 500;
@@ -407,13 +409,13 @@ public class Map extends JFrame implements ActionListener {
                 }
                 unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * Math.log(unBlob.speed)
                         - 0.002 * unBlob.viewRange;
-
+                        System.out.println(blobs.get(1).energy);  
             }
 
             eatBlob();
 
         }
-        if (minute == day * 200) { // ce qui se passe à la fin de la journée
+        if (minute == day * dayDuration) { // ce qui se passe à la fin de la journée
 
             whipeBlobs();
             resetFood();
