@@ -25,8 +25,11 @@ public class Map extends JFrame implements ActionListener {
     double blobIniSpeed = 20;
     double blobIniSize = 10;
     double blobIniView = 50;
+    double energyIni = 1000;
     ArrayList<Blob> blobs = new ArrayList<Blob>();
     public double wanderingStrengthInit = 2;
+    public double amplitudeVariation = 1.0;
+    public double chanceVariation = 1.0;// entre 0 est 1
 
     // foods
     int initFoodNumber = 20;
@@ -65,7 +68,7 @@ public class Map extends JFrame implements ActionListener {
 
     public void iniBlob() {
         for (int i = 0; i < initBlobNumber; i++) {
-            blobs.add(new Blob(blobIniSpeed, blobIniSize, blobIniView));
+            blobs.add(new Blob(blobIniSpeed, blobIniSize, blobIniView, energyIni));
             blobs.get(i).energy = blobs.get(i).energyIni;
             double rand = Math.random();
             if (rand < 0.25) {
@@ -356,7 +359,31 @@ public class Map extends JFrame implements ActionListener {
         paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
     }
-
+    public Blob newBlob(Blob parent){
+        double size = parent.size;
+        if(Math.random()<chanceVariation){
+            size += (amplitudeVariation/size)*(Math.random()-0.5)*2;
+        }
+        double speed = parent.speed;
+        if(Math.random()<chanceVariation){
+            speed += (amplitudeVariation/speed)*(Math.random()-0.5)*2;
+        }
+        double viewRange = parent.viewRange;
+        if(Math.random()<chanceVariation){
+            viewRange += (amplitudeVariation/viewRange)*(Math.random()-0.5)*2;
+        }
+        double energyIni = parent.energyIni;
+        if(Math.random()<chanceVariation){
+            energyIni += (amplitudeVariation/energyIni)*(Math.random()-0.5)*2;
+        }
+        return new Blob(speed,size,viewRange,energyIni);
+    }
+    public void newGeneration(){
+        int nb=blobs.size();
+        for(int i=0;i<nb;i++){
+            blobs.add(blobs.get(i));
+        }
+    }
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
         if (e.getSource() == timer) {

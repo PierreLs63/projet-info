@@ -7,7 +7,7 @@ public class Blob {
     public double size;
     public double viewRange;
     public double energy;
-    public double energyIni = 1000;
+    public double energyIni;
     public boolean alive = true;
     public Color color = new Color(0, 0, 0);
     public int foodB = 0;
@@ -30,10 +30,11 @@ public class Blob {
     public int predatorRepulsionForce;
     public int targetAttrationForce;
 
-    public Blob(double sp, double si, double vr) {
+    public Blob(double sp, double si, double vr,double en) {
         speed = sp;
         size = si;
         viewRange = vr;
+        energyIni = en;
         color = definedColor();
     }
 
