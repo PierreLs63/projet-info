@@ -87,6 +87,7 @@ public class Blob {
     }
 
     public void draw(Graphics g, Color c) { // dessine un blob
+        color=definedColor();
         g.setColor(c);
         //definedColor();
         g.fillOval((int) (pos_x), (int) (pos_y), (int) size, (int) size);
