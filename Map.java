@@ -20,6 +20,7 @@ public class Map extends JFrame implements ActionListener {
     int day = 1;
     int minute = 0;
 
+    
     // blobs
     int initBlobNumber = 10;
     double blobIniSpeed = 20;
