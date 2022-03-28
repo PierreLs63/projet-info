@@ -219,7 +219,6 @@ public class Map extends JFrame implements ActionListener {
 
         for (Blob unBlob : blobs) {
             unBlob.wallBounce = false;
-            unBlob.foodB = 0;
             unBlob.energy = unBlob.energyIni;
             if (unBlob.pos_x >= wallWidth && unBlob.pos_x <= (width - wallWidth)
                     && unBlob.pos_y >= wallHeight && unBlob.pos_y <= (height - wallHeight)) {
@@ -384,8 +383,12 @@ public class Map extends JFrame implements ActionListener {
         ArrayList<Blob> blobsTemp = new ArrayList<Blob>();
         for(Blob el:blobs){
             if(el.foodB==2){
-                blobsTemp.add(newBlob(el));
+                Blob blobC=newBlob(el);
+                blobC.pos_x=el.pos_x;
+                blobC.pos_y=el.pos_y;
+                blobsTemp.add(blobC);
             }
+            el.foodB=0;
         }
         for(Blob el:blobsTemp){
             blobs.add(el);
