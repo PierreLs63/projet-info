@@ -39,7 +39,7 @@ public class Map extends JFrame implements ActionListener {
     public double chanceVariation = 1.0;// entre 0 est 1
 
     // foods
-    public int initFoodNumber = 10;
+    public int initFoodNumber = 5;
     public ArrayList<Food> foods = new ArrayList<Food>();
 
     // IHM
@@ -52,7 +52,6 @@ public class Map extends JFrame implements ActionListener {
         wallWidth = width / 20; // largeur des bords map
         wallHeight = height / 20; // hauteur des bords map
         setBounds(0, 0, width, height);
-        setVisible(true);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
