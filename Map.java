@@ -39,7 +39,7 @@ public class Map extends JFrame implements ActionListener {
     public double chanceVariation = 1.0;// entre 0 est 1
 
     // foods
-    public int initFoodNumber = 5;
+    public int initFoodNumber = 10;
     public ArrayList<Food> foods = new ArrayList<Food>();
 
     // IHM
@@ -54,7 +54,7 @@ public class Map extends JFrame implements ActionListener {
         setBounds(0, 0, width, height);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        setVisible(true);
         iniBlob(); // initialise un tableau de blob chacun placés
                    // aléatoirement sur les bords de la map
         iniFood(); // initialise un tableau de food chacun placés
