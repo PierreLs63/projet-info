@@ -1,26 +1,15 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.Timer;
 
-public class Map extends JFrame implements ActionListener {
+public class Map {
     // variables du terrain
     public int width;
     public int height;
     public int wallWidth;
     public int wallHeight;
     public int wallRepulsionForce = 1000;
-
-    // temps
-    public Timer timer;
-    public int day = 1;
-    public int minute = 0;
-    public int dayDuration = 500;
-
 
     // blobs
     public int initBlobNumber = 10;
@@ -42,28 +31,19 @@ public class Map extends JFrame implements ActionListener {
     public int initFoodNumber = 10;
     public ArrayList<Food> foods = new ArrayList<Food>();
 
-    // IHM
-    private Image dbImage;
-    private Graphics dbg;
 
     public Map(int w, int h) {
         width = w; // largeur de la map
         height = h; // hauteur de la map
         wallWidth = width / 20; // largeur des bords map
         wallHeight = height / 20; // hauteur des bords map
-        setBounds(0, 0, width, height);
-        setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        
         iniBlob(); // initialise un tableau de blob chacun placés
                    // aléatoirement sur les bords de la map
         iniFood(); // initialise un tableau de food chacun placés
                    // aléatoirement sur la map
 
         blobs.get(2).size = 20;
-        timer = new Timer(10, this); // ttes les actions se feront les x ms
-        timer.start(); // commence la partie
-        repaint(); // actualise l'IDH
     }
 
     public void iniFood() {
@@ -344,28 +324,6 @@ public class Map extends JFrame implements ActionListener {
 
     }
 
-    public void paintComponent(Graphics g) {
-        g.setColor(Color.pink); // la map ext
-        g.fillRect(0, 0, width, height);
-        g.setColor(Color.blue); // la map int
-        g.fillRect(wallWidth, wallHeight, width - 2 * wallWidth, height - 2 * wallWidth);
-
-        for (Blob unBlob : blobs) { // les blobs
-            unBlob.draw(g, unBlob.color);
-        }
-
-        for (Food miam : foods) { // la nourriture
-            miam.draw(g, Color.green);
-        }
-    }
-
-    public void paint(Graphics g) {
-        dbImage = createImage(width, height);
-        dbg = dbImage.getGraphics();
-        paintComponent(dbg);
-        g.drawImage(dbImage, 0, 0, this);
-    }
-
     public Blob newBlob(Blob parent){
         double size = parent.size;
         if(Math.random()<chanceVariation){
@@ -401,32 +359,5 @@ public class Map extends JFrame implements ActionListener {
         for(Blob el:blobsTemp){
             blobs.add(el);
         }   
-    }
-
-    @Override
-    public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
-        if (e.getSource() == timer) {
-            minute++;
-            for (Blob unBlob : blobs) {
-                if (unBlob.energy > 0) {
-                    moveBlobs(unBlob);
-                }
-                unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * Math.log(unBlob.speed)
-                        - 0.002 * unBlob.viewRange;
-                        System.out.println(blobs.get(1).energy);  
-            }
-
-            eatBlob();
-
-        }
-        if (minute == day * dayDuration) { // ce qui se passe à la fin de la journée
-
-            whipeBlobs();
-            resetFood();
-            newGeneration();
-            day++;
-            System.out.println("day " + day);
-        }
-        repaint();
     }
 }
