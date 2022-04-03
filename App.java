@@ -16,25 +16,29 @@ public class App extends JFrame implements ActionListener {
     private Image dbImage;
     private Graphics dbg;
     JPanel mapBounds;
+    JPanel affichageMap;
 
     public App (Map aMap){
+        this.setTitle("Le jeu des blobs");
+        this.setResizable(true);
+
         map = aMap;
         mapBounds = new JPanel();
         setBounds(0, 0, 1920, 1000);
         setLayout(null);
 
-        JPanel affichageGlobal = new JPanel();
-        affichageGlobal.setBounds(0,50,1920,1000);
-        affichageGlobal.setBackground(Color.white);
-        affichageGlobal.setLayout(null);
+        JPanel affichageMap = new JPanel();
+        affichageMap.setBounds(0,50,1000,500);
+        affichageMap.setBackground(Color.green);
+        affichageMap.setLayout(null);
 
         mapBounds.setBounds(500, 100, map.width, map.height);
         mapBounds.setLayout(null);
-        mapBounds.setBackground(Color.green);
+        mapBounds.setBackground(Color.yellow);
 
 
-        affichageGlobal.add(mapBounds);
-        add(affichageGlobal);
+        affichageMap.add(mapBounds);
+        add(affichageMap);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
