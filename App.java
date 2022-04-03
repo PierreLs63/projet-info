@@ -14,13 +14,18 @@ public class App extends JFrame implements ActionListener {
     // map
     public Map map;
     JPanel mapBounds;
+    JPanel affichageMap;
 
     public App (Map aMap){
+        this.setTitle("Le jeu des blobs");
+        this.setResizable(true);
+
         map = aMap;
 
         setBounds(0, 0, 1920, 1000);
         setLayout(null);
 
+<<<<<<< HEAD
         JPanel contentPane = new JPanel();
         contentPane.setBounds(0,0,getWidth(),getHeight());
         contentPane.setLayout(null);
@@ -29,11 +34,17 @@ public class App extends JFrame implements ActionListener {
         affichageGlobal.setBounds(0,50,1000,1000);
         affichageGlobal.setBackground(Color.white);
         affichageGlobal.setLayout(null);
+=======
+        JPanel affichageMap = new JPanel();
+        affichageMap.setBounds(0,50,1000,500);
+        affichageMap.setBackground(Color.green);
+        affichageMap.setLayout(null);
+>>>>>>> 17a671158c8a085ef2139e0c084f5153b56389b1
 
         mapBounds = new JPanel();
         mapBounds.setBounds(500, 100, map.width, map.height);
         mapBounds.setLayout(null);
-        mapBounds.setBackground(Color.green);
+        mapBounds.setBackground(Color.yellow);
 
         JButton f = new JButton("appuyez");
         f.setBounds(500,500,50,50);
@@ -43,7 +54,12 @@ public class App extends JFrame implements ActionListener {
         contentPane.add(affichageGlobal);
         contentPane.add(f);
 
+<<<<<<< HEAD
         setContentPane(contentPane);
+=======
+        affichageMap.add(mapBounds);
+        add(affichageMap);
+>>>>>>> 17a671158c8a085ef2139e0c084f5153b56389b1
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
