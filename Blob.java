@@ -91,7 +91,7 @@ public class Blob {
         color=definedColor();
         g.setColor(c);
         //definedColor();
-        g.fillOval((int) (pos_x), (int) (pos_y), (int) size, (int) size);
+        g.fillOval((int) (pos_x), (int) (pos_y), (int) (size*(Math.sin(energy*0.025)+7)/8), (int) (size*(Math.sin(energy*0.025)+7)/8));
     }
 
     public Color definedColor() {
