@@ -15,7 +15,7 @@ public class Map extends JPanel {
 
     // blobs
     public int initBlobNumber = 10;
-    public double blobIniSpeed = 20;
+    public  double blobIniSpeed = 20;
     public double blobIniSize = 10;
     public double blobIniView = 50;
     public double energyIni = 500;
@@ -30,7 +30,7 @@ public class Map extends JPanel {
     public double chanceVariation = 1.0;// entre 0 est 1
 
     // foods
-    public int initFoodNumber = 10;
+    public  int initFoodNumber = 10;
     public ArrayList<Food> foods = new ArrayList<Food>();
 
     //IHM
