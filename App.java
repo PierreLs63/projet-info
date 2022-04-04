@@ -61,6 +61,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     public App(Map aMap) {
         map = aMap;
+        stat = new Stats(map.blobs);
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
@@ -78,9 +80,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         mapBounds.setLayout(null);
 
         JPanel statBounds = new JPanel();
-        statBounds.setBounds(300,50, 400,300);
+        statBounds.setBounds(300, 50, stat.width, stat.height);
         statBounds.setLayout(null);
-
 
         // JPanel qui contient tt le côté gauche qui est celui de la map
         JPanel affichageMap = new JPanel();
@@ -105,7 +106,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         startButton.addActionListener(this);
 
         daysCount = new JLabel("day");
+        daysCount.setBounds(800, 20, 80, 20);
 
+        //sliders
         int lengthSlider = 200;
         int widthSlider = 40;
         speedSlider = new JSlider(JSlider.HORIZONTAL, speed_MIN, speed_MAX, speed_INIT);
@@ -199,10 +202,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         BlobSizeSlider.setBounds(xBlobSizeSlider, yBlobSizeSlider, lengthSlider, widthSlider);
         DetectionSlider.setBounds(xDetectionSlider, yDetectionSlider, lengthSlider, widthSlider);
         affichageSliders.setLayout(null);
+        //fin sliders
 
         mapBounds.add(map);
         statBounds.add(stat);
         affichageMap.add(mapBounds);
+        affichageMap.add(daysCount);
         contentPane.add(affichageSliders);
         contentPane.add(affichageMap);
 
@@ -213,7 +218,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        map.repaint(); // actualise l'IDH
+        map.repaint(); // actualise la map
         stat.repaint();
 
         timer = new Timer(10, this);
@@ -228,6 +233,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.iniFood(); // initialise un tableau de food chacun placés
             // aléatoirement sur la map
             timer.start();
+            //stat.repaint(); // actualise les stats
 
         }
 
@@ -252,9 +258,10 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.newGeneration();
             day++;
             System.out.println("day " + day);
+            stat.repaint();
         }
         map.repaint();
-        stat.repaint();
+        //stat.repaint();
 
     }
 
