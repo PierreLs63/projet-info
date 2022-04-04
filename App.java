@@ -20,6 +20,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     JButton startButton;
     JLabel daysCount;
 
+    //Stats
+    Stats stat;
+
     // Valeurs MIN,MAX,INIT slliders
     static final int speed_MIN = 0;
     static final int speed_MAX = 30;
@@ -73,6 +76,11 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         JPanel mapBounds = new JPanel();
         mapBounds.setBounds((1000 - map.width) / 2, (1000 - map.height) / 2, map.width, map.height);
         mapBounds.setLayout(null);
+
+        JPanel statBounds = new JPanel();
+        statBounds.setBounds(300,50, 400,300);
+        statBounds.setLayout(null);
+
 
         // JPanel qui contient tt le côté gauche qui est celui de la map
         JPanel affichageMap = new JPanel();
@@ -193,17 +201,20 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.setLayout(null);
 
         mapBounds.add(map);
+        statBounds.add(stat);
         affichageMap.add(mapBounds);
         contentPane.add(affichageSliders);
         contentPane.add(affichageMap);
 
         affichageSliders.add(startButton);
+        affichageSliders.add(statBounds);
 
         setContentPane(contentPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
         map.repaint(); // actualise l'IDH
+        stat.repaint();
 
         timer = new Timer(10, this);
 
@@ -235,7 +246,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         }
         if (minute == day * dayDuration) { // ce qui se passe à la fin de la journée
-
+            stat = new Stats(map.blobs);
             map.whipeBlobs();
             map.resetFood();
             map.newGeneration();
@@ -243,6 +254,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             System.out.println("day " + day);
         }
         map.repaint();
+        stat.repaint();
+
     }
 
     public void stateChanged(ChangeEvent e) {

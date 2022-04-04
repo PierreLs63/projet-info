@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Collections;
 import javax.swing.*;
 import java.awt.*;
 public class Stats extends JPanel{
@@ -16,6 +13,9 @@ public class Stats extends JPanel{
     int[] energy_value = {0,0,0,0,0};
     public Stats(ArrayList<Blob> blobs){
         this.blobs = blobs;
+        setBounds(0,0,400,300);
+        setLayout(null);
+        fetch();
     }
     public void fetch(){
         for(Blob el : blobs){
@@ -53,7 +53,7 @@ public class Stats extends JPanel{
             }
         }
     }
-    public void draw(Graphics g, Color c){
+    public void paint(Graphics g, Color c){
         for(int i=0;i<size_value.length;i++){
             g.setColor(c);
             g.fillRect(20*i+10,200-size_value[i]*10,10,size_value[i]*10);
