@@ -67,6 +67,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         setTitle("Les Blobs c'est cool");
         setLayout(null);
 
+        System.out.println(map.blobIniSize);
+
         // JPanel qui contient juste la map
         JPanel mapBounds = new JPanel();
         mapBounds.setBounds((1000 - map.width) / 2, (1000 - map.height) / 2, map.width, map.height);
@@ -94,7 +96,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         startButton.setBounds(700, 900, 200, 80);
         startButton.addActionListener(this);
 
-        //daysCount = new JLabel("day");
+        daysCount = new JLabel("day");
 
         int lengthSlider = 200;
         int widthSlider = 40;
@@ -209,6 +211,11 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
         if (e.getSource() == startButton) {
+
+            map.iniBlob(); // initialise un tableau de blob chacun placés
+            // aléatoirement sur les bords de la map
+            map.iniFood(); // initialise un tableau de food chacun placés
+            // aléatoirement sur la map
             timer.start();
 
         }
@@ -242,16 +249,16 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         JSlider source = (JSlider) e.getSource();
         if (source == speedSlider) {
             speedLabel.setText("Vitesse : " + speedSlider.getValue());
-            //Map.blobIniSpeed =speedSlider.getValue() ;
+            map.blobIniSpeed =speedSlider.getValue() ;
 
         } else if (source == FoodSlider) {
             FoodLabel.setText("quantite nourriture : " + FoodSlider.getValue());
-            //Map.initFoodNumber = FoodSlider.getValue();
+            map.initFoodNumber = FoodSlider.getValue();
         } else if (source == MapSizeSlider) {
             MapSizeLabel.setText("Taille de la carte : " + MapSizeSlider.getValue());
         } else if (source == BlobSizeSlider) {
             BlobSizeLabel.setText("Taille du blob : " + BlobSizeSlider.getValue());
-            // Map.blobIniSize = BlobSizeSlider.getValue();
+            map.blobIniSize = BlobSizeSlider.getValue();
         } else if (source == DetectionSlider) {
             DetectionLabel.setText("Champ de vision : " + DetectionSlider.getValue());
         } else if (source == EnergySlider) {
