@@ -88,7 +88,6 @@ public class Map extends JPanel {
         //blobs.get(2).speed = 1000;
 
     }
-
     public int testBord(Blob unBlob) { // vérifie si le blob détecte les murs de la map
         if (new Vect(wallWidth, unBlob.pos_y).distance(unBlob.pos_x,
                 unBlob.pos_y) <= 10 && unBlob.wallBounce == true) {
