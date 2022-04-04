@@ -14,6 +14,9 @@ public class App extends JFrame implements ActionListener {
     // map
     public Map map;
 
+    //IHM
+    JButton startButton;
+
     public App (Map aMap){
         map = aMap;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -25,49 +28,58 @@ public class App extends JFrame implements ActionListener {
         setTitle("Les Blobs c'est cool");
         setLayout(null);
 
+        //JPanel qui contient juste la map
         JPanel mapBounds = new JPanel();
         mapBounds.setBounds((1000-map.width)/2, (1000-map.height)/2, map.width, map.height);
         mapBounds.setLayout(null);
-
         
+        //JPanel qui contient tt le côté gauche qui est celui de la map
         JPanel affichageMap = new JPanel();
         affichageMap.setBounds(0,0,1000,1000);
         affichageMap.setLayout(null);
         affichageMap.setBackground(Color.pink);
 
+        //JPanel qui contient tout le côté droit avec les sliders
         JPanel affichageSliders = new JPanel();
-        affichageMap.setBounds(1000,0,920,1000);
+        affichageSliders.setBounds(1000,0,920,1000);
+        affichageSliders.setLayout(null);
+        affichageSliders.setBackground(Color.yellow);
 
+        //JPanel conteneur qui contient affichageSliders et affichageMap
         JPanel contentPane = new JPanel();
         contentPane.setBounds(0,0,getWidth(),getHeight());
         contentPane.setLayout(null);
 
+        //Bouton START
+        startButton = new JButton("START");
+        startButton.setBounds(700,900,200,80);
+        startButton.addActionListener(this);
+
         mapBounds.add(map);
         affichageMap.add(mapBounds);
+        contentPane.add(affichageSliders);
         contentPane.add(affichageMap);
 
-        
+        affichageSliders.add(startButton);
 
-        //JButton f = new JButton("appuyez");
-        // f.setBounds(500,500,50,50);
-
-
-        //contentPane.add(f);
 
         setContentPane(contentPane);
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
         map.repaint(); // actualise l'IDH
 
         timer = new Timer(10, this);
-        //timer.start();
 
     }
 
 
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
+        if(e.getSource() == startButton){
+        timer.start();
+
+        }
+
         if (e.getSource() == timer) {
             minute++;
             for (Blob unBlob : map.blobs) {
