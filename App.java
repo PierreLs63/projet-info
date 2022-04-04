@@ -19,6 +19,7 @@ public class App extends JFrame implements ActionListener {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
+        System.out.println(width + " " + height);
 
         setBounds(0, 0, (int)width, (int)height-50);
         setTitle("Les Blobs c'est cool");
@@ -34,10 +35,12 @@ public class App extends JFrame implements ActionListener {
         affichageMap.setLayout(null);
         affichageMap.setBackground(Color.pink);
 
+        JPanel affichageSliders = new JPanel();
+        affichageMap.setBounds(1000,0,920,1000);
+
         JPanel contentPane = new JPanel();
         contentPane.setBounds(0,0,getWidth(),getHeight());
         contentPane.setLayout(null);
-        contentPane.setBackground(Color.blue);
 
         mapBounds.add(map);
         affichageMap.add(mapBounds);
