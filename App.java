@@ -13,36 +13,43 @@ public class App extends JFrame implements ActionListener {
 
     // map
     public Map map;
-    JPanel mapBounds;
 
     public App (Map aMap){
         map = aMap;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
 
-        setBounds(0, 0, 1920, 1000);
+
+        setBounds(0, 0, (int)width, (int)height);
         setTitle("Les Blobs c'est cool");
         setLayout(null);
 
         JPanel contentPane = new JPanel();
         contentPane.setBounds(0,0,getWidth(),getHeight());
         contentPane.setLayout(null);
+        contentPane.setBackground(Color.blue);
+
 
         JPanel affichageMap = new JPanel();
-        affichageMap.setBounds(0,50,1000,1000);
-        affichageMap.setBackground(Color.white);
+        affichageMap.setBounds(0,0,920,1000);
         affichageMap.setLayout(null);
+        affichageMap.setBackground(Color.green);
 
-        mapBounds = new JPanel();
-        mapBounds.setBounds(500, 100, map.width, map.height);
+
+        JPanel mapBounds = new JPanel();
+        mapBounds.setBounds(50, 50, map.width, map.height);
         mapBounds.setLayout(null);
-        mapBounds.setBackground(Color.green);
+        mapBounds.setBackground(Color.yellow);
 
-        JButton f = new JButton("appuyez");
-        f.setBounds(500,500,50,50);
+        //JButton f = new JButton("appuyez");
+        // f.setBounds(500,500,50,50);
 
 
-        affichageMap.add(map);
+        mapBounds.add(map);
+        affichageMap.add(mapBounds);
         contentPane.add(affichageMap);
-        contentPane.add(f);
+        //contentPane.add(f);
 
         setContentPane(contentPane);
 

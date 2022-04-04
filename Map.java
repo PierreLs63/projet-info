@@ -44,7 +44,7 @@ public class Map extends JPanel {
         wallWidth = width / 20; // largeur des bords map
         wallHeight = height / 20; // hauteur des bords map
         
-        setBounds(0, 50, width, height);
+        setBounds(0, 0, width, height);
         setLayout(null);
 
         iniBlob(); // initialise un tableau de blob chacun placés
@@ -389,6 +389,6 @@ public class Map extends JPanel {
         dbImage = createImage(width, height);
         dbg = dbImage.getGraphics();
         paintComponent(dbg);
-        g.drawImage(dbImage, 0, 50, this);
+        g.drawImage(dbImage, 0, 0, this);
     }
 }
