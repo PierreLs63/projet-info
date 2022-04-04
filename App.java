@@ -20,35 +20,35 @@ public class App extends JFrame implements ActionListener {
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
 
-
-        setBounds(0, 0, (int)width, (int)height);
+        setBounds(0, 0, (int)width, (int)height-50);
         setTitle("Les Blobs c'est cool");
         setLayout(null);
+
+        JPanel mapBounds = new JPanel();
+        mapBounds.setBounds((1000-map.width)/2, (1000-map.height)/2, map.width, map.height);
+        mapBounds.setLayout(null);
+
+        
+        JPanel affichageMap = new JPanel();
+        affichageMap.setBounds(0,0,1000,1000);
+        affichageMap.setLayout(null);
+        affichageMap.setBackground(Color.pink);
 
         JPanel contentPane = new JPanel();
         contentPane.setBounds(0,0,getWidth(),getHeight());
         contentPane.setLayout(null);
         contentPane.setBackground(Color.blue);
 
+        mapBounds.add(map);
+        affichageMap.add(mapBounds);
+        contentPane.add(affichageMap);
 
-        JPanel affichageMap = new JPanel();
-        affichageMap.setBounds(0,0,920,1000);
-        affichageMap.setLayout(null);
-        affichageMap.setBackground(Color.green);
-
-
-        JPanel mapBounds = new JPanel();
-        mapBounds.setBounds(50, 50, map.width, map.height);
-        mapBounds.setLayout(null);
-        mapBounds.setBackground(Color.yellow);
+        
 
         //JButton f = new JButton("appuyez");
         // f.setBounds(500,500,50,50);
 
 
-        mapBounds.add(map);
-        affichageMap.add(mapBounds);
-        contentPane.add(affichageMap);
         //contentPane.add(f);
 
         setContentPane(contentPane);
@@ -59,7 +59,7 @@ public class App extends JFrame implements ActionListener {
         map.repaint(); // actualise l'IDH
 
         timer = new Timer(10, this);
-        timer.start();
+        //timer.start();
 
     }
 
