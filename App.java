@@ -15,28 +15,43 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     // map
     public Map map;
+<<<<<<< HEAD
     //stats
     public Stats stat;
+=======
+    public int mapWidth = 500;
+    public int mapHeight = 500;
+
+
+>>>>>>> 728813eab6023bec876bd0eedb27096dcf69f5ff
     // IHM
     JButton startButton;
     JLabel daysCount;
+
+    //Stats
+    Stats stat;
 
     // Valeurs MIN,MAX,INIT slliders
     static final int speed_MIN = 0;
     static final int speed_MAX = 30;
     static final int speed_INIT = 20; // initial speed
+
     static final int Energy_MIN = 0;
     static final int Energy_MAX = 2000;
     static final int Energy_INIT = 500;
+
     static final int qntfood_MAX = 100;
     static final int qntFood_MIN = 0;
     static final int qntfood_INIT = 5;
+
     static final int detection_MIN = 10;
     static final int detection_MAX = 50;
     static final int detection_INIT = 50;
-    static final int mapSize_MIN = 10;
-    static final int mapSize_MAX = 50;
-    static final int mapSize_INIT = 30;
+
+    static final int mapSize_MIN = 100;
+    static final int mapSize_MAX = 1000;
+    static final int mapSize_INIT = 500;
+
     static final int BlobSize_INIT = 10;
     static final int BlobSize_MIN = 5;
     static final int BlobSize_MAX = 40;
@@ -57,9 +72,13 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     JLabel BlobSizeLabel;
     JLabel DetectionLabel;
 
+<<<<<<< HEAD
     public App(Map aMap) {
         map = aMap;
         stat= new Stats(map.blobs);
+=======
+    public App() {
+>>>>>>> 728813eab6023bec876bd0eedb27096dcf69f5ff
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
@@ -69,22 +88,23 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         setTitle("Les Blobs c'est cool");
         setLayout(null);
 
-        // JPanel qui contient juste la map
-        JPanel mapBounds = new JPanel();
-        mapBounds.setBounds((1000 - map.width) / 2, (1000 - map.height) / 2, map.width, map.height);
-        mapBounds.setLayout(null);
+        EcranStart();
 
-        // JPanel qui contient tt le côté gauche qui est celui de la map
-        JPanel affichageMap = new JPanel();
-        affichageMap.setBounds(0, 0, 1000, 1000);
-        affichageMap.setLayout(null);
-        affichageMap.setBackground(Color.pink);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+<<<<<<< HEAD
         // JPanel qui contient tout le côté droit avec les sliders
         JPanel affichageSliders = new JPanel();
         affichageSliders.setBounds(1000, 0, 920, 700);
         affichageSliders.setLayout(null);
         affichageSliders.setBackground(Color.yellow);
+=======
+        timer = new Timer(10, this);
+
+    }
+
+    public void EcranStart(){
+>>>>>>> 728813eab6023bec876bd0eedb27096dcf69f5ff
 
         // JPanel conteneur qui contient affichageSliders et affichageMap
         JPanel contentPane = new JPanel();
@@ -96,15 +116,33 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageStats.setLayout(null);
         affichageStats.setBackground(Color.red);
 
+        // JPanel qui contient tt le côté gauche avec l'image de start du jeu
+        JPanel affichageStart = new JPanel();
+        affichageStart.setBounds(0, 0, 1000, 1000);
+        affichageStart.setLayout(null);
+        affichageStart.setBackground(Color.pink);
+
+        // JPanel qui contient tout le côté droit avec les sliders
+        JPanel affichageSliders = new JPanel();
+        affichageSliders.setBounds(1000, 0, 920, 1000);
+        affichageSliders.setLayout(null);
+        affichageSliders.setBackground(Color.yellow);
+        
         // Bouton START
         startButton = new JButton("START");
+<<<<<<< HEAD
         startButton.setBounds(700, 0, 200, 80);
+=======
+        startButton.setBounds(700, 900, 200, 80);
+        startButton.setLayout(null);
+>>>>>>> 728813eab6023bec876bd0eedb27096dcf69f5ff
         startButton.addActionListener(this);
 
-        //daysCount = new JLabel("day");
-
+        //sliders
         int lengthSlider = 200;
         int widthSlider = 40;
+
+        //SpeedSlider
         speedSlider = new JSlider(JSlider.HORIZONTAL, speed_MIN, speed_MAX, speed_INIT);
         // Turn on labels at major tick marks.
         int xSpeedSlider = 20;
@@ -114,8 +152,11 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
         speedSlider.addChangeListener(this);
+        speedSlider.setBounds(xSpeedSlider, ySpeedSlider, lengthSlider, widthSlider);
         speedLabel = new JLabel("Vitesse : " + speed_INIT);
         speedLabel.setBounds(xSpeedSlider, ySpeedSlider - 70, 200, 60);
+
+        //FoodSlider
         FoodSlider = new JSlider(JSlider.HORIZONTAL, qntFood_MIN, qntfood_MAX, qntfood_INIT);
         // Turn on labels at major tick marks.
         int xFoodSlider = xSpeedSlider;
@@ -125,20 +166,24 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         FoodSlider.setPaintTicks(true);
         FoodSlider.setPaintLabels(true);
         FoodSlider.addChangeListener(this);
+        FoodSlider.setBounds(xFoodSlider, yFoodSlider, lengthSlider, widthSlider);
         FoodLabel = new JLabel("quantite nourriture : " + qntfood_INIT);
         FoodLabel.setBounds(xFoodSlider, yFoodSlider - 70, 200, 60);
 
+        //MapSize Slider
         MapSizeSlider = new JSlider(JSlider.HORIZONTAL, mapSize_MIN, mapSize_MAX, mapSize_INIT);
         int xMapSizeSlider = xFoodSlider;
         int yMapSizeSlider = yFoodSlider + 140;
-        MapSizeSlider.setMajorTickSpacing(10);// espace minimal affiché sous le slider entre les valeurs de vitesse
-        MapSizeSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
+        MapSizeSlider.setMajorTickSpacing(180);// espace minimal affiché sous le slider entre les valeurs de vitesse
+        MapSizeSlider.setMinorTickSpacing(50);// espace minimal entre les valeurs de vitesse
         MapSizeSlider.setPaintTicks(true);
         MapSizeSlider.setPaintLabels(true);
         MapSizeSlider.addChangeListener(this);
+        MapSizeSlider.setBounds(xMapSizeSlider, yMapSizeSlider, lengthSlider, widthSlider);
         MapSizeLabel = new JLabel("Taille de la carte: " + mapSize_INIT);
         MapSizeLabel.setBounds(xMapSizeSlider, yMapSizeSlider - 70, 200, 60);
 
+        //BlobsNumber Slider
         BlobSizeSlider = new JSlider(JSlider.HORIZONTAL, BlobSize_MIN, BlobSize_MAX, BlobSize_INIT);
         // Turn on labels at major tick marks.
         int xBlobSizeSlider = xSpeedSlider;
@@ -148,10 +193,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         BlobSizeSlider.setPaintTicks(true);
         BlobSizeSlider.setPaintLabels(true);
         BlobSizeSlider.addChangeListener(this);
+        BlobSizeSlider.setBounds(xBlobSizeSlider, yBlobSizeSlider, lengthSlider, widthSlider);
         BlobSizeLabel = new JLabel("Taille du blob : " + BlobSize_INIT);
-        BlobSizeSlider.setBounds(xBlobSizeSlider, yBlobSizeSlider - 70, 200, 60);
+        //BlobSizeSlider.setBounds(xBlobSizeSlider, yBlobSizeSlider - 70, 200, 60);
         BlobSizeLabel.setBounds(xBlobSizeSlider, yBlobSizeSlider - 70, 200, 60);
 
+        //EnergyIni Slider
         EnergySlider = new JSlider(JSlider.HORIZONTAL, Energy_MIN, Energy_MAX, Energy_INIT);
         // Turn on labels at major tick marks.
         int xEnergySlider = xSpeedSlider + 250;
@@ -161,11 +208,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         EnergySlider.setPaintTicks(true);
         EnergySlider.setPaintLabels(true);
         EnergySlider.addChangeListener(this);
+        EnergySlider.setBounds(xEnergySlider, yEnergySlider, lengthSlider, widthSlider);
         EnergyLabel = new JLabel("Energie des blobs : " + EnergySlider.getValue());
-        EnergySlider.setBounds(xEnergySlider, yEnergySlider - 70, 500, 60);
+        //EnergySlider.setBounds(xEnergySlider, yEnergySlider - 70, 500, 60);
         EnergyLabel.setBounds(xEnergySlider, yEnergySlider - 70, 200, 60);
 
-        // Slider modifiant la distance de détection des blobs
+        // DetectionRange Slider
         DetectionSlider = new JSlider(JSlider.HORIZONTAL, detection_MIN, detection_MAX, detection_INIT);
         int xDetectionSlider = xEnergySlider;
         int yDetectionSlider = yEnergySlider + 140;
@@ -174,9 +222,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         DetectionSlider.setPaintTicks(true);
         DetectionSlider.setPaintLabels(true);
         DetectionSlider.addChangeListener(this);
+        DetectionSlider.setBounds(xDetectionSlider, yDetectionSlider, lengthSlider, widthSlider);
         DetectionLabel = new JLabel("Champ de vision : " + detection_INIT);
         DetectionLabel.setBounds(xDetectionSlider, yDetectionSlider - 70, 200, 60);
 
+        //add
+        affichageSliders.add(startButton);
         affichageSliders.add(speedSlider);
         affichageSliders.add(speedLabel);
         affichageSliders.add(MapSizeSlider);
@@ -189,20 +240,70 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.add(BlobSizeLabel);
         affichageSliders.add(DetectionSlider);
         affichageSliders.add(DetectionLabel);
-        speedSlider.setBounds(xSpeedSlider, ySpeedSlider, lengthSlider, widthSlider);
-        FoodSlider.setBounds(xFoodSlider, yFoodSlider, lengthSlider, widthSlider);
-        EnergySlider.setBounds(xEnergySlider, yEnergySlider, lengthSlider, widthSlider);
-        MapSizeSlider.setBounds(xMapSizeSlider, yMapSizeSlider, lengthSlider, widthSlider);
-        BlobSizeSlider.setBounds(xBlobSizeSlider, yBlobSizeSlider, lengthSlider, widthSlider);
-        DetectionSlider.setBounds(xDetectionSlider, yDetectionSlider, lengthSlider, widthSlider);
-        affichageSliders.setLayout(null);
+        contentPane.add(affichageSliders);
+        contentPane.add(affichageStart);
+        add(contentPane);
+        setVisible(true);
 
+    }
+
+    public void EcranJeu(){
+
+        // JPanel conteneur qui contient affichageSliders et affichageMap
+        JPanel contentPane = new JPanel();
+        contentPane.setBounds(0, 0, getWidth(), getHeight());
+        contentPane.setLayout(null);
+
+        // JPanel qui contient tt le côté gauche avec l'affichage de la partie
+        JPanel affichageMap = new JPanel();
+        affichageMap.setBounds(0, 0, 1000, 1000);
+        affichageMap.setLayout(null);
+        affichageMap.setBackground(Color.pink);
+
+        // JPanel qui contient tout le côté droit avec les sliders
+        JPanel affichageSliders = new JPanel();
+        affichageSliders.setBounds(1000, 0, 920, 1000);
+        affichageSliders.setLayout(null);
+        affichageSliders.setBackground(Color.yellow);
+
+        // JPanel qui contient juste la map
+        JPanel mapBounds = new JPanel();
+        mapBounds.setBounds((1000 - map.width) / 2, (1000 - map.height) / 2, map.width, map.height);
+        mapBounds.setLayout(null);
+
+        // JLabel qui affiche le nb de jours passés
+        daysCount = new JLabel("day");
+        daysCount.setBounds(800, 20, 80, 20);
+        daysCount.setLayout(null);
+
+        JPanel statBounds = new JPanel();
+        statBounds.setBounds(300, 50, stat.width, stat.height);
+        statBounds.setLayout(null);
+
+        affichageSliders.remove(startButton);
+        affichageSliders.remove(speedSlider);
+        affichageSliders.remove(speedLabel);
+        affichageSliders.remove(MapSizeSlider);
+        affichageSliders.remove(MapSizeLabel);
+        affichageSliders.remove(FoodLabel);
+        affichageSliders.remove(FoodSlider);
+        affichageSliders.remove(EnergyLabel);
+        affichageSliders.remove(EnergySlider);
+        affichageSliders.remove(BlobSizeSlider);
+        affichageSliders.remove(BlobSizeLabel);
+        affichageSliders.remove(DetectionSlider);
+        affichageSliders.remove(DetectionLabel);
         mapBounds.add(map);
+        statBounds.add(stat);
         affichageMap.add(mapBounds);
+        affichageSliders.add(daysCount);
+        affichageSliders.add(startButton);
+        affichageSliders.add(statBounds);
         contentPane.add(affichageSliders);
         affichageStats.add(stat);
         contentPane.add(affichageStats);
         contentPane.add(affichageMap);
+<<<<<<< HEAD
         
 
         affichageSliders.add(startButton);
@@ -214,16 +315,35 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         map.repaint(); // actualise l'IDH
 
         timer = new Timer(10, this);
+=======
+        add(contentPane);
+        setVisible(true);
+
+        map.repaint(); // actualise la map
+        stat.repaint();
+>>>>>>> 728813eab6023bec876bd0eedb27096dcf69f5ff
 
     }
 
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
         if (e.getSource() == startButton) {
+
+            map = new Map(mapWidth, mapHeight);
+            stat = new Stats(map.blobs);
+
+            EcranJeu();
+
+            map.iniBlob(); // initialise un tableau de blob chacun placés
+            // aléatoirement sur les bords de la map
+            map.iniFood(); // initialise un tableau de food chacun placés
+            // aléatoirement sur la map
             timer.start();
+            //stat.repaint(); // actualise les stats
 
         }
 
         if (e.getSource() == timer) {
+
             minute++;
             for (Blob unBlob : map.blobs) {
                 if (unBlob.energy > 0) {
@@ -238,7 +358,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         }
         if (minute == day * dayDuration) { // ce qui se passe à la fin de la journée
-
+            stat = new Stats(map.blobs);
             map.whipeBlobs();
             map.resetFood();
             map.newGeneration();
@@ -246,24 +366,29 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             stat.repaint();
             day++;
             System.out.println("day " + day);
+            stat.repaint();
         }
         map.repaint();
+        //stat.repaint();
+
     }
 
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider) e.getSource();
         if (source == speedSlider) {
             speedLabel.setText("Vitesse : " + speedSlider.getValue());
-            //Map.blobIniSpeed =speedSlider.getValue() ;
+            map.blobIniSpeed =speedSlider.getValue() ;
 
         } else if (source == FoodSlider) {
             FoodLabel.setText("quantite nourriture : " + FoodSlider.getValue());
-            //Map.initFoodNumber = FoodSlider.getValue();
+            map.initFoodNumber = FoodSlider.getValue();
         } else if (source == MapSizeSlider) {
             MapSizeLabel.setText("Taille de la carte : " + MapSizeSlider.getValue());
+            mapWidth = MapSizeSlider.getValue();
+            mapHeight = MapSizeSlider.getValue();
         } else if (source == BlobSizeSlider) {
             BlobSizeLabel.setText("Taille du blob : " + BlobSizeSlider.getValue());
-            // Map.blobIniSize = BlobSizeSlider.getValue();
+            map.blobIniSize = BlobSizeSlider.getValue();
         } else if (source == DetectionSlider) {
             DetectionLabel.setText("Champ de vision : " + DetectionSlider.getValue());
         } else if (source == EnergySlider) {
