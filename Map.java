@@ -25,7 +25,7 @@ public class Map extends JPanel {
     // Coefs de variation
     public double amplitudeVariationSize = 50;
     public double amplitudeVariationSpeed = 100;
-    public double amplitudeVariationEnergy = 10;
+    public double amplitudeVariationEnergy = 100;
     public double amplitudeVariationView = 15;
     public double chanceVariation = 1.0;// entre 0 est 1
 
