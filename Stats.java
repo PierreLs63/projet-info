@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 public class Stats extends JPanel{
-    Color c = new Color(100,100,100);
+    Color c = new Color(200,100,100);
     ArrayList<Blob> blobs = new ArrayList<Blob>();
     int[] size_range = {20,30,40,80};
     int[] size_value = {0,0,0,0,0};
@@ -14,6 +14,9 @@ public class Stats extends JPanel{
     int[] energy_value = {0,0,0,0,0};
     private Image dbImage;
     private Graphics dbg;
+    public int width = 800;
+    public int height = 800;
+
     public Stats(ArrayList<Blob> bl){
         setBounds(0, 0, 800, 800);
         setLayout(null);
