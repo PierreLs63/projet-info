@@ -4,15 +4,14 @@ import java.awt.*;
 public class Stats extends JPanel{
     Color c = new Color(100,100,100);
     ArrayList<Blob> blobs = new ArrayList<Blob>();
-    int[] size_range = {20,30,40,50};
+    int[] size_range = {20,30,40,80};
     int[] size_value = {0,0,0,0,0};
     int[] view_range = {20,40,80,100};
     int[] view_value = {0,0,0,0,0};
     int[] speed_range = {20,40,80,100};
     int[] speed_value = {0,0,0,0,0};
-    int[] energy_range = {500,510,520,530};
+    int[] energy_range = {500,500,501,505};
     int[] energy_value = {0,0,0,0,0};
-<<<<<<< HEAD
     private Image dbImage;
     private Graphics dbg;
     public Stats(ArrayList<Blob> bl){
@@ -28,23 +27,6 @@ public class Stats extends JPanel{
             speed_value[j]=0;
             energy_value[j]=0;
         }
-=======
-    int width = 400;
-    int height = 300;
-
-    //IHM
-    private Image dbImage;
-    private Graphics dbg;
-
-    public Stats(ArrayList<Blob> blobs){
-        this.blobs = blobs;
-        setBounds(0,0,width,height);
-        setLayout(null);
-        fetch();
-    }
-    public void fetch(){
-
->>>>>>> 728813eab6023bec876bd0eedb27096dcf69f5ff
         for(Blob el : blobs){
             for(int i=0;i<size_range.length;i++){
                 if(el.size<size_range[i]){
@@ -84,12 +66,7 @@ public class Stats extends JPanel{
             }
         }
     }
-<<<<<<< HEAD
     public void paintComponent(Graphics g){
-=======
-    
-    public void paintComponent(Graphics g, Color c){
->>>>>>> 728813eab6023bec876bd0eedb27096dcf69f5ff
         for(int i=0;i<size_value.length;i++){
             g.setColor(c);
             g.fillRect(20*i+10,200-size_value[i]*10,10,size_value[i]*10);
@@ -106,14 +83,6 @@ public class Stats extends JPanel{
             g.setColor(c);
             g.fillRect(20*i+320,200-energy_value[i]*10,10,energy_value[i]*10);
         }
-        
-    }
-
-    public void paint(Graphics g) {
-        dbImage = createImage(width, height);
-        dbg = dbImage.getGraphics();
-        paintComponent(dbg);
-        g.drawImage(dbImage, 0, 0, this);
     }
     public void paint(Graphics g) {
         dbImage = createImage(920, 1000);
