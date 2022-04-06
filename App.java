@@ -22,6 +22,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     // IHM
     JButton startButton;
     JLabel daysCount;
+    JPanel affichageSliders;
 
     //Stats
     Stats stat;
@@ -99,7 +100,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageStart.setBackground(Color.pink);
 
         // JPanel qui contient tout le côté droit avec les sliders
-        JPanel affichageSliders = new JPanel();
+        affichageSliders = new JPanel();
         affichageSliders.setBounds(1000, 0, 920, 1000);
         affichageSliders.setLayout(null);
         affichageSliders.setBackground(Color.yellow);
@@ -214,13 +215,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.add(DetectionLabel);
         contentPane.add(affichageSliders);
         contentPane.add(affichageStart);
-        add(contentPane);
+        setContentPane(contentPane);
         setVisible(true);
 
     }
 
     public void EcranJeu(){
-        setVisible(false);
 
         // JPanel conteneur qui contient affichageSliders et affichageMap
         JPanel contentPane = new JPanel();
@@ -231,13 +231,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         JPanel affichageMap = new JPanel();
         affichageMap.setBounds(0, 0, 1000, 1000);
         affichageMap.setLayout(null);
-        affichageMap.setBackground(Color.pink);
-
-        // JPanel qui contient tout le côté droit avec les sliders
-        JPanel affichageSliders = new JPanel();
-        affichageSliders.setBounds(1000, 0, 920, 1000);
-        affichageSliders.setLayout(null);
-        affichageSliders.setBackground(Color.yellow);
+        affichageMap.setBackground(Color.pink);     
 
         // JPanel qui contient juste la map
         JPanel mapBounds = new JPanel();
@@ -253,7 +247,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         statBounds.setBounds(0, 400, stat.width, stat.height);
         statBounds.setLayout(null);
 
-        dispose();
+        affichageSliders.remove(startButton);
         affichageSliders.remove(speedSlider);
         affichageSliders.remove(speedLabel);
         affichageSliders.remove(MapSizeSlider);
@@ -266,17 +260,15 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.remove(BlobSizeLabel);
         affichageSliders.remove(DetectionSlider);
         affichageSliders.remove(DetectionLabel);
-        dispose();
-
         mapBounds.add(map);
         statBounds.add(stat);
         affichageMap.add(mapBounds);
         affichageSliders.add(daysCount);
-        affichageSliders.add(startButton);
+        affichageSliders.remove(startButton);
         affichageSliders.add(statBounds);
         contentPane.add(affichageSliders);
         contentPane.add(affichageMap);
-        add(contentPane);
+        setContentPane(contentPane);
         setVisible(true);
 
         map.repaint(); // actualise la map
