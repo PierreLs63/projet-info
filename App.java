@@ -15,7 +15,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     // map
     public Map map;
-
+    //stats
+    public Stats stat;
     // IHM
     JButton startButton;
     JLabel daysCount;
@@ -58,6 +59,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     public App(Map aMap) {
         map = aMap;
+        stat= new Stats(map.blobs);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
@@ -80,7 +82,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // JPanel qui contient tout le côté droit avec les sliders
         JPanel affichageSliders = new JPanel();
-        affichageSliders.setBounds(1000, 0, 920, 1000);
+        affichageSliders.setBounds(1000, 0, 920, 700);
         affichageSliders.setLayout(null);
         affichageSliders.setBackground(Color.yellow);
 
@@ -88,10 +90,15 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         JPanel contentPane = new JPanel();
         contentPane.setBounds(0, 0, getWidth(), getHeight());
         contentPane.setLayout(null);
+        //Affichage stat
+        JPanel affichageStats = new JPanel();
+        affichageStats.setBounds(1000, 700, 1000, 300);
+        affichageStats.setLayout(null);
+        affichageStats.setBackground(Color.red);
 
         // Bouton START
         startButton = new JButton("START");
-        startButton.setBounds(700, 900, 200, 80);
+        startButton.setBounds(700, 0, 200, 80);
         startButton.addActionListener(this);
 
         //daysCount = new JLabel("day");
@@ -160,8 +167,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Slider modifiant la distance de détection des blobs
         DetectionSlider = new JSlider(JSlider.HORIZONTAL, detection_MIN, detection_MAX, detection_INIT);
-        int xDetectionSlider = xSpeedSlider;
-        int yDetectionSlider = yBlobSizeSlider + 140;
+        int xDetectionSlider = xEnergySlider;
+        int yDetectionSlider = yEnergySlider + 140;
         DetectionSlider.setMajorTickSpacing(10);
         DetectionSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
         DetectionSlider.setPaintTicks(true);
@@ -193,14 +200,17 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         mapBounds.add(map);
         affichageMap.add(mapBounds);
         contentPane.add(affichageSliders);
+        affichageStats.add(stat);
+        contentPane.add(affichageStats);
         contentPane.add(affichageMap);
+        
 
         affichageSliders.add(startButton);
 
         setContentPane(contentPane);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-
+        stat.repaint();
         map.repaint(); // actualise l'IDH
 
         timer = new Timer(10, this);
@@ -221,7 +231,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
                 }
                 unBlob.energy = unBlob.energy - 0.05 * unBlob.size - 0.05 * Math.log(unBlob.speed)
                         - 0.002 * unBlob.viewRange;
-                System.out.println(map.blobs.get(1).energy);
+                //System.out.println(map.blobs.get(1).energy);
             }
 
             map.eatBlob();
@@ -232,6 +242,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.whipeBlobs();
             map.resetFood();
             map.newGeneration();
+            stat.fetch(map.blobs);
+            stat.repaint();
             day++;
             System.out.println("day " + day);
         }
