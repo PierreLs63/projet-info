@@ -3,12 +3,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.awt.image.BufferedImage;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class App extends JFrame implements ActionListener, ChangeListener {
+public class App extends JFrame implements ActionListener, ChangeListener  {
 
     // temps
     public Timer timer;
@@ -24,8 +25,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     // IHM
     JButton startButton;
-    JButton createMap;
-    BufferedImage MapButtonIcon = ImageIO.read(new File(131-1310596_open-a-trading-account-with-investorseurope-free-getting.png));
+    JButton createMapButton;
+    File file = new File("131-1310596_open-a-trading-account-with-investorseurope-free-getting.png");
+    BufferedImage MapButtonIcon = ImageIO.read(file);
 
     JLabel daysCount;
     double height;
@@ -68,11 +70,11 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     // Declaration Sliders
     JSlider speedSlider;
-    JSlider FoodSlider;
-    JSlider EnergySlider;
-    JSlider MapSizeSlider;
-    JSlider DetectionSlider;
-    JSlider BlobSizeSlider;
+    JSlider foodSlider;
+    JSlider energySlider;
+    JSlider mapSizeSlider;
+    JSlider detectionSlider;
+    JSlider blobSizeSlider;
 
     // Labels
     JLabel speedLabel;
@@ -82,7 +84,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     JLabel BlobSizeLabel;
     JLabel DetectionLabel;
 
-    public App() {
+    public App() throws IOException{
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         width = screenSize.getWidth();
         height = screenSize.getHeight();
@@ -92,7 +94,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         setTitle("Les Blobs c'est cool");
         setLayout(null);
 
-        EcranCreateMap();
+        EcrancreateMapButton();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -100,7 +102,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     }
 
-    public void EcranCreateMap(){
+    public void EcrancreateMapButton(){
 
         // JPanel conteneur qui contient tout les autres JPanel
         contentPane = new JPanel();
@@ -119,21 +121,24 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.setLayout(null);
         affichageSliders.setBackground(Color.yellow);
 
-        // Bouton CreateMap
-        createMap = new JButton("Créer la carte");
-        createMap.setBounds(affichageSliders.getWidth()/2-200, affichageSliders.getHeight()/2, 400, 300);
-        createMap.setLayout(null);
-        createMap.addActionListener(this);
+        // Bouton createMapButton
+        createMapButton = new JButton(new ImageIcon(MapButtonIcon));
+        createMapButton.setBounds(affichageSliders.getWidth()/2-200, affichageSliders.getHeight()/2, 400, 300);
+        createMapButton.setLayout(null);
+        createMapButton.addActionListener(this);
+        createMapButton.setBorder(BorderFactory.createEmptyBorder());
+        createMapButton.setContentAreaFilled(false);
+        createMapButton.setBorderPainted(false);
+        createMapButton.setFocusPainted(false);
+        createMapButton.setContentAreaFilled(false);
 
-        affichageSliders.add(createMap);
+        affichageSliders.add(createMapButton);
         contentPane.add(affichageSliders);
         contentPane.add(affichageStart);
         setContentPane(contentPane);
         setVisible(true);
 
-        createMap = new JButton(new ImageIcon(MapButtonIcon));
-        createMap.setBorder(BorderFactory.createEmptyBorder());
-        createMap.setContentAreaFilled(false);
+        
 
 
     }
@@ -167,93 +172,98 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
         speedSlider.addChangeListener(this);
+        speedSlider.setBackground(Color.yellow);
         speedSlider.setBounds(xSpeedSlider, ySpeedSlider, lengthSlider, widthSlider);
         speedLabel = new JLabel("Vitesse : " + speed_INIT);
-        speedLabel.setBounds(xSpeedSlider, ySpeedSlider - 70, 200, 60);
+        speedLabel.setBounds(xSpeedSlider + 5, ySpeedSlider - 50, 200, 60);
 
-        //FoodSlider
-        FoodSlider = new JSlider(JSlider.HORIZONTAL, qntFood_MIN, qntfood_MAX, qntfood_INIT);
+        //foodSlider
+        foodSlider = new JSlider(JSlider.HORIZONTAL, qntFood_MIN, qntfood_MAX, qntfood_INIT);
         // Turn on labels at major tick marks.
-        int xFoodSlider = xSpeedSlider;
-        int yFoodSlider = ySpeedSlider + 140;
-        FoodSlider.setMajorTickSpacing(20);// espace minimal affiché sous le slider entre les valeurs de vitesse
-        FoodSlider.setMinorTickSpacing(5);// espace minimal entre les valeurs de vitesse
-        FoodSlider.setPaintTicks(true);
-        FoodSlider.setPaintLabels(true);
-        FoodSlider.addChangeListener(this);
-        FoodSlider.setBounds(xFoodSlider, yFoodSlider, lengthSlider, widthSlider);
-        FoodLabel = new JLabel("quantite nourriture : " + qntfood_INIT);
-        FoodLabel.setBounds(xFoodSlider, yFoodSlider - 70, 200, 60);
+        int xfoodSlider = xSpeedSlider;
+        int yfoodSlider = ySpeedSlider + 140;
+        foodSlider.setMajorTickSpacing(20);// espace minimal affiché sous le slider entre les valeurs de vitesse
+        foodSlider.setMinorTickSpacing(5);// espace minimal entre les valeurs de vitesse
+        foodSlider.setPaintTicks(true);
+        foodSlider.setPaintLabels(true);
+        foodSlider.addChangeListener(this);
+        foodSlider.setBounds(xfoodSlider, yfoodSlider, lengthSlider, widthSlider);
+        foodSlider.setBackground(Color.yellow);
+        FoodLabel = new JLabel("Quantité de nourriture : " + qntfood_INIT);
+        FoodLabel.setBounds(xfoodSlider + 5, yfoodSlider - 50, 200, 60);
 
         //MapSize Slider
-        MapSizeSlider = new JSlider(JSlider.HORIZONTAL, mapSize_MIN, mapSize_MAX, mapSize_INIT);
-        int xMapSizeSlider = xFoodSlider;
-        int yMapSizeSlider = yFoodSlider + 140;
-        MapSizeSlider.setMajorTickSpacing(180);// espace minimal affiché sous le slider entre les valeurs de vitesse
-        MapSizeSlider.setMinorTickSpacing(50);// espace minimal entre les valeurs de vitesse
-        MapSizeSlider.setPaintTicks(true);
-        MapSizeSlider.setPaintLabels(true);
-        MapSizeSlider.addChangeListener(this);
-        MapSizeSlider.setBounds(xMapSizeSlider, yMapSizeSlider, lengthSlider, widthSlider);
+        mapSizeSlider = new JSlider(JSlider.HORIZONTAL, mapSize_MIN, mapSize_MAX, mapSize_INIT);
+        int xmapSizeSlider = xfoodSlider;
+        int ymapSizeSlider = yfoodSlider + 140;
+        mapSizeSlider.setMajorTickSpacing(180);// espace minimal affiché sous le slider entre les valeurs de vitesse
+        mapSizeSlider.setMinorTickSpacing(50);// espace minimal entre les valeurs de vitesse
+        mapSizeSlider.setPaintTicks(true);
+        mapSizeSlider.setPaintLabels(true);
+        mapSizeSlider.addChangeListener(this);
+        mapSizeSlider.setBounds(xmapSizeSlider, ymapSizeSlider, lengthSlider, widthSlider);
+        mapSizeSlider.setBackground(Color.yellow);
         MapSizeLabel = new JLabel("Taille de la carte: " + mapSize_INIT);
-        MapSizeLabel.setBounds(xMapSizeSlider, yMapSizeSlider - 70, 200, 60);
+        MapSizeLabel.setBounds(xmapSizeSlider + 5, ymapSizeSlider - 50, 200, 60);
 
         //BlobsNumber Slider
-        BlobSizeSlider = new JSlider(JSlider.HORIZONTAL, BlobSize_MIN, BlobSize_MAX, BlobSize_INIT);
+        blobSizeSlider = new JSlider(JSlider.HORIZONTAL, BlobSize_MIN, BlobSize_MAX, BlobSize_INIT);
         // Turn on labels at major tick marks.
-        int xBlobSizeSlider = xSpeedSlider;
-        int yBlobSizeSlider = yMapSizeSlider + 140;
-        BlobSizeSlider.setMajorTickSpacing(5);// espace minimal affiché sous le slider entre les valeurs de vitesse
-        BlobSizeSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
-        BlobSizeSlider.setPaintTicks(true);
-        BlobSizeSlider.setPaintLabels(true);
-        BlobSizeSlider.addChangeListener(this);
-        BlobSizeSlider.setBounds(xBlobSizeSlider, yBlobSizeSlider, lengthSlider, widthSlider);
+        int xblobSizeSlider = xSpeedSlider;
+        int yblobSizeSlider = ymapSizeSlider + 140;
+        blobSizeSlider.setMajorTickSpacing(5);// espace minimal affiché sous le slider entre les valeurs de vitesse
+        blobSizeSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
+        blobSizeSlider.setPaintTicks(true);
+        blobSizeSlider.setPaintLabels(true);
+        blobSizeSlider.addChangeListener(this);
+        blobSizeSlider.setBounds(xblobSizeSlider, yblobSizeSlider, lengthSlider, widthSlider);
+        blobSizeSlider.setBackground(Color.yellow);
         BlobSizeLabel = new JLabel("Taille du blob : " + BlobSize_INIT);
-        //BlobSizeSlider.setBounds(xBlobSizeSlider, yBlobSizeSlider - 70, 200, 60);
-        BlobSizeLabel.setBounds(xBlobSizeSlider, yBlobSizeSlider - 70, 200, 60);
+        BlobSizeLabel.setBounds(xblobSizeSlider + 5, yblobSizeSlider - 50, 200, 60);
 
         //EnergyIni Slider
-        EnergySlider = new JSlider(JSlider.HORIZONTAL, Energy_MIN, Energy_MAX, Energy_INIT);
+        energySlider = new JSlider(JSlider.HORIZONTAL, Energy_MIN, Energy_MAX, Energy_INIT);
         // Turn on labels at major tick marks.
-        int xEnergySlider = xSpeedSlider + 250;
-        int yEnergySlider = ySpeedSlider;
-        EnergySlider.setMajorTickSpacing(500);// espace minimal affiché sous le slider entre les valeurs de vitesse
-        EnergySlider.setMinorTickSpacing(100);// espace minimal entre les valeurs de vitesse
-        EnergySlider.setPaintTicks(true);
-        EnergySlider.setPaintLabels(true);
-        EnergySlider.addChangeListener(this);
-        EnergySlider.setBounds(xEnergySlider, yEnergySlider, lengthSlider, widthSlider);
-        EnergyLabel = new JLabel("Energie des blobs : " + EnergySlider.getValue());
-        //EnergySlider.setBounds(xEnergySlider, yEnergySlider - 70, 500, 60);
-        EnergyLabel.setBounds(xEnergySlider, yEnergySlider - 70, 200, 60);
+        int xenergySlider = xSpeedSlider + 250;
+        int yenergySlider = ySpeedSlider;
+        energySlider.setMajorTickSpacing(500);// espace minimal affiché sous le slider entre les valeurs de vitesse
+        energySlider.setMinorTickSpacing(100);// espace minimal entre les valeurs de vitesse
+        energySlider.setPaintTicks(true);
+        energySlider.setPaintLabels(true);
+        energySlider.addChangeListener(this);
+        energySlider.setBounds(xenergySlider, yenergySlider, lengthSlider, widthSlider);
+        energySlider.setBackground(Color.yellow);
+        EnergyLabel = new JLabel("Energie des blobs : " + energySlider.getValue());
+        EnergyLabel.setBounds(xenergySlider + 5, yenergySlider - 50, 200, 60);
 
         // DetectionRange Slider
-        DetectionSlider = new JSlider(JSlider.HORIZONTAL, detection_MIN, detection_MAX, detection_INIT);
-        int xDetectionSlider = xEnergySlider;
-        int yDetectionSlider = yEnergySlider + 140;
-        DetectionSlider.setMajorTickSpacing(10);
-        DetectionSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
-        DetectionSlider.setPaintTicks(true);
-        DetectionSlider.setPaintLabels(true);
-        DetectionSlider.addChangeListener(this);
-        DetectionSlider.setBounds(xDetectionSlider, yDetectionSlider, lengthSlider, widthSlider);
+        detectionSlider = new JSlider(JSlider.HORIZONTAL, detection_MIN, detection_MAX, detection_INIT);
+        int xdetectionSlider = xenergySlider;
+        int ydetectionSlider = yenergySlider + 140;
+        detectionSlider.setMajorTickSpacing(10);
+        detectionSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
+        detectionSlider.setPaintTicks(true);
+        detectionSlider.setPaintLabels(true);
+        detectionSlider.addChangeListener(this);
+        detectionSlider.setBounds(xdetectionSlider, ydetectionSlider, lengthSlider, widthSlider);
+        detectionSlider.setBackground(Color.yellow);
         DetectionLabel = new JLabel("Champ de vision : " + detection_INIT);
-        DetectionLabel.setBounds(xDetectionSlider, yDetectionSlider - 70, 200, 60);
+        DetectionLabel.setBounds(xdetectionSlider + 5, ydetectionSlider - 50, 200, 60);
 
         //add
+        affichageSliders.remove(createMapButton);
         affichageSliders.add(startButton);
         affichageSliders.add(speedSlider);
         affichageSliders.add(speedLabel);
-        affichageSliders.add(MapSizeSlider);
+        affichageSliders.add(mapSizeSlider);
         affichageSliders.add(MapSizeLabel);
         affichageSliders.add(FoodLabel);
-        affichageSliders.add(FoodSlider);
+        affichageSliders.add(foodSlider);
         affichageSliders.add(EnergyLabel);
-        affichageSliders.add(EnergySlider);
-        affichageSliders.add(BlobSizeSlider);
+        affichageSliders.add(energySlider);
+        affichageSliders.add(blobSizeSlider);
         affichageSliders.add(BlobSizeLabel);
-        affichageSliders.add(DetectionSlider);
+        affichageSliders.add(detectionSlider);
         affichageSliders.add(DetectionLabel);
         contentPane.add(affichageSliders);
         contentPane.add(affichageStart);
@@ -298,15 +308,15 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.remove(startButton);
         affichageSliders.remove(speedSlider);
         affichageSliders.remove(speedLabel);
-        affichageSliders.remove(MapSizeSlider);
+        affichageSliders.remove(mapSizeSlider);
         affichageSliders.remove(MapSizeLabel);
         affichageSliders.remove(FoodLabel);
-        affichageSliders.remove(FoodSlider);
+        affichageSliders.remove(foodSlider);
         affichageSliders.remove(EnergyLabel);
-        affichageSliders.remove(EnergySlider);
-        affichageSliders.remove(BlobSizeSlider);
+        affichageSliders.remove(energySlider);
+        affichageSliders.remove(blobSizeSlider);
         affichageSliders.remove(BlobSizeLabel);
-        affichageSliders.remove(DetectionSlider);
+        affichageSliders.remove(detectionSlider);
         affichageSliders.remove(DetectionLabel);
         mapBounds.add(map);
         statBounds.add(stat);
@@ -325,6 +335,11 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     }
 
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
+
+        if (e.getSource() == createMapButton){
+            EcranSet();
+        }
+
         if (e.getSource() == startButton) {
 
             map = new Map(mapWidth, mapHeight);
@@ -376,20 +391,20 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             speedLabel.setText("Vitesse : " + speedSlider.getValue());
             map.blobIniSpeed =speedSlider.getValue() ;
 
-        } else if (source == FoodSlider) {
-            FoodLabel.setText("quantite nourriture : " + FoodSlider.getValue());
-            map.initFoodNumber = FoodSlider.getValue();
-        } else if (source == MapSizeSlider) {
-            MapSizeLabel.setText("Taille de la carte : " + MapSizeSlider.getValue());
-            mapWidth = MapSizeSlider.getValue();
-            mapHeight = MapSizeSlider.getValue();
-        } else if (source == BlobSizeSlider) {
-            BlobSizeLabel.setText("Taille du blob : " + BlobSizeSlider.getValue());
-            map.blobIniSize = BlobSizeSlider.getValue();
-        } else if (source == DetectionSlider) {
-            DetectionLabel.setText("Champ de vision : " + DetectionSlider.getValue());
-        } else if (source == EnergySlider) {
-            EnergyLabel.setText("Energie des blobs : " + EnergySlider.getValue());
+        } else if (source == foodSlider) {
+            FoodLabel.setText("quantite nourriture : " + foodSlider.getValue());
+            map.initFoodNumber = foodSlider.getValue();
+        } else if (source == mapSizeSlider) {
+            MapSizeLabel.setText("Taille de la carte : " + mapSizeSlider.getValue());
+            mapWidth = mapSizeSlider.getValue();
+            mapHeight = mapSizeSlider.getValue();
+        } else if (source == blobSizeSlider) {
+            BlobSizeLabel.setText("Taille du blob : " + blobSizeSlider.getValue());
+            map.blobIniSize = blobSizeSlider.getValue();
+        } else if (source == detectionSlider) {
+            DetectionLabel.setText("Champ de vision : " + detectionSlider.getValue());
+        } else if (source == energySlider) {
+            EnergyLabel.setText("Energie des blobs : " + energySlider.getValue());
         }
     }
 
