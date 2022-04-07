@@ -1,6 +1,9 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.awt.image.BufferedImage;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -21,9 +24,19 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     // IHM
     JButton startButton;
+    JButton createMap;
+    BufferedImage MapButtonIcon = ImageIO.read(new File(131-1310596_open-a-trading-account-with-investorseurope-free-getting.png));
+
     JLabel daysCount;
     double height;
     double width;
+    JPanel contentPane;
+    JPanel affichageStats;
+    JPanel affichageStart;
+    JPanel affichageSliders;
+    JPanel affichageMap;
+    JPanel mapBounds;
+    JPanel statBounds;
 
     //Stats
     Stats stat;
@@ -79,7 +92,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         setTitle("Les Blobs c'est cool");
         setLayout(null);
 
-        EcranStart();
+        EcranCreateMap();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -87,30 +100,53 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     }
 
-    public void EcranStart(){
+    public void EcranCreateMap(){
 
-        // JPanel conteneur qui contient affichageSliders et affichageMap
-        JPanel contentPane = new JPanel();
+        // JPanel conteneur qui contient tout les autres JPanel
+        contentPane = new JPanel();
         contentPane.setBounds(0, 0, getWidth(), getHeight());
         contentPane.setLayout(null);
-        //Affichage stat
-        JPanel affichageStats = new JPanel();
-        affichageStats.setBounds(1000, 700, 1000, 300);
-        affichageStats.setLayout(null);
-        affichageStats.setBackground(Color.red);
 
         // JPanel qui contient tt le côté gauche avec l'image de start du jeu
-        JPanel affichageStart = new JPanel();
+        affichageStart = new JPanel();
         affichageStart.setBounds(0, 0, 1000, 1000);
         affichageStart.setLayout(null);
         affichageStart.setBackground(Color.pink);
 
         // JPanel qui contient tout le côté droit avec les sliders
-        JPanel affichageSliders = new JPanel();
+        affichageSliders = new JPanel();
         affichageSliders.setBounds(1000, 0, 920, 1000);
         affichageSliders.setLayout(null);
         affichageSliders.setBackground(Color.yellow);
-        
+
+        // Bouton CreateMap
+        createMap = new JButton("Créer la carte");
+        createMap.setBounds(affichageSliders.getWidth()/2-200, affichageSliders.getHeight()/2, 400, 300);
+        createMap.setLayout(null);
+        createMap.addActionListener(this);
+
+        affichageSliders.add(createMap);
+        contentPane.add(affichageSliders);
+        contentPane.add(affichageStart);
+        setContentPane(contentPane);
+        setVisible(true);
+
+        createMap = new JButton(new ImageIcon(MapButtonIcon));
+        createMap.setBorder(BorderFactory.createEmptyBorder());
+        createMap.setContentAreaFilled(false);
+
+
+    }
+
+
+    public void EcranSet(){
+
+        //Affichage stat
+        affichageStats = new JPanel();
+        affichageStats.setBounds(1000, 700, 1000, 300);
+        affichageStats.setLayout(null);
+        affichageStats.setBackground(Color.red);
+
         // Bouton START
         startButton = new JButton("START");
         startButton.setBounds(0, 0, 200, 80);
@@ -221,7 +257,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.add(DetectionLabel);
         contentPane.add(affichageSliders);
         contentPane.add(affichageStart);
-        add(contentPane);
+        setContentPane(contentPane);
         setVisible(true);
 
     }
@@ -229,24 +265,24 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public void EcranJeu(){
 
         // JPanel conteneur qui contient affichageSliders et affichageMap
-        JPanel contentPane = new JPanel();
+        contentPane = new JPanel();
         contentPane.setBounds(0, 0, getWidth(), getHeight());
         contentPane.setLayout(null);
 
         // JPanel qui contient tt le côté gauche avec l'affichage de la partie
-        JPanel affichageMap = new JPanel();
+        affichageMap = new JPanel();
         affichageMap.setBounds(0, 0, 1000, 1000);
         affichageMap.setLayout(null);
         affichageMap.setBackground(Color.pink);
 
         // JPanel qui contient tout le côté droit avec les sliders
-        JPanel affichageSliders = new JPanel();
+        affichageSliders = new JPanel();
         affichageSliders.setBounds(1000, 0, 920, 1000);
         affichageSliders.setLayout(null);
         affichageSliders.setBackground(Color.yellow);
 
         // JPanel qui contient juste la map
-        JPanel mapBounds = new JPanel();
+        mapBounds = new JPanel();
         mapBounds.setBounds((1000 - map.width) / 2, (1000 - map.height) / 2, map.width, map.height);
         mapBounds.setLayout(null);
 
@@ -255,7 +291,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         daysCount.setBounds(800, 20, 80, 20);
         daysCount.setLayout(null);
 
-        JPanel statBounds = new JPanel();
+        statBounds = new JPanel();
         statBounds.setBounds(0,(int) height-stat.height, stat.width, stat.height);
         statBounds.setLayout(null);
 
@@ -280,7 +316,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.add(statBounds);
         contentPane.add(affichageSliders);
         contentPane.add(affichageMap);
-        add(contentPane);
+        setContentPane(contentPane);        
         setVisible(true);
 
         map.repaint(); // actualise la map
@@ -331,7 +367,6 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             System.out.println("day " + day);
         }
         map.repaint();
-        //stat.repaint();
 
     }
 
