@@ -14,11 +14,11 @@ public class Stats extends JPanel{
     int[] energy_value = {0,0,0,0,0};
     private Image dbImage;
     private Graphics dbg;
-    public int width = 800;
-    public int height = 800;
+    public int width = 920;
+    public int height = 400;
 
     public Stats(ArrayList<Blob> bl){
-        setBounds(0, 0, 800, 800);
+        setBounds(0, 0, width, height);
         setLayout(null);
         blobs = bl;
         fetch(bl);
@@ -70,22 +70,44 @@ public class Stats extends JPanel{
         }
     }
     public void paintComponent(Graphics g){
-        for(int i=0;i<size_value.length;i++){
-            g.setColor(c);
-            g.fillRect(20*i+10,200-size_value[i]*10,10,size_value[i]*10);
+        g.setColor(new Color(200,200,200));
+        Font font = new Font("Serif", Font.PLAIN, 12);
+        g.setFont(font);
+        FontMetrics fontMetrics = g.getFontMetrics();
+        g.fillRect(0,50,700,2);
+        g.fillRect(0,100,700,2);
+        g.fillRect(0,150,700,2);
+        g.fillRect(0,200,700,2);
+        g.setColor(c);
+        for(int i=0;i<size_value.length-1;i++){
+            g.fillRect(30*i+10,250-size_value[i]*(int)200/(blobs.size()),10,size_value[i]*(int)200/(blobs.size()));
+            g.drawString(String.valueOf(size_range[i]), 30*i+20, 250+fontMetrics.getAscent());
         }
-        for(int i=0;i<view_value.length;i++){
-            g.setColor(c);
-            g.fillRect(20*i+120,200-view_value[i]*10,10,view_value[i]*10);
+        g.fillRect(30*4+10,250-size_value[4]*(int)200/(blobs.size()),10,size_value[4]*(int)200/(blobs.size()));
+        for(int i=0;i<view_value.length-1;i++){
+            g.fillRect(30*i+180,250-view_value[i]*(int)200/(blobs.size()),10,view_value[i]*(int)200/(blobs.size()));
+            g.drawString(String.valueOf(view_range[i]), 30*i+190, 250+fontMetrics.getAscent());
         }
-        for(int i=0;i<speed_value.length;i++){
-            g.setColor(c);
-            g.fillRect(20*i+220,200-speed_value[i]*10,10,speed_value[i]*10);
+        g.fillRect(30*4+180,250-view_value[4]*(int)200/(blobs.size()),10,view_value[4]*(int)200/(blobs.size()));
+        for(int i=0;i<speed_value.length-1;i++){
+            g.fillRect(30*i+350,250-speed_value[i]*(int)200/(blobs.size()),10,speed_value[i]*(int)200/(blobs.size()));
+            g.drawString(String.valueOf(speed_range[i]), 30*i+360, 250+fontMetrics.getAscent());
         }
-        for(int i=0;i<energy_value.length;i++){
-            g.setColor(c);
-            g.fillRect(20*i+320,200-energy_value[i]*10,10,energy_value[i]*10);
+        g.fillRect(30*4+350,250-speed_value[4]*(int)200/(blobs.size()),10,speed_value[4]*(int)200/(blobs.size()));
+        for(int i=0;i<energy_value.length-1;i++){
+            g.fillRect(30*i+520,250-energy_value[i]*(int)200/(blobs.size()),10,energy_value[i]*(int)200/(blobs.size()));
+            g.drawString(String.valueOf(energy_range[i]), 30*i+530, 250+fontMetrics.getAscent());
         }
+        g.fillRect(30*4+520,250-energy_value[4]*(int)200/(blobs.size()),10,energy_value[4]*(int)200/(blobs.size()));
+        g.drawString(String.valueOf((int)(blobs.size())), 700, 50+fontMetrics.getAscent());
+        g.drawString(String.valueOf((int)(blobs.size()*0.75)), 700, 100+fontMetrics.getAscent());
+        g.drawString(String.valueOf((int)(blobs.size()/2)), 700, 150+fontMetrics.getAscent());
+        g.drawString(String.valueOf((int)(blobs.size()*0.25)), 700, 200+fontMetrics.getAscent());
+        g.drawString("Size", 60, 270+fontMetrics.getAscent());
+        g.drawString("viewrange", 230, 270+fontMetrics.getAscent());
+        g.drawString("speed", 400, 270+fontMetrics.getAscent());
+        g.drawString("energy", 570, 270+fontMetrics.getAscent());
+
     }
     public void paint(Graphics g) {
         dbImage = createImage(920, 1000);
