@@ -24,6 +24,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     // IHM
     JButton startButton;
+    JButton backButton;
     JButton createMapButton300;
     JButton createMapButton400;
     JButton createMapButton500;
@@ -42,6 +43,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     double width;
     JPanel contentPane;
     JPanel affichageStats;
+    JPanel affichageBoutons;
     JPanel affichageStart;
     JPanel affichageSliders;
     JPanel affichageMap;
@@ -77,10 +79,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     static final int BlobSize_MAX = 40;
 
     // Declaration Sliders
+    // sliders
+    int widthSlider = 800;
+    int heightSlider = 40;
     JSlider speedSlider;
     JSlider foodSlider;
     JSlider energySlider;
-    JSlider mapSizeSlider;
     JSlider detectionSlider;
     JSlider blobSizeSlider;
 
@@ -88,11 +92,10 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     JLabel speedLabel;
     JLabel FoodLabel;
     JLabel EnergyLabel;
-    JLabel MapSizeLabel;
     JLabel BlobSizeLabel;
     JLabel DetectionLabel;
 
-    public App() throws IOException {
+    public App() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         width = screenSize.getWidth();
         height = screenSize.getHeight();
@@ -102,7 +105,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         setTitle("Les Blobs c'est cool");
         setLayout(null);
 
-        EcrancreateMapButton300();
+        EcranCreateMap();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -110,7 +113,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     }
 
-    public void EcrancreateMapButton300() {
+    public void EcranCreateMap() {
 
         // JPanel conteneur qui contient tout les autres JPanel
         contentPane = new JPanel();
@@ -123,26 +126,25 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageStart.setLayout(null);
         affichageStart.setBackground(Color.pink);
 
-        // JPanel qui contient tout le côté droit avec les sliders
-        affichageSliders = new JPanel();
-        affichageSliders.setBounds(1000, 0, 920, 1000);
-        affichageSliders.setLayout(null);
-        affichageSliders.setBackground(Color.yellow);
+        // JPanel qui contient tout le côté droit avec les boutons
+        affichageBoutons = new JPanel();
+        affichageBoutons.setBounds(1000, 0, 920, 1000);
+        affichageBoutons.setLayout(null);
+        affichageBoutons.setBackground(Color.yellow);
 
-        //Texte de création de la map
+        // Texte de création de la map
         texteCreaMap = new JLabel(new ImageIcon("./Images/TexteCréaCarte.png"));
         texteCreaMap.setLayout(null);
         texteCreaMap.setBounds(103, 200, 713, 160);
 
-        //Fond du côté droit de l'IHM
+        // Fond du côté droit de l'IHM
         fondDroit = new JLabel(new ImageIcon("./Images/FondDroit.jpeg"));
         fondDroit.setLayout(null);
         fondDroit.setBounds(0, 0, 920, 1000);
 
-
         // Bouton createMapButton300
         createMapButton300 = new JButton(new ImageIcon("./Images/Logo300.png"));
-        createMapButton300.setBounds(affichageSliders.getWidth() / 6 - 100, affichageSliders.getHeight() / 2, 150, 80);
+        createMapButton300.setBounds(affichageBoutons.getWidth() / 6 - 100, affichageBoutons.getHeight() / 2, 150, 80);
         createMapButton300.setLayout(null);
         createMapButton300.addActionListener(this);
         createMapButton300.setBorder(BorderFactory.createEmptyBorder());
@@ -153,7 +155,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton createMapButton400
         createMapButton400 = new JButton(new ImageIcon("./Images/Logo400.png"));
-        createMapButton400.setBounds(createMapButton300.getX() + 200, affichageSliders.getHeight() / 2, 150, 80);
+        createMapButton400.setBounds(createMapButton300.getX() + 200, affichageBoutons.getHeight() / 2, 150, 80);
         createMapButton400.setLayout(null);
         createMapButton400.addActionListener(this);
         createMapButton400.setBorder(BorderFactory.createEmptyBorder());
@@ -164,7 +166,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton createMapButton500
         createMapButton500 = new JButton(new ImageIcon("./Images/Logo500.png"));
-        createMapButton500.setBounds(createMapButton400.getX() + 200, affichageSliders.getHeight() / 2, 150, 80);
+        createMapButton500.setBounds(createMapButton400.getX() + 200, affichageBoutons.getHeight() / 2, 150, 80);
         createMapButton500.setLayout(null);
         createMapButton500.addActionListener(this);
         createMapButton500.setBorder(BorderFactory.createEmptyBorder());
@@ -175,7 +177,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton createMapButton600
         createMapButton600 = new JButton(new ImageIcon("./Images/Logo600.png"));
-        createMapButton600.setBounds(createMapButton500.getX() + 200, affichageSliders.getHeight() / 2, 150, 80);
+        createMapButton600.setBounds(createMapButton500.getX() + 200, affichageBoutons.getHeight() / 2, 150, 80);
         createMapButton600.setLayout(null);
         createMapButton600.addActionListener(this);
         createMapButton600.setBorder(BorderFactory.createEmptyBorder());
@@ -186,7 +188,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton createMapButton700
         createMapButton700 = new JButton(new ImageIcon("./Images/Logo700.png"));
-        createMapButton700.setBounds(affichageSliders.getWidth() / 6 - 100, affichageSliders.getHeight() / 2 + 200, 150, 80);
+        createMapButton700.setBounds(affichageBoutons.getWidth() / 6 - 100, affichageBoutons.getHeight() / 2 + 200, 150,
+                80);
         createMapButton700.setLayout(null);
         createMapButton700.addActionListener(this);
         createMapButton700.setBorder(BorderFactory.createEmptyBorder());
@@ -197,7 +200,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton createMapButton800
         createMapButton800 = new JButton(new ImageIcon("./Images/Logo800.png"));
-        createMapButton800.setBounds(createMapButton700.getX() + 200, affichageSliders.getHeight() / 2 + 200, 150, 80);
+        createMapButton800.setBounds(createMapButton700.getX() + 200, affichageBoutons.getHeight() / 2 + 200, 150, 80);
         createMapButton800.setLayout(null);
         createMapButton800.addActionListener(this);
         createMapButton800.setBorder(BorderFactory.createEmptyBorder());
@@ -208,7 +211,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton createMapButton900
         createMapButton900 = new JButton(new ImageIcon("./Images/Logo900.png"));
-        createMapButton900.setBounds(createMapButton800.getX() + 200, affichageSliders.getHeight() / 2 + 200, 150, 80);
+        createMapButton900.setBounds(createMapButton800.getX() + 200, affichageBoutons.getHeight() / 2 + 200, 150, 80);
         createMapButton900.setLayout(null);
         createMapButton900.addActionListener(this);
         createMapButton900.setBorder(BorderFactory.createEmptyBorder());
@@ -219,7 +222,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton createMapButton1000
         createMapButton1000 = new JButton(new ImageIcon("./Images/Logo1000.png"));
-        createMapButton1000.setBounds(createMapButton900.getX() + 200, affichageSliders.getHeight() / 2 + 200, 177, 80);
+        createMapButton1000.setBounds(createMapButton900.getX() + 200, affichageBoutons.getHeight() / 2 + 200, 177, 80);
         createMapButton1000.setLayout(null);
         createMapButton1000.addActionListener(this);
         createMapButton1000.setBorder(BorderFactory.createEmptyBorder());
@@ -228,17 +231,18 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         createMapButton1000.setFocusPainted(false);
         createMapButton1000.setContentAreaFilled(false);
 
-        affichageSliders.add(createMapButton300);
-        affichageSliders.add(createMapButton400);
-        affichageSliders.add(createMapButton500);
-        affichageSliders.add(createMapButton600);
-        affichageSliders.add(createMapButton700);
-        affichageSliders.add(createMapButton800);
-        affichageSliders.add(createMapButton900);
-        affichageSliders.add(createMapButton1000);
-        affichageSliders.add(texteCreaMap);
-        affichageSliders.add(fondDroit);
-        contentPane.add(affichageSliders);
+        contentPane.removeAll();
+        affichageBoutons.add(createMapButton300);
+        affichageBoutons.add(createMapButton400);
+        affichageBoutons.add(createMapButton500);
+        affichageBoutons.add(createMapButton600);
+        affichageBoutons.add(createMapButton700);
+        affichageBoutons.add(createMapButton800);
+        affichageBoutons.add(createMapButton900);
+        affichageBoutons.add(createMapButton1000);
+        affichageBoutons.add(texteCreaMap);
+        affichageBoutons.add(fondDroit);
+        contentPane.add(affichageBoutons);
         contentPane.add(affichageStart);
         setContentPane(contentPane);
         setVisible(true);
@@ -247,127 +251,95 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     public void EcranSet() {
 
-        // Affichage stat
-        affichageStats = new JPanel();
-        affichageStats.setBounds(1000, 700, 1000, 300);
-        affichageStats.setLayout(null);
-        affichageStats.setBackground(Color.red);
+        // JPanel qui contient tout le côté droit avec les sliders
+        affichageSliders = new JPanel();
+        affichageSliders.setBounds(1000, 0, 920, 1000);
+        affichageSliders.setLayout(null);
+        affichageSliders.setBackground(Color.yellow);
 
         // Bouton START
         startButton = new JButton(new ImageIcon("./Images/Start.png"));
-        startButton.setBounds(0, 0, 200, 80);
+        startButton.setBounds(affichageSliders.getWidth()/3 - 100, affichageSliders.getHeight()-100, 200, 80);
         startButton.setLayout(null);
         startButton.addActionListener(this);
 
-        // sliders
-        int lengthSlider = 200;
-        int widthSlider = 40;
+        // Bouton BACK
+        backButton = new JButton(new ImageIcon("./Images/Back.png"));
+        backButton.setBounds(2*affichageSliders.getWidth()/3 - 100, affichageSliders.getHeight()-100, 200, 80);
+        backButton.setLayout(null);
+        backButton.addActionListener(this);
 
         // SpeedSlider
         speedSlider = new JSlider(JSlider.HORIZONTAL, speed_MIN, speed_MAX, speed_INIT);
         // Turn on labels at major tick marks.
-        int xSpeedSlider = 20;
-        int ySpeedSlider = 200;
         speedSlider.setMajorTickSpacing(10);// espace minimal affiché sous le slider entre les valeurs de vitesse
         speedSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
         speedSlider.addChangeListener(this);
-        speedSlider.setBackground(Color.yellow);
-        speedSlider.setBounds(xSpeedSlider, ySpeedSlider, lengthSlider, widthSlider);
+        speedSlider.setOpaque(false);
+        //speedSlider.setBackground(new ImageIcon("./Images/FondDroit.jpeg"));
+        speedSlider.setBounds(affichageSliders.getWidth()/2 - widthSlider/2, affichageSliders.getHeight()/6 - 100, widthSlider, heightSlider);
         speedLabel = new JLabel("Vitesse : " + speed_INIT);
-        speedLabel.setBounds(xSpeedSlider + 5, ySpeedSlider - 50, 200, 60);
+        speedLabel.setBounds(speedSlider.getX()+5 + 5, speedSlider.getY() - 50, 200, 60);
 
         // foodSlider
         foodSlider = new JSlider(JSlider.HORIZONTAL, qntFood_MIN, qntfood_MAX, qntfood_INIT);
         // Turn on labels at major tick marks.
-        int xfoodSlider = xSpeedSlider;
-        int yfoodSlider = ySpeedSlider + 140;
         foodSlider.setMajorTickSpacing(20);// espace minimal affiché sous le slider entre les valeurs de vitesse
         foodSlider.setMinorTickSpacing(5);// espace minimal entre les valeurs de vitesse
         foodSlider.setPaintTicks(true);
         foodSlider.setPaintLabels(true);
         foodSlider.addChangeListener(this);
-        foodSlider.setBounds(xfoodSlider, yfoodSlider, lengthSlider, widthSlider);
-        foodSlider.setBackground(Color.yellow);
+        foodSlider.setBounds(affichageSliders.getWidth()/2 - widthSlider/2, 2*affichageSliders.getHeight()/6 - 100, widthSlider, heightSlider);
+        foodSlider.setOpaque(false);
         FoodLabel = new JLabel("Quantité de nourriture : " + qntfood_INIT);
-        FoodLabel.setBounds(xfoodSlider + 5, yfoodSlider - 50, 200, 60);
+        FoodLabel.setBounds(foodSlider.getX() + 5 , foodSlider.getY() - 50, 200, 60);
 
-        // MapSize Slider
-        mapSizeSlider = new JSlider(JSlider.HORIZONTAL, mapSize_MIN, mapSize_MAX, mapSize_INIT);
-        int xmapSizeSlider = xfoodSlider;
-        int ymapSizeSlider = yfoodSlider + 140;
-        mapSizeSlider.setMajorTickSpacing(180);// espace minimal affiché sous le slider entre les valeurs de vitesse
-        mapSizeSlider.setMinorTickSpacing(50);// espace minimal entre les valeurs de vitesse
-        mapSizeSlider.setPaintTicks(true);
-        mapSizeSlider.setPaintLabels(true);
-        mapSizeSlider.addChangeListener(this);
-        mapSizeSlider.setBounds(xmapSizeSlider, ymapSizeSlider, lengthSlider, widthSlider);
-        mapSizeSlider.setBackground(Color.yellow);
-        MapSizeLabel = new JLabel("Taille de la carte: " + mapSize_INIT);
-        MapSizeLabel.setBounds(xmapSizeSlider + 5, ymapSizeSlider - 50, 200, 60);
-
-        // BlobsNumber Slider
+        // BlobsSize Slider
         blobSizeSlider = new JSlider(JSlider.HORIZONTAL, BlobSize_MIN, BlobSize_MAX, BlobSize_INIT);
         // Turn on labels at major tick marks.
-        int xblobSizeSlider = xSpeedSlider;
-        int yblobSizeSlider = ymapSizeSlider + 140;
         blobSizeSlider.setMajorTickSpacing(5);// espace minimal affiché sous le slider entre les valeurs de vitesse
         blobSizeSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
         blobSizeSlider.setPaintTicks(true);
         blobSizeSlider.setPaintLabels(true);
         blobSizeSlider.addChangeListener(this);
-        blobSizeSlider.setBounds(xblobSizeSlider, yblobSizeSlider, lengthSlider, widthSlider);
-        blobSizeSlider.setBackground(Color.yellow);
+        blobSizeSlider.setBounds(affichageSliders.getWidth()/2 - widthSlider/2, 3*affichageSliders.getHeight()/6 - 100, widthSlider, heightSlider);
+        blobSizeSlider.setOpaque(false);
         BlobSizeLabel = new JLabel("Taille du blob : " + BlobSize_INIT);
-        BlobSizeLabel.setBounds(xblobSizeSlider + 5, yblobSizeSlider - 50, 200, 60);
+        BlobSizeLabel.setBounds(blobSizeSlider.getX() + 5 , blobSizeSlider.getY() - 50, 200, 60);
 
         // EnergyIni Slider
         energySlider = new JSlider(JSlider.HORIZONTAL, Energy_MIN, Energy_MAX, Energy_INIT);
         // Turn on labels at major tick marks.
-        int xenergySlider = xSpeedSlider + 250;
-        int yenergySlider = ySpeedSlider;
         energySlider.setMajorTickSpacing(500);// espace minimal affiché sous le slider entre les valeurs de vitesse
         energySlider.setMinorTickSpacing(100);// espace minimal entre les valeurs de vitesse
         energySlider.setPaintTicks(true);
         energySlider.setPaintLabels(true);
         energySlider.addChangeListener(this);
-        energySlider.setBounds(xenergySlider, yenergySlider, lengthSlider, widthSlider);
-        energySlider.setBackground(Color.yellow);
+        energySlider.setBounds(affichageSliders.getWidth()/2 - widthSlider/2, 4*affichageSliders.getHeight()/6 - 100, widthSlider, heightSlider);
+        energySlider.setOpaque(false);
         EnergyLabel = new JLabel("Energie des blobs : " + energySlider.getValue());
-        EnergyLabel.setBounds(xenergySlider + 5, yenergySlider - 50, 200, 60);
+        EnergyLabel.setBounds(energySlider.getX() + 5 , energySlider.getY() - 50, 200, 60);
 
         // DetectionRange Slider
         detectionSlider = new JSlider(JSlider.HORIZONTAL, detection_MIN, detection_MAX, detection_INIT);
-        int xdetectionSlider = xenergySlider;
-        int ydetectionSlider = yenergySlider + 140;
         detectionSlider.setMajorTickSpacing(10);
         detectionSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
         detectionSlider.setPaintTicks(true);
         detectionSlider.setPaintLabels(true);
         detectionSlider.addChangeListener(this);
-        detectionSlider.setBounds(xdetectionSlider, ydetectionSlider, lengthSlider, widthSlider);
-        detectionSlider.setBackground(Color.yellow);
+        detectionSlider.setBounds(affichageSliders.getWidth()/2 - widthSlider/2, 5*affichageSliders.getHeight()/6 - 100, widthSlider, heightSlider);
+        detectionSlider.setOpaque(false);
         DetectionLabel = new JLabel("Champ de vision : " + detection_INIT);
-        DetectionLabel.setBounds(xdetectionSlider + 5, ydetectionSlider - 50, 200, 60);
+        DetectionLabel.setBounds(detectionSlider.getX() + 5 , detectionSlider.getY() - 50, 200, 60);
 
         // add
-        affichageSliders.remove(createMapButton300);
-        affichageSliders.remove(createMapButton400);
-        affichageSliders.remove(createMapButton500);
-        affichageSliders.remove(createMapButton600);
-        affichageSliders.remove(createMapButton700);
-        affichageSliders.remove(createMapButton800);
-        affichageSliders.remove(createMapButton900);
-        affichageSliders.remove(createMapButton1000);
-        affichageSliders.remove(texteCreaMap);
-        affichageSliders.remove(fondDroit);
-
+        contentPane.removeAll();
         affichageSliders.add(startButton);
+        affichageSliders.add(backButton);
         affichageSliders.add(speedSlider);
         affichageSliders.add(speedLabel);
-        affichageSliders.add(mapSizeSlider);
-        affichageSliders.add(MapSizeLabel);
         affichageSliders.add(FoodLabel);
         affichageSliders.add(foodSlider);
         affichageSliders.add(EnergyLabel);
@@ -376,6 +348,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.add(BlobSizeLabel);
         affichageSliders.add(detectionSlider);
         affichageSliders.add(DetectionLabel);
+        affichageSliders.add(fondDroit);
         contentPane.add(affichageSliders);
         contentPane.add(affichageStart);
         setContentPane(contentPane);
@@ -416,24 +389,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         statBounds.setBounds(0, (int) height - stat.height, stat.width, stat.height);
         statBounds.setLayout(null);
 
-        affichageSliders.remove(startButton);
-        affichageSliders.remove(speedSlider);
-        affichageSliders.remove(speedLabel);
-        affichageSliders.remove(mapSizeSlider);
-        affichageSliders.remove(MapSizeLabel);
-        affichageSliders.remove(FoodLabel);
-        affichageSliders.remove(foodSlider);
-        affichageSliders.remove(EnergyLabel);
-        affichageSliders.remove(energySlider);
-        affichageSliders.remove(blobSizeSlider);
-        affichageSliders.remove(BlobSizeLabel);
-        affichageSliders.remove(detectionSlider);
-        affichageSliders.remove(DetectionLabel);
+        // add et remove
+        contentPane.removeAll();
         mapBounds.add(map);
         statBounds.add(stat);
         affichageMap.add(mapBounds);
         affichageSliders.add(daysCount);
-        affichageSliders.add(startButton);
         affichageSliders.add(statBounds);
         contentPane.add(affichageSliders);
         contentPane.add(affichageMap);
@@ -450,6 +411,10 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         if (e.getSource() == createMapButton300) {
             map = new Map(300, 300);
             EcranSet();
+        }
+
+        if (e.getSource() == backButton) {
+            EcranCreateMap();
         }
 
         if (e.getSource() == createMapButton400) {
@@ -540,17 +505,16 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         } else if (source == foodSlider) {
             FoodLabel.setText("quantite nourriture : " + foodSlider.getValue());
             map.initFoodNumber = foodSlider.getValue();
-        } else if (source == mapSizeSlider) {
-            MapSizeLabel.setText("Taille de la carte : " + mapSizeSlider.getValue());
-            mapWidth = mapSizeSlider.getValue();
-            mapHeight = mapSizeSlider.getValue();
         } else if (source == blobSizeSlider) {
             BlobSizeLabel.setText("Taille du blob : " + blobSizeSlider.getValue());
             map.blobIniSize = blobSizeSlider.getValue();
         } else if (source == detectionSlider) {
             DetectionLabel.setText("Champ de vision : " + detectionSlider.getValue());
+            map.blobIniView = detectionSlider.getValue();
         } else if (source == energySlider) {
             EnergyLabel.setText("Energie des blobs : " + energySlider.getValue());
+            map.energyIni = energySlider.getValue();
+
         }
     }
 
