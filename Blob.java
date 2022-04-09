@@ -98,7 +98,6 @@ public class Blob {
         int r = (int) Math.round(speed) * 10;
         int g = (int) Math.round(size) * 15;
         int b = (int) Math.round(viewRange) * 10;
-        System.out.println(r);
         if (r >= 254) {
             r = 254;
         }if (g >= 254) {

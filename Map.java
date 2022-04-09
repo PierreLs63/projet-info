@@ -14,11 +14,11 @@ public class Map extends JPanel {
     public int wallRepulsionForce = 1000;
 
     // blobs
-    public int initBlobNumber = 10;
-    public double blobIniSpeed = 20;
-    public double blobIniSize = 10;
-    public double blobIniView = 50;
-    public double energyIni = 500;
+    public int initBlobNumber;
+    public double blobIniSpeed;
+    public double blobIniSize;
+    public double blobIniView;
+    public double energyIni;
     public ArrayList<Blob> blobs = new ArrayList<Blob>();
     public double wanderingStrengthInit = 2;
 
@@ -27,23 +27,22 @@ public class Map extends JPanel {
     public double amplitudeVariationSpeed = 100;
     public double amplitudeVariationEnergy = 100;
     public double amplitudeVariationView = 15;
-    public double chanceVariation = 1.0;// entre 0 est 1
+    public double chanceVariation = 0.8;// entre 0 est 1
 
     // foods
     public int initFoodNumber = 10;
     public ArrayList<Food> foods = new ArrayList<Food>();
 
-    //IHM
+    // IHM
     private Image dbImage;
     private Graphics dbg;
-
 
     public Map(int w, int h) {
         width = w; // largeur de la map
         height = h; // hauteur de la map
         wallWidth = width / 20; // largeur des bords map
         wallHeight = height / 20; // hauteur des bords map
-        
+
         setBounds(0, 0, width, height);
         setLayout(null);
 
@@ -79,9 +78,8 @@ public class Map extends JPanel {
                 blobs.get(i).speedV = new Vect(0, -1);
             }
         }
-        //blobs.get(2).speed = 1000;
-
     }
+
     public int testBord(Blob unBlob) { // vérifie si le blob détecte les murs de la map
         if (new Vect(wallWidth, unBlob.pos_y).distance(unBlob.pos_x,
                 unBlob.pos_y) <= 10 && unBlob.wallBounce == true) {
@@ -133,7 +131,7 @@ public class Map extends JPanel {
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
                     e.pos_y) <= unBlob.viewRange
-                    && unBlob != e && unBlob.size < (0.8 * e.size) ) {
+                    && unBlob != e && unBlob.size < (0.8 * e.size)) {
                 blobTarget.add(e);
 
             }
@@ -326,41 +324,41 @@ public class Map extends JPanel {
 
     }
 
-    public Blob newBlob(Blob parent){
+    public Blob newBlob(Blob parent) {
         double size = parent.size;
-        if(Math.random()<chanceVariation){
-            size += (amplitudeVariationSize/size)*(Math.random()-0.5)*2;
+        if (Math.random() < chanceVariation) {
+            size += (amplitudeVariationSize / size) * (Math.random() - 0.5) * 2;
         }
         double speed = parent.speed;
-        if(Math.random()<chanceVariation){
-            speed += (amplitudeVariationSpeed/speed)*(Math.random()-0.5)*2;
+        if (Math.random() < chanceVariation) {
+            speed += (amplitudeVariationSpeed / speed) * (Math.random() - 0.5) * 2;
         }
         double viewRange = parent.viewRange;
-        if(Math.random()<chanceVariation){
-            viewRange += (amplitudeVariationView/viewRange)*(Math.random()-0.5)*2;
+        if (Math.random() < chanceVariation) {
+            viewRange += (amplitudeVariationView / viewRange) * (Math.random() - 0.5) * 2;
         }
         double energyIni = parent.energyIni;
-        if(Math.random()<chanceVariation){
-            energyIni += (amplitudeVariationEnergy/energyIni)*(Math.random()-0.5)*2;
+        if (Math.random() < chanceVariation) {
+            energyIni += (amplitudeVariationEnergy / energyIni) * (Math.random() - 0.5) * 2;
         }
-        return new Blob(speed,size,viewRange,energyIni);
+        return new Blob(speed, size, viewRange, energyIni);
     }
 
-    public void newGeneration(){
+    public void newGeneration() {
         ArrayList<Blob> blobsTemp = new ArrayList<Blob>();
-        for(Blob el:blobs){
-            if(el.foodB==2){
-                Blob blobC=newBlob(el);
-                blobC.pos_x=el.pos_x;
-                blobC.pos_y=el.pos_y;
-                blobC.energy=blobC.energyIni;
+        for (Blob el : blobs) {
+            if (el.foodB == 2) {
+                Blob blobC = newBlob(el);
+                blobC.pos_x = el.pos_x;
+                blobC.pos_y = el.pos_y;
+                blobC.energy = blobC.energyIni;
                 blobsTemp.add(blobC);
             }
-            el.foodB=0;
+            el.foodB = 0;
         }
-        for(Blob el:blobsTemp){
+        for (Blob el : blobsTemp) {
             blobs.add(el);
-        }   
+        }
     }
 
     public void paintComponent(Graphics g) {

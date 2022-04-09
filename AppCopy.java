@@ -8,7 +8,7 @@ import javax.swing.event.ChangeListener;
 import javafx.event.ActionEvent; 
 
 
-public class IHMControle extends JFrame implements ChangeListener, ActionListener  {
+public class AppCopy extends JFrame implements ChangeListener, ActionListener  {
 
   //Variables nécessaires à la création des sliders
   static final int speed_MIN = 0;
@@ -48,7 +48,7 @@ public class IHMControle extends JFrame implements ChangeListener, ActionListene
   JButton resetButton;
 
 
-  public IHMControle(String nom, int width, int height) {
+  public AppCopy(String nom, int width, int height) {
     super(nom);
     setSize(width, height);
     setLocation(0,0);
@@ -191,8 +191,10 @@ public class IHMControle extends JFrame implements ChangeListener, ActionListene
     }
   }
 
-  public static void main(String [] args) {  
-    IHMControle fenetre =new IHMControle("Sliders",1600,900);  
-    fenetre.getContentPane().setBackground(Color.ORANGE);
+
+  @Override
+  public void actionPerformed(java.awt.event.ActionEvent e) {
+    // TODO Auto-generated method stub
+    
   }
 }
