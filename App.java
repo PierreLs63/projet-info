@@ -635,8 +635,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         if (e.getSource() == startButton) {
 
-            stat = new Stats(map.blobs);
-            stat.fetch(map.blobs);
+            stat = new Stats(map.blobs,blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
+            stat.fetch(map.blobs,blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
             stat.repaint();
 
             map.iniBlob(); // initialise un tableau de blob chacun placés
@@ -667,7 +667,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.whipeBlobs();
             map.resetFood();
             map.newGeneration();
-            stat.fetch(map.blobs);
+            stat.fetch(map.blobs,blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
+            System.out.println(map.blobs.get(0).viewRange);
             stat.repaint();
             day++;
             daysCount.setText("Day " + day);

@@ -6,24 +6,33 @@ public class Stats extends JPanel{
     ArrayList<Blob> blobs = new ArrayList<Blob>();
     int[] size_range = {20,30,40,80};
     int[] size_value = {0,0,0,0,0};
-    int[] view_range = {20,40,80,100};
+    int[] view_range = {30,35,40,45};
     int[] view_value = {0,0,0,0,0};
-    int[] speed_range = {20,40,80,100};
+    int[] speed_range = {20,50,80,110};
     int[] speed_value = {0,0,0,0,0};
-    int[] energy_range = {500,500,501,505};
+    int[] energy_range = {485,495,505,515};
     int[] energy_value = {0,0,0,0,0};
     private Image dbImage;
     private Graphics dbg;
     public int width = 920;
     public int height = 400;
 
-    public Stats(ArrayList<Blob> bl){
+    public Stats(ArrayList<Blob> bl,int size,int view,int speed,int energy){
         setBounds(0, 0, width, height);
         setLayout(null);
         blobs = bl;
-        fetch(bl);
+        fetch(bl,size,view,speed,energy);
     }
-    public void fetch(ArrayList<Blob> blobs){
+    public void setRange(int size,int view,int speed,int energy){
+        for(int i=0;i<4;i++){
+            size_range[i]=size-10+i*10;
+            view_range[i]=view-5+i*5;
+            speed_range[i]=speed-20+i*30;
+            energy_range[i]=energy-10+i*10;
+        }
+    }
+    public void fetch(ArrayList<Blob> blobs,int size,int view,int speed,int energy){
+        setRange(size, view,speed,energy);
         for(int j=0;j<=4;j++){
             size_value[j]=0;
             view_value[j]=0;
