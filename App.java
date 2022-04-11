@@ -21,6 +21,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     // IHM
     public JButton startButton;
     public JButton backButton;
+    public JButton exitButton;
     public JButton createMapButton300;
     public JButton createMapButton400;
     public JButton createMapButton500;
@@ -436,14 +437,25 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // JLabel qui affiche le nb de jours passés
         daysCount = new JLabel("Day " + day);
-        daysCount.setBounds(750, 0, 300, 100);
+        daysCount.setBounds(60, 0, 300, 80);
         daysCount.setLayout(null);
         daysCount.setFont(new Font("Ravie", Font.PLAIN, 30));
+
+        // Bouton START
+        exitButton = new JButton(new ImageIcon("./Images/Exit.png"));
+        exitButton.setBounds(affichageSliders.getWidth() - 200, 0, 200, 80);
+        exitButton.setLayout(null);
+        exitButton.addActionListener(this);
+        exitButton.setBorder(BorderFactory.createEmptyBorder());
+        exitButton.setContentAreaFilled(false);
+        exitButton.setBorderPainted(false);
+        exitButton.setFocusPainted(false);
+        exitButton.setContentAreaFilled(false);
 
         // Slider nombre de nourriture par jour
         foodSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
                 2 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
-        foodLabel.setBounds(foodSlider.getX() + 5, foodSlider.getY() - 50, 200, 60);
+        foodLabel.setBounds(foodSlider.getX() + 5, foodSlider.getY() - 50, 150, 60);
 
         // Mutation Chance Slider
         variationChanceSlider = new JSlider(JSlider.HORIZONTAL, variationChance_MIN, variationChance_MAX,
@@ -457,8 +469,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         variationChanceSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
                 3 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
         variationChanceSlider.setOpaque(false);
-        variationChanceLabel = new JLabel("Chances de mutations (%) : " + variationChanceSlider.getValue());
-        variationChanceLabel.setBounds(variationChanceSlider.getX() + 5, variationChanceSlider.getY() - 50, 200, 60);
+        variationChanceLabel = new JLabel("Chances de mutations : " + variationChanceSlider.getValue() + "%");
+        variationChanceLabel.setBounds(variationChanceSlider.getX() + 5, variationChanceSlider.getY() - 50, 210, 60);
 
         // Mutation energy Slider
         amplitudeVariationEnergySlider = new JSlider(JSlider.HORIZONTAL, amplitudeVariationEnergy_MIN,
@@ -486,7 +498,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         // Turn on labels at major tick marks.
         amplitudeVariationSizeSlider.setMajorTickSpacing(20);// espace minimal affiché sous le slider entre les
                                                              // valeurs
-        
+
         amplitudeVariationSizeSlider.setMinorTickSpacing(10);// espace minimal entre les valeurs de vitesse
         amplitudeVariationSizeSlider.setPaintTicks(true);
         amplitudeVariationSizeSlider.setPaintLabels(true);
@@ -533,18 +545,19 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         amplitudeVariationViewSlider.addChangeListener(this);
         amplitudeVariationViewSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
                 7 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
-                amplitudeVariationViewSlider.setOpaque(false);
+        amplitudeVariationViewSlider.setOpaque(false);
         amplitudeVariationViewLabel = new JLabel(
                 "Amplitude de variation du rayon de vison des blobs à la mutation : "
                         + amplitudeVariationViewSlider.getValue());
         amplitudeVariationViewLabel.setBounds(amplitudeVariationViewSlider.getX() + 5,
-        amplitudeVariationViewSlider.getY() - 50, 500, 60);
+                amplitudeVariationViewSlider.getY() - 50, 500, 60);
 
         // add et remove
         contentPane.removeAll();
         mapBounds.add(map);
         statBounds.add(stat);
         affichageMap.add(mapBounds);
+        affichageSliders.add(exitButton);
         affichageSliders.add(daysCount);
         affichageSliders.add(statBounds);
         affichageSliders.add(foodLabel);
@@ -582,6 +595,11 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
 
         if (e.getSource() == backButton) {
+            ecranCreateMap();
+        }
+
+        if (e.getSource() == exitButton) {
+            day = 1;
             ecranCreateMap();
         }
 
@@ -635,8 +653,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         if (e.getSource() == startButton) {
 
-            stat = new Stats(map.blobs,blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
-            stat.fetch(map.blobs,blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
+            stat = new Stats(map.blobs, blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
+            stat.fetch(map.blobs, blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
             stat.repaint();
 
             map.iniBlob(); // initialise un tableau de blob chacun placés
@@ -667,8 +685,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.whipeBlobs();
             map.resetFood();
             map.newGeneration();
-            stat.fetch(map.blobs,blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
-            System.out.println(map.blobs.get(0).viewRange);
+            stat.fetch(map.blobs, blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
             stat.repaint();
             day++;
             daysCount.setText("Day " + day);
@@ -698,22 +715,25 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             numberLabel.setText("Nombre de blobs : " + blobNumberSlider.getValue());
             map.initBlobNumber = blobNumberSlider.getValue();
 
-        }else if (source == variationChanceSlider) {
-            variationChanceLabel.setText("Chances de mutations (%) : " + variationChanceSlider.getValue());
-            map.chanceVariation = variationChanceSlider.getValue()/100;
-        }else if (source == amplitudeVariationEnergySlider) {
-            amplitudeVariationEnergyLabel.setText("Amplitude de variation de l'énergie à la mutation : " + amplitudeVariationEnergySlider.getValue());
+        } else if (source == variationChanceSlider) {
+            variationChanceLabel.setText("Chances de mutations : " + variationChanceSlider.getValue()+"%");
+            map.chanceVariation = variationChanceSlider.getValue() / 100;
+        } else if (source == amplitudeVariationEnergySlider) {
+            amplitudeVariationEnergyLabel.setText(
+                    "Amplitude de variation de l'énergie à la mutation : " + amplitudeVariationEnergySlider.getValue());
             map.amplitudeVariationEnergy = amplitudeVariationEnergySlider.getValue();
-        }else if (source == amplitudeVariationSizeSlider) {
-            amplitudeVariationSizeLabel.setText("Amplitude de variation de la taille des blobs à la mutation : " + amplitudeVariationSizeSlider.getValue());
+        } else if (source == amplitudeVariationSizeSlider) {
+            amplitudeVariationSizeLabel.setText("Amplitude de variation de la taille des blobs à la mutation : "
+                    + amplitudeVariationSizeSlider.getValue());
             map.amplitudeVariationSize = amplitudeVariationSizeSlider.getValue();
-        }else if (source == amplitudeVariationSpeedSlider) {
-            amplitudeVariationSpeedLabel.setText("Amplitude de variation de la vitesse des blobs à la mutation : " + amplitudeVariationSpeedSlider.getValue());
+        } else if (source == amplitudeVariationSpeedSlider) {
+            amplitudeVariationSpeedLabel.setText("Amplitude de variation de la vitesse des blobs à la mutation : "
+                    + amplitudeVariationSpeedSlider.getValue());
             map.amplitudeVariationSpeed = amplitudeVariationSpeedSlider.getValue();
-        }else if (source == amplitudeVariationViewSlider) {
-            amplitudeVariationViewLabel.setText("Amplitude de variation du rayon de vison des blobs à la mutation : " + amplitudeVariationViewSlider.getValue());
+        } else if (source == amplitudeVariationViewSlider) {
+            amplitudeVariationViewLabel.setText("Amplitude de variation du rayon de vison des blobs à la mutation : "
+                    + amplitudeVariationViewSlider.getValue());
             map.amplitudeVariationView = amplitudeVariationViewSlider.getValue();
         }
     }
-
 }
