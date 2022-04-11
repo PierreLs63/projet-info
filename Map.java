@@ -339,7 +339,7 @@ public class Map extends JPanel {
         }
         double energyIni = parent.energyIni;
         if (Math.random() < chanceVariation) {
-            energyIni += (amplitudeVariationEnergy / energyIni) * (Math.random() - 0.5) * 2;
+            energyIni += (amplitudeVariationEnergy / energyIni) * (Math.random() - 0.5) * 20;
         }
         return new Blob(speed, size, viewRange, energyIni);
     }
