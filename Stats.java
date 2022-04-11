@@ -25,7 +25,7 @@ public class Stats extends JPanel{
     }
     public void setRange(int size,int view,int speed,int energy){
         for(int i=0;i<4;i++){
-            size_range[i]=size-10+i*10;
+            size_range[i]=size+i*10;
             view_range[i]=view-5+i*5;
             speed_range[i]=speed-20+i*30;
             energy_range[i]=energy-10+i*10;
