@@ -443,7 +443,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton START
         exitButton = new JButton(new ImageIcon("./Images/Exit.png"));
-        exitButton.setBounds(affichageSliders.getWidth() - 200, 0, 200, 80);
+        exitButton.setBounds(affichageSliders.getWidth() - 225, 0, 200, 80);
         exitButton.setLayout(null);
         exitButton.addActionListener(this);
         exitButton.setBorder(BorderFactory.createEmptyBorder());
