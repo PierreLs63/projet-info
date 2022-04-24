@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.Timer;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -30,6 +30,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public JButton createMapButton800;
     public JButton createMapButton900;
     public JButton createMapButton1000;
+    public JButton iSpeed;// Bouton d'information sur le slider associé
+    public JButton iFood;// Bouton d'information sur le slider associé
+    public JButton iBlobSize;// Bouton d'information sur le slider associé
+    public JButton iDetection;// Bouton d'information sur le slider associé
+    public JButton iEnergy;// Bouton d'information sur le slider associé
+    public JButton iBlobNumber;
     public JLabel texteCreaMap;
     public JLabel fondDroit;
     public JLabel daysCount;
@@ -381,7 +387,25 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         blobNumberSlider.setOpaque(false);
         numberLabel = new JLabel("Nombre de blobs : " + blobNumber_INIT);
         numberLabel.setBounds(blobNumberSlider.getX() + 5, blobNumberSlider.getY() - 50, 200, 60);
-
+        //Paramètrages des boutons d'informations sous chaque sliders
+        iSpeed = new JButton("?");
+        iBlobSize = new JButton("?");
+        iDetection = new JButton("?");
+        iFood = new JButton("?");
+        iEnergy = new JButton("?");
+        iBlobNumber = new JButton("?");
+        iSpeed.setBounds(speedLabel.getX(),speedLabel.getY()+110,30,30);
+        iBlobSize.setBounds(blobSizeLabel.getX(),blobSizeLabel.getY()+110,30,30);
+        iDetection.setBounds(detectionLabel.getX(),detectionLabel.getY()+110,30,30);
+        iFood.setBounds(foodLabel.getX(),foodLabel.getY()+110,30,30);
+        iEnergy.setBounds(energyLabel.getX(),energyLabel.getY()+110,30,30);
+        iBlobNumber.setBounds(numberLabel.getX(),numberLabel.getY()+90,30,30);
+        iSpeed.addActionListener(this);
+        iEnergy.addActionListener(this);
+        iFood.addActionListener(this);
+        iBlobSize.addActionListener(this);
+        iDetection.addActionListener(this);
+        iBlobNumber.addActionListener(this);
         // add
         contentPane.removeAll();
         affichageSliders.add(startButton);
@@ -399,6 +423,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageSliders.add(blobNumberSlider);
         affichageSliders.add(numberLabel);
         affichageSliders.add(fondDroit);
+        affichageSliders.add(iBlobSize);
+        affichageSliders.add(iDetection);
+        affichageSliders.add(iEnergy);
+        affichageSliders.add(iFood);
+        affichageSliders.add(iSpeed);
+        affichageSliders.add(iBlobNumber);
         contentPane.add(affichageSliders);
         contentPane.add(affichageStart);
         setContentPane(contentPane);
@@ -432,7 +462,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // JPanel qui contient les stats
         statBounds = new JPanel();
-        statBounds.setBounds(0, (int) height - stat.height, stat.width-200, stat.height);
+        statBounds.setBounds(0, (int) height - stat.height, stat.width, stat.height);
         statBounds.setLayout(null);
 
         // JLabel qui affiche le nb de jours passés
@@ -443,7 +473,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         // Bouton START
         exitButton = new JButton(new ImageIcon("./Images/Exit.png"));
-        exitButton.setBounds(affichageSliders.getWidth() - 200, 0, 200, 80);
+        exitButton.setBounds(affichageSliders.getWidth() - 225, 0, 200, 80);
         exitButton.setLayout(null);
         exitButton.addActionListener(this);
         exitButton.setBorder(BorderFactory.createEmptyBorder());
@@ -469,8 +499,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         variationChanceSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
                 3 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
         variationChanceSlider.setOpaque(false);
-        variationChanceLabel = new JLabel("Chances de mutations (%) : " + variationChanceSlider.getValue());
-        variationChanceLabel.setBounds(variationChanceSlider.getX() + 5, variationChanceSlider.getY() - 50, 200, 60);
+        variationChanceLabel = new JLabel("Chances de mutations : " + variationChanceSlider.getValue() + "%");
+        variationChanceLabel.setBounds(variationChanceSlider.getX() + 5, variationChanceSlider.getY() - 50, 210, 60);
 
         // Mutation energy Slider
         amplitudeVariationEnergySlider = new JSlider(JSlider.HORIZONTAL, amplitudeVariationEnergy_MIN,
@@ -599,6 +629,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         }
 
         if (e.getSource() == exitButton) {
+            day = 1;
             ecranCreateMap();
         }
 
@@ -689,6 +720,25 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             day++;
             daysCount.setText("Day " + day);
         }
+        if(e.getSource()==iSpeed){
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster la vitesse à laquelle se déplacent les blobs");// Réutilisation d'une ligne de code donnée dans une IE de 2ème année (Exo Pendu)
+        }
+        if(e.getSource()==iBlobNumber){
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster le nombre de blobs présents sur la carte");
+        }
+        if(e.getSource()==iBlobSize){
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster la taille des blobs sur la carte");
+        }
+        if(e.getSource()==iDetection){
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster le champ de vision des blobs");
+        }
+        if(e.getSource()==iEnergy){
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster l'énergie des blobs au début du jour");
+        }
+        if(e.getSource()==iFood){
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster la quantité de nourriture présente sur la carte au début du jour");
+        }
+        
         map.repaint();
 
     }
@@ -699,7 +749,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             speedLabel.setText("Vitesse : " + speedSlider.getValue());
             map.blobIniSpeed = speedSlider.getValue();
         } else if (source == foodSlider) {
-            foodLabel.setText("quantite nourriture : " + foodSlider.getValue());
+            foodLabel.setText("Quantite nourriture : " + foodSlider.getValue());
             map.initFoodNumber = foodSlider.getValue();
         } else if (source == blobSizeSlider) {
             blobSizeLabel.setText("Taille du blob : " + blobSizeSlider.getValue());
@@ -715,7 +765,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.initBlobNumber = blobNumberSlider.getValue();
 
         } else if (source == variationChanceSlider) {
-            variationChanceLabel.setText("Chances de mutations (%) : " + variationChanceSlider.getValue());
+            variationChanceLabel.setText("Chances de mutations : " + variationChanceSlider.getValue()+"%");
             map.chanceVariation = variationChanceSlider.getValue() / 100;
         } else if (source == amplitudeVariationEnergySlider) {
             amplitudeVariationEnergyLabel.setText(
