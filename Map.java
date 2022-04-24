@@ -362,9 +362,9 @@ public class Map extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
-        g.setColor(Color.pink); // la map ext
+        g.setColor(new Color (40,155,93)); // la map ext
         g.fillRect(0, 0, width, height);
-        g.setColor(Color.blue); // la map int
+        g.setColor(Color.green); // la map int
         g.fillRect(wallWidth, wallHeight, width - 2 * wallWidth, height - 2 * wallWidth);
 
         for (Blob unBlob : blobs) { // les blobs
@@ -372,7 +372,7 @@ public class Map extends JPanel {
         }
 
         for (Food miam : foods) { // la nourriture
-            miam.draw(g, Color.green);
+            miam.draw(g, Color.yellow);
         }
     }
 

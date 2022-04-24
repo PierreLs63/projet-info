@@ -33,6 +33,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public JLabel texteCreaMap;
     public JLabel fondDroit;
     public JLabel daysCount;
+    public JLabel bloby;
+    public JLabel foodLogo;
     public double height;
     public double width;
     public JPanel contentPane;
@@ -43,6 +45,19 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public JPanel affichageMap;
     public JPanel mapBounds;
     public JPanel statBounds;
+
+    // Boutons d'information sur les sliders associé
+    public JButton iSpeed;
+    public JButton iFood;
+    public JButton iBlobSize;
+    public JButton iDetection;
+    public JButton iEnergy;
+    public JButton iBlobNumber;
+    public JButton iamplitudeVariationSize;
+    public JButton iamplitudeVariationSpeed;
+    public JButton iamplitudeVariationEnergy;
+    public JButton iamplitudeVariationView;
+    public JButton ivariationChance;
 
     // Stats
     public Stats stat;
@@ -112,7 +127,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public JSlider amplitudeVariationViewSlider;
     public JSlider variationChanceSlider;
 
-    // Labels
+    // Labels slidders
     public JLabel speedLabel;
     public JLabel foodLabel;
     public JLabel energyLabel;
@@ -126,9 +141,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public JLabel variationChanceLabel;
 
     public App() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        width = screenSize.getWidth();
-        height = screenSize.getHeight();
+        width = 1920;
+        height = 1080;
 
         setBounds(0, 0, (int) width, (int) height - 50);
         setTitle("Les Blobs c'est cool");
@@ -153,7 +167,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageStart = new JPanel();
         affichageStart.setBounds(0, 0, 1000, 1000);
         affichageStart.setLayout(null);
-        affichageStart.setBackground(Color.pink);
+        affichageStart.setBackground(Color.green);
 
         // JPanel qui contient tout le côté droit avec les boutons
         affichageBoutons = new JPanel();
@@ -170,6 +184,19 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         fondDroit = new JLabel(new ImageIcon("./Images/FondDroit.jpeg"));
         fondDroit.setLayout(null);
         fondDroit.setBounds(0, 0, 920, 1000);
+
+        // Image accueil bloby mascotte
+
+        bloby = new JLabel(new ImageIcon("./Images/Gif06.png"));
+        bloby.setLayout(null);
+        bloby.setBounds(affichageStart.getWidth()/2-100, affichageStart.getHeight()/2-400, 600, 600);
+
+        // Image accueil nourriture 
+
+        foodLogo = new JLabel(new ImageIcon("./Images/Food23.png"));
+        foodLogo.setLayout(null);
+        foodLogo.setBounds(affichageStart.getWidth()/2-450, affichageStart.getHeight()/2-150, 300, 300);
+
 
         // Bouton createMapButton300
         createMapButton300 = new JButton(new ImageIcon("./Images/Logo300.png"));
@@ -271,6 +298,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageBoutons.add(createMapButton1000);
         affichageBoutons.add(texteCreaMap);
         affichageBoutons.add(fondDroit);
+        affichageStart.add(bloby);
+        affichageStart.add(foodLogo);
         contentPane.add(affichageBoutons);
         contentPane.add(affichageStart);
         setContentPane(contentPane);
@@ -382,8 +411,40 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         numberLabel = new JLabel("Nombre de blobs : " + blobNumber_INIT);
         numberLabel.setBounds(blobNumberSlider.getX() + 5, blobNumberSlider.getY() - 50, 200, 60);
 
+        // Paramètrages des boutons d'informations sous chaque sliders
+
+        iSpeed = new JButton(new ImageIcon("./Images/info.png"));
+        iSpeed.setBounds(speedLabel.getX(), speedLabel.getY() + 100, 30, 30);
+        iSpeed.addActionListener(this);
+
+        iBlobSize = new JButton(new ImageIcon("./Images/info.png"));
+        iBlobSize.setBounds(blobSizeLabel.getX(), blobSizeLabel.getY() + 100, 30, 30);
+        iBlobSize.addActionListener(this);
+
+        iDetection = new JButton(new ImageIcon("./Images/info.png"));
+        iDetection.setBounds(detectionLabel.getX(), detectionLabel.getY() + 100, 30, 30);
+        iDetection.addActionListener(this);
+
+        iFood = new JButton(new ImageIcon("./Images/info.png"));
+        iFood.setBounds(foodLabel.getX(), foodLabel.getY() + 100, 30, 30);
+        iFood.addActionListener(this);
+
+        iEnergy = new JButton(new ImageIcon("./Images/info.png"));
+        iEnergy.setBounds(energyLabel.getX(), energyLabel.getY() + 110, 30, 30);
+        iEnergy.addActionListener(this);
+
+        iBlobNumber = new JButton(new ImageIcon("./Images/info.png"));
+        iBlobNumber.setBounds(numberLabel.getX(), numberLabel.getY() + 100, 30, 30);
+        iBlobNumber.addActionListener(this);
+
         // add
         contentPane.removeAll();
+        affichageSliders.add(iBlobSize);
+        affichageSliders.add(iDetection);
+        affichageSliders.add(iEnergy);
+        affichageSliders.add(iFood);
+        affichageSliders.add(iSpeed);
+        affichageSliders.add(iBlobNumber);
         affichageSliders.add(startButton);
         affichageSliders.add(backButton);
         affichageSliders.add(speedSlider);
@@ -417,7 +478,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageMap = new JPanel();
         affichageMap.setBounds(0, 0, 1000, 1000);
         affichageMap.setLayout(null);
-        affichageMap.setBackground(Color.pink);
+        affichageMap.setBackground(Color.gray);
 
         // JPanel qui contient tout le côté droit avec les sliders
         affichageSliders = new JPanel();
@@ -552,11 +613,42 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         amplitudeVariationViewLabel.setBounds(amplitudeVariationViewSlider.getX() + 5,
                 amplitudeVariationViewSlider.getY() - 50, 500, 60);
 
+                
+        iamplitudeVariationEnergy = new JButton(new ImageIcon("./Images/info.png"));
+        iamplitudeVariationEnergy.setBounds(amplitudeVariationEnergyLabel.getX() - 50, amplitudeVariationEnergyLabel.getY()+25, 30, 30);
+        iamplitudeVariationEnergy.addActionListener(this);
+
+        iamplitudeVariationSize = new JButton(new ImageIcon("./Images/info.png"));
+        iamplitudeVariationSize.setBounds(amplitudeVariationSizeLabel.getX() - 50, amplitudeVariationSizeLabel.getY()+25, 30, 30);
+        iamplitudeVariationSize.addActionListener(this);
+
+        iamplitudeVariationSpeed = new JButton(new ImageIcon("./Images/info.png"));
+        iamplitudeVariationSpeed.setBounds(amplitudeVariationSpeedLabel.getX() - 50, amplitudeVariationSpeedLabel.getY()+25, 30, 30);
+        iamplitudeVariationSpeed.addActionListener(this);
+
+        iamplitudeVariationView = new JButton(new ImageIcon("./Images/info.png"));
+        iamplitudeVariationView.setBounds(amplitudeVariationViewLabel.getX() - 50, amplitudeVariationViewLabel.getY()+25, 30, 30);
+        iamplitudeVariationView.addActionListener(this);
+
+        ivariationChance = new JButton(new ImageIcon("./Images/info.png"));
+        ivariationChance.setBounds(variationChanceLabel.getX() - 50, variationChanceLabel.getY() +25, 30, 30);
+        ivariationChance.addActionListener(this);
+
+        iFood = new JButton(new ImageIcon("./Images/info.png"));
+        iFood.setBounds(foodLabel.getX() - 50, foodLabel.getY() +25, 30, 30);
+        iFood.addActionListener(this);
+
         // add et remove
         contentPane.removeAll();
         mapBounds.add(map);
         statBounds.add(stat);
         affichageMap.add(mapBounds);
+        affichageSliders.add(iFood);
+        affichageSliders.add(iamplitudeVariationEnergy);
+        affichageSliders.add(iamplitudeVariationSize);
+        affichageSliders.add(iamplitudeVariationSpeed);
+        affichageSliders.add(iamplitudeVariationView);
+        affichageSliders.add(ivariationChance);
         affichageSliders.add(exitButton);
         affichageSliders.add(daysCount);
         affichageSliders.add(statBounds);
@@ -653,8 +745,10 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
         if (e.getSource() == startButton) {
 
-            stat = new Stats(map.blobs, blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
-            stat.fetch(map.blobs, blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
+            stat = new Stats(map.blobs, blobSizeSlider.getValue(), detectionSlider.getValue(), speedSlider.getValue(),
+                    energySlider.getValue());
+            stat.fetch(map.blobs, blobSizeSlider.getValue(), detectionSlider.getValue(), speedSlider.getValue(),
+                    energySlider.getValue());
             stat.repaint();
 
             map.iniBlob(); // initialise un tableau de blob chacun placés
@@ -685,10 +779,63 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.whipeBlobs();
             map.resetFood();
             map.newGeneration();
-            stat.fetch(map.blobs, blobSizeSlider.getValue(),detectionSlider.getValue(),speedSlider.getValue(),energySlider.getValue());
+            stat.fetch(map.blobs, blobSizeSlider.getValue(), detectionSlider.getValue(), speedSlider.getValue(),
+                    energySlider.getValue());
             stat.repaint();
             day++;
             daysCount.setText("Day " + day);
+        }
+        if (e.getSource() == iSpeed) {
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster la vitesse à laquelle se déplacent les blobs");// Réutilisation
+                                                                                                                 // d'une
+                                                                                                                 // ligne
+                                                                                                                 // de
+                                                                                                                 // code
+                                                                                                                 // donnée
+                                                                                                                 // dans
+                                                                                                                 // une
+                                                                                                                 // IE
+                                                                                                                 // de
+                                                                                                                 // 2ème
+                                                                                                                 // année
+                                                                                                                 // (Exo
+                                                                                                                 // Pendu)
+        }
+        if (e.getSource() == iBlobNumber) {
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster le nombre de blobs initialement présents sur la carte");
+        }
+        if (e.getSource() == iBlobSize) {
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster la taille initiale des blobs sur la carte");
+        }
+        if (e.getSource() == iDetection) {
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster le champ de vision initial des blobs");
+        }
+        if (e.getSource() == iEnergy) {
+            JOptionPane.showMessageDialog(null, "Permet d'ajuster l'énergie initiale des blobs au début du jour");
+        }
+        if (e.getSource() == iFood) {
+            JOptionPane.showMessageDialog(null,
+                    "Permet d'ajuster la quantité de nourriture présente sur la carte au début du jour");
+        }
+        if (e.getSource() == iamplitudeVariationEnergy) {
+            JOptionPane.showMessageDialog(null,
+                    "Permet d'ajuster à quel point l'énergie du blob dupliqué différera de celle du blob initial");
+        }
+        if (e.getSource() == iamplitudeVariationSize) {
+            JOptionPane.showMessageDialog(null,
+                    "Permet d'ajuster à quel point la taille du blob dupliqué différera de celle du blob initial");
+        }
+        if (e.getSource() == iamplitudeVariationSpeed) {
+            JOptionPane.showMessageDialog(null,
+                    "Permet d'ajuster à quel point la vitesse du blob dupliqué différera de celle du blob initial");
+        }
+        if (e.getSource() == iamplitudeVariationView) {
+            JOptionPane.showMessageDialog(null,
+                    "Permet d'ajuster à quel point la distance de vision du blob dupliqué différera de celle du blob initial");
+        }
+        if (e.getSource() == ivariationChance) {
+            JOptionPane.showMessageDialog(null,
+                    "Permet de modifier le pourcentage de chance que le blob créé à la duplication soit différent du blob initial");
         }
         map.repaint();
 
@@ -716,7 +863,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.initBlobNumber = blobNumberSlider.getValue();
 
         } else if (source == variationChanceSlider) {
-            variationChanceLabel.setText("Chances de mutations : " + variationChanceSlider.getValue()+"%");
+            variationChanceLabel.setText("Chances de mutations : " + variationChanceSlider.getValue() + "%");
             map.chanceVariation = variationChanceSlider.getValue() / 100;
         } else if (source == amplitudeVariationEnergySlider) {
             amplitudeVariationEnergyLabel.setText(
