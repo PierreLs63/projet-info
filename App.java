@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.Timer;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -32,6 +32,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public JButton createMapButton1000;
     public JLabel texteCreaMap;
     public JLabel fondDroit;
+    public JLabel fondGauche;
     public JLabel daysCount;
     public JLabel bloby;
     public JLabel foodLogo;
@@ -185,6 +186,11 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         fondDroit.setLayout(null);
         fondDroit.setBounds(0, 0, 920, 1000);
 
+        // Fond du côté droit de l'IHM
+        fondGauche = new JLabel(new ImageIcon("./Images/FondHerbe.jpg"));
+        fondGauche.setLayout(null);
+        fondGauche.setBounds(0, 0, 1000, 1000);
+
         // Image accueil bloby mascotte
 
         bloby = new JLabel(new ImageIcon("./Images/Gif06.png"));
@@ -300,6 +306,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         affichageBoutons.add(fondDroit);
         affichageStart.add(bloby);
         affichageStart.add(foodLogo);
+        affichageStart.add(fondGauche);
         contentPane.add(affichageBoutons);
         contentPane.add(affichageStart);
         setContentPane(contentPane);
