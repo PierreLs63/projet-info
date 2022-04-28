@@ -849,6 +849,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     }
 
     public void stateChanged(ChangeEvent e) {
+
         JSlider source = (JSlider) e.getSource();
         if (source == speedSlider) {
             speedLabel.setText("Vitesse : " + speedSlider.getValue());
@@ -890,4 +891,11 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.amplitudeVariationView = amplitudeVariationViewSlider.getValue();
         }
     }
+    
+    public static void main(String[] args) { 
+
+        App plop = new App ();
+    } 
 }
+    
+
