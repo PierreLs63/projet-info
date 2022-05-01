@@ -152,6 +152,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     }
 
+    /**
+     * Le premier affichage permettant de choisir la taille de la carte
+     */
     public void ecranCreateMap() {
 
         // JPanel conteneur qui contient tout les autres JPanel
@@ -306,6 +309,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     }
 
+    /**
+     * Le seconde affichage où l'on sélectionne les paramètres initiaux de la simulation
+     */
     public void ecranSet() {
 
         // JPanel qui contient tout le côté droit avec les sliders
@@ -466,6 +472,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     }
 
+    /**
+     * Le troisième affichage où la simulation se déroule et l'on peut changer des paramètres
+     */
     public void EcranJeu() {
 
         // JPanel conteneur qui contient affichageSliders et affichageMap
@@ -677,6 +686,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     }
 
+    /**
+     * Initialisation des paramètres de la carte créé sur ceux initiaux des sliders au cas où ils ne soient pas modifiés par l'utilisateur
+     */
     public void setMapIni() {
         map.blobIniSpeed = speedSlider.getValue();
         map.blobIniSize = blobSizeSlider.getValue();
