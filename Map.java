@@ -30,7 +30,7 @@ public class Map extends JPanel {
     public double chanceVariation;// entre 0 est 1
 
     // foods
-    public int initFoodNumber;
+    public int initFoodNumber = 20;
     public ArrayList<Food> foods = new ArrayList<Food>();
 
     // IHM

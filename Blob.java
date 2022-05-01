@@ -8,7 +8,6 @@ public class Blob {
     public double viewRange;
     public double energy;
     public double energyIni;
-    public boolean alive = true;
     public Color color = new Color(0, 0, 0);
     public int foodB = 0;
 
@@ -25,7 +24,7 @@ public class Blob {
     // parametres de deplacement
     public double wanderingStrength;
     public double orientation = 0;
-    public double steeringStrength = 10;
+    public double STEERING_STRENGTH = 10;
     public int foodAttrationForce;
     public int predatorRepulsionForce;
     public int targetAttrationForce;
@@ -63,7 +62,7 @@ public class Blob {
 
     public void computeNewVitesse() { // calcul la nouvelle vitesse du blob
         computeWanderingForce();
-        newSpeedV = (speedV.times(steeringStrength)).vectAdd(wanderingForceV.times(wanderingStrength));
+        newSpeedV = (speedV.times(STEERING_STRENGTH)).vectAdd(wanderingForceV.times(wanderingStrength));
         newSpeedV.normalize();
         newSpeedV = newSpeedV.times(Math.log(speed));
 
@@ -71,7 +70,7 @@ public class Blob {
 
     public void computeNewVitesse(Vect newForce, int newForceStrength) {
         computeWanderingForce();
-        newSpeedV = (speedV.times(steeringStrength))
+        newSpeedV = (speedV.times(STEERING_STRENGTH))
                 .vectAdd(wanderingForceV.times(wanderingStrength).vectAdd(newForce.times(newForceStrength)));
         newSpeedV.normalize();
         newSpeedV = newSpeedV.times(Math.log(speed));
