@@ -11,7 +11,7 @@ public class Map extends JPanel {
     public int height;
     public int wallWidth;
     public int wallHeight;
-    public int wallRepulsionForce = 1000;
+    public int WALL_REPULSION_FORCE = 1000;
 
     // blobs
     public int initBlobNumber;
@@ -20,17 +20,17 @@ public class Map extends JPanel {
     public double blobIniView;
     public double energyIni;
     public ArrayList<Blob> blobs = new ArrayList<Blob>();
-    public double wanderingStrengthInit = 2;
+    public double WANDERING_STRENGTH_FORCE = 2;
 
     // Coefs de variation
-    public double amplitudeVariationSize = 50;
-    public double amplitudeVariationSpeed = 100;
-    public double amplitudeVariationEnergy = 100;
-    public double amplitudeVariationView = 15;
-    public double chanceVariation = 0.8;// entre 0 est 1
+    public double amplitudeVariationSize ;
+    public double amplitudeVariationSpeed;
+    public double amplitudeVariationEnergy;
+    public double amplitudeVariationView;
+    public double chanceVariation;// entre 0 est 1
 
     // foods
-    public int initFoodNumber = 10;
+    public int initFoodNumber;
     public ArrayList<Food> foods = new ArrayList<Food>();
 
     // IHM
@@ -255,37 +255,37 @@ public class Map extends JPanel {
 
             } else if (testBord(unBlob) == -2) { // faire que les blobs soient repoussés par le mur du bas
                 unBlob.wanderingStrength = 0;
-                unBlob.VectSpeed(new Vect(0, -1), wallRepulsionForce); // applique une force qui les repousse du mur
+                unBlob.VectSpeed(new Vect(0, -1), WALL_REPULSION_FORCE); // applique une force qui les repousse du mur
                 unBlob.wallBounce = false;
 
             } else if (testBord(unBlob) == 2) { // faire que les blobs soient repoussés par le mur du haut
                 unBlob.wanderingStrength = 0;
-                unBlob.VectSpeed(new Vect(0, 1), wallRepulsionForce); // applique une force qui les repousse du mur
+                unBlob.VectSpeed(new Vect(0, 1), WALL_REPULSION_FORCE); // applique une force qui les repousse du mur
                 unBlob.wallBounce = false;
 
             } else if (testBord(unBlob) == -1) { // faire que les blobs soient repoussés par le mur de gauche
                 unBlob.wanderingStrength = 0;
-                unBlob.VectSpeed(new Vect(1, 0), wallRepulsionForce); // applique une force qui les repousse du mur
+                unBlob.VectSpeed(new Vect(1, 0), WALL_REPULSION_FORCE); // applique une force qui les repousse du mur
                 unBlob.wallBounce = false;
 
             } else if (testBord(unBlob) == 1) { // faire que les blobs soient repoussés par le mur de droite
                 unBlob.wanderingStrength = 0;
-                unBlob.VectSpeed(new Vect(-1, 0), wallRepulsionForce); // applique une force qui les repousse du mur
+                unBlob.VectSpeed(new Vect(-1, 0), WALL_REPULSION_FORCE); // applique une force qui les repousse du mur
                 unBlob.wallBounce = false;
 
             } else if (!attractFood(unBlob).equals(new Vect(0, 0))) {
-                unBlob.wanderingStrength = wanderingStrengthInit;
+                unBlob.wanderingStrength = WANDERING_STRENGTH_FORCE;
                 unBlob.VectSpeed(attractFood(unBlob), unBlob.foodAttrationForce);
                 unBlob.wallBounce = true;
 
             } else if (!testBlobPredator(unBlob).equals(new Vect(0, 0))) { // faire que les blobs fuient ceux plus gros
-                unBlob.wanderingStrength = wanderingStrengthInit;
+                unBlob.wanderingStrength = WANDERING_STRENGTH_FORCE;
                 unBlob.VectSpeed(testBlobPredator(unBlob), unBlob.predatorRepulsionForce);
                 unBlob.wallBounce = true;
 
             } else if (!testBlobTarget(unBlob).equals(new Vect(0, 0))) {// faire que les blobs poursuivent ceux plus
                                                                         // petits
-                unBlob.wanderingStrength = wanderingStrengthInit;
+                unBlob.wanderingStrength = WANDERING_STRENGTH_FORCE;
                 unBlob.VectSpeed(testBlobTarget(unBlob), unBlob.targetAttrationForce);
                 unBlob.wallBounce = true;
 

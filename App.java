@@ -11,12 +11,12 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public Timer timer;
     public int day = 1;
     public int minute = 0;
-    public int dayDuration = 500;
+    public int DAY_DURATION = 500;
 
     // map
     public Map map;
-    public int mapWidth = 500;
-    public int mapHeight = 500;
+    public int mapWidth;
+    public int mapHeight;
 
     // IHM
     public JButton startButton;
@@ -64,58 +64,53 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public Stats stat;
 
     // Valeurs MIN,MAX,INIT slliders
-    static final int speed_MIN = 0;
-    static final int speed_MAX = 30;
-    static final int speed_INIT = 20; // initial speed
+    static final int SPEED_MIN = 0;
+    static final int SPEED_MAX = 30;
+    static final int SPEED_INI = 20; // initial speed
 
-    static final int energy_MIN = 0;
-    static final int energy_MAX = 2000;
-    static final int energy_INIT = 500;
+    static final int ENERGY_MIN = 0;
+    static final int ENERGY_MAX = 2000;
+    static final int ENERGY_INIT = 500;
 
-    static final int qntfood_MAX = 100;
-    static final int qntFood_MIN = 0;
-    static final int qntfood_INIT = 20;
+    static final int QUANT_FOOD_MIN = 0;
+    static final int QUANT_FOOD_MAX = 100;
+    static final int QUANT_FOOD_INI = 20;
 
-    static final int detection_MIN = 10;
-    static final int detection_MAX = 50;
-    static final int detection_INIT = 30;
+    static final int DETECTION_MIN = 10;
+    static final int DETECTION_MAX = 50;
+    static final int DETECTION_INI = 30;
 
-    static final int mapSize_MIN = 100;
-    static final int mapSize_MAX = 1000;
-    static final int mapSize_INIT = 500;
+    static final int BLOB_SIZE_MIN = 5;
+    static final int BLOB_SIZE_MAX = 40;
+    static final int BLOB_SIZE_INI = 10;
 
-    static final int blobSize_INIT = 10;
-    static final int blobSize_MIN = 5;
-    static final int blobSize_MAX = 40;
+    static final int QUANT_BLOB_MIN = 5;
+    static final int QUANT_BLOB_MAX = 50;
+    static final int QUANT_BLOB_INI = 10;
 
-    static final int blobNumber_INIT = 10;
-    static final int blobNumber_MIN = 5;
-    static final int blobNumber_MAX = 50;
+    static final int AMPLITUDE_VARIATION_SIZE_MIN = 0;
+    static final int AMPLITUDE_VARIATION_SIZE_MAX = 100;
+    static final int AMPLITUDE_VARIATION_SIZE_INIT = 50;
 
-    static final int amplitudeVariationSize_INIT = 50;
-    static final int amplitudeVariationSize_MIN = 0;
-    static final int amplitudeVariationSize_MAX = 100;
+    static final int AMPLITUDE_VARIATION_SPEED_MIN = 0;
+    static final int AMPLITUDE_VARIATION_SPEED_MAX = 1000;
+    static final int AMPLITUDE_VARIATION_SPEED_INI = 100;
 
-    static final int amplitudeVariationSpeed_INIT = 100;
-    static final int amplitudeVariationSpeed_MIN = 0;
-    static final int amplitudeVariationSpeed_MAX = 1000;
+    static final int AMPLITUDE_VARIATION_ENERGY_MIN = 0;
+    static final int AMPLITUDE_VARIATION_ENERGY_MAX = 200;
+    static final int AMPLITUDE_VARIATION_ENERGY_INI = 100;
 
-    static final int amplitudeVariationEnergy_INIT = 100;
-    static final int amplitudeVariationEnergy_MIN = 0;
-    static final int amplitudeVariationEnergy_MAX = 200;
+    static final int AMPLITUDE_VARIATION_VIEW_RANGE_MIN = 0;
+    static final int AMPLITUDE_VARIATION_VIEW_RANGE_MAX = 50;
+    static final int AMPLITUDE_VARIATION_VIEW_RANGE_INI = 15;
 
-    static final int amplitudeVariationView_INIT = 15;
-    static final int amplitudeVariationView_MIN = 0;
-    static final int amplitudeVariationView_MAX = 50;
-
-    static final int variationChance_INIT = 80;
-    static final int variationChance_MIN = 0;
-    static final int variationChance_MAX = 100;
+    static final int VARIATION_CHANCE_MIN = 0;
+    static final int VARIATION_CHANCE_MAX = 100;
+    static final int VARIATION_CHANCE_INI = 80;
 
     // Declaration Sliders
-    // sliders
-    public int widthSlider = 800;
-    public int heightSlider = 40;
+    public int WIDTH_SLIDER = 800;
+    public int HEIGHT_SLIDER = 40;
     public JSlider speedSlider;
     public JSlider foodSlider;
     public JSlider energySlider;
@@ -128,7 +123,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public JSlider amplitudeVariationViewSlider;
     public JSlider variationChanceSlider;
 
-    // Labels slidders
+    // Labels des slidders
     public JLabel speedLabel;
     public JLabel foodLabel;
     public JLabel energyLabel;
@@ -192,17 +187,14 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         fondGauche.setBounds(0, 0, 1000, 1000);
 
         // Image accueil bloby mascotte
-
         bloby = new JLabel(new ImageIcon("./Images/Gif06.png"));
         bloby.setLayout(null);
-        bloby.setBounds(affichageStart.getWidth()/2-100, affichageStart.getHeight()/2-400, 600, 600);
+        bloby.setBounds(affichageStart.getWidth() / 2 - 100, affichageStart.getHeight() / 2 - 400, 600, 600);
 
-        // Image accueil nourriture 
-
+        // Image accueil nourriture
         foodLogo = new JLabel(new ImageIcon("./Images/Food23.png"));
         foodLogo.setLayout(null);
-        foodLogo.setBounds(affichageStart.getWidth()/2-450, affichageStart.getHeight()/2-150, 300, 300);
-
+        foodLogo.setBounds(affichageStart.getWidth() / 2 - 450, affichageStart.getHeight() / 2 - 150, 300, 300);
 
         // Bouton createMapButton300
         createMapButton300 = new JButton(new ImageIcon("./Images/Logo300.png"));
@@ -335,7 +327,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         backButton.addActionListener(this);
 
         // SpeedSlider
-        speedSlider = new JSlider(JSlider.HORIZONTAL, speed_MIN, speed_MAX, speed_INIT);
+        speedSlider = new JSlider(JSlider.HORIZONTAL, SPEED_MIN, SPEED_MAX, SPEED_INI);
         // Turn on labels at major tick marks.
         speedSlider.setMajorTickSpacing(10);// espace minimal affiché sous le slider entre les valeurs de vitesse
         speedSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
@@ -344,78 +336,78 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         speedSlider.addChangeListener(this);
         speedSlider.setOpaque(false);
         // speedSlider.setBackground(new ImageIcon("./Images/FondDroit.jpeg"));
-        speedSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2, affichageSliders.getHeight() / 7 - 75,
-                widthSlider, heightSlider);
-        speedLabel = new JLabel("Vitesse : " + speed_INIT);
+        speedSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2, affichageSliders.getHeight() / 7 - 75,
+                WIDTH_SLIDER, HEIGHT_SLIDER);
+        speedLabel = new JLabel("Vitesse : " + SPEED_INI);
         speedLabel.setBounds(speedSlider.getX() + 5 + 5, speedSlider.getY() - 50, 200, 60);
 
         // foodSlider
-        foodSlider = new JSlider(JSlider.HORIZONTAL, qntFood_MIN, qntfood_MAX, qntfood_INIT);
+        foodSlider = new JSlider(JSlider.HORIZONTAL, QUANT_FOOD_MIN, QUANT_FOOD_MAX, QUANT_FOOD_INI);
         // Turn on labels at major tick marks.
         foodSlider.setMajorTickSpacing(20);// espace minimal affiché sous le slider entre les valeurs de vitesse
         foodSlider.setMinorTickSpacing(5);// espace minimal entre les valeurs de vitesse
         foodSlider.setPaintTicks(true);
         foodSlider.setPaintLabels(true);
         foodSlider.addChangeListener(this);
-        foodSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                2 * affichageSliders.getHeight() / 7 - 75, widthSlider, heightSlider);
+        foodSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                2 * affichageSliders.getHeight() / 7 - 75, WIDTH_SLIDER, HEIGHT_SLIDER);
         foodSlider.setOpaque(false);
-        foodLabel = new JLabel("Quantité de nourriture : " + qntfood_INIT);
+        foodLabel = new JLabel("Quantité de nourriture : " + QUANT_FOOD_INI);
         foodLabel.setBounds(foodSlider.getX() + 5, foodSlider.getY() - 50, 200, 60);
 
         // BlobsSize Slider
-        blobSizeSlider = new JSlider(JSlider.HORIZONTAL, blobSize_MIN, blobSize_MAX, blobSize_INIT);
+        blobSizeSlider = new JSlider(JSlider.HORIZONTAL, BLOB_SIZE_MIN, BLOB_SIZE_MAX, BLOB_SIZE_INI);
         // Turn on labels at major tick marks.
         blobSizeSlider.setMajorTickSpacing(5);// espace minimal affiché sous le slider entre les valeurs de vitesse
         blobSizeSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
         blobSizeSlider.setPaintTicks(true);
         blobSizeSlider.setPaintLabels(true);
         blobSizeSlider.addChangeListener(this);
-        blobSizeSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                3 * affichageSliders.getHeight() / 7 - 75, widthSlider, heightSlider);
+        blobSizeSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                3 * affichageSliders.getHeight() / 7 - 75, WIDTH_SLIDER, HEIGHT_SLIDER);
         blobSizeSlider.setOpaque(false);
-        blobSizeLabel = new JLabel("Taille du blob : " + blobSize_INIT);
+        blobSizeLabel = new JLabel("Taille du blob : " + BLOB_SIZE_INI);
         blobSizeLabel.setBounds(blobSizeSlider.getX() + 5, blobSizeSlider.getY() - 50, 200, 60);
 
         // EnergyIni Slider
-        energySlider = new JSlider(JSlider.HORIZONTAL, energy_MIN, energy_MAX, energy_INIT);
+        energySlider = new JSlider(JSlider.HORIZONTAL, ENERGY_MIN, ENERGY_MAX, ENERGY_INIT);
         // Turn on labels at major tick marks.
         energySlider.setMajorTickSpacing(500);// espace minimal affiché sous le slider entre les valeurs de vitesse
         energySlider.setMinorTickSpacing(100);// espace minimal entre les valeurs de vitesse
         energySlider.setPaintTicks(true);
         energySlider.setPaintLabels(true);
         energySlider.addChangeListener(this);
-        energySlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                4 * affichageSliders.getHeight() / 7 - 75, widthSlider, heightSlider);
+        energySlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                4 * affichageSliders.getHeight() / 7 - 75, WIDTH_SLIDER, HEIGHT_SLIDER);
         energySlider.setOpaque(false);
         energyLabel = new JLabel("Energie des blobs : " + energySlider.getValue());
         energyLabel.setBounds(energySlider.getX() + 5, energySlider.getY() - 50, 200, 60);
 
         // DetectionRange Slider
-        detectionSlider = new JSlider(JSlider.HORIZONTAL, detection_MIN, detection_MAX, detection_INIT);
+        detectionSlider = new JSlider(JSlider.HORIZONTAL, DETECTION_MIN, DETECTION_MAX, DETECTION_INI);
         detectionSlider.setMajorTickSpacing(10);
         detectionSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
         detectionSlider.setPaintTicks(true);
         detectionSlider.setPaintLabels(true);
         detectionSlider.addChangeListener(this);
-        detectionSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                5 * affichageSliders.getHeight() / 7 - 75, widthSlider, heightSlider);
+        detectionSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                5 * affichageSliders.getHeight() / 7 - 75, WIDTH_SLIDER, HEIGHT_SLIDER);
         detectionSlider.setOpaque(false);
-        detectionLabel = new JLabel("Champ de vision : " + detection_INIT);
+        detectionLabel = new JLabel("Champ de vision : " + DETECTION_INI);
         detectionLabel.setBounds(detectionSlider.getX() + 5, detectionSlider.getY() - 50, 200, 60);
 
         // BlobsNumber Slider
-        blobNumberSlider = new JSlider(JSlider.HORIZONTAL, blobNumber_MIN, blobNumber_MAX, blobNumber_INIT);
+        blobNumberSlider = new JSlider(JSlider.HORIZONTAL, QUANT_BLOB_MIN, QUANT_BLOB_MAX, QUANT_BLOB_INI);
         // Turn on labels at major tick marks.
         blobNumberSlider.setMajorTickSpacing(5);// espace minimal affiché sous le slider entre les valeurs de vitesse
         blobNumberSlider.setMinorTickSpacing(1);// espace minimal entre les valeurs de vitesse
         blobNumberSlider.setPaintTicks(true);
         blobNumberSlider.setPaintLabels(true);
         blobNumberSlider.addChangeListener(this);
-        blobNumberSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                6 * affichageSliders.getHeight() / 7 - 75, widthSlider, heightSlider);
+        blobNumberSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                6 * affichageSliders.getHeight() / 7 - 75, WIDTH_SLIDER, HEIGHT_SLIDER);
         blobNumberSlider.setOpaque(false);
-        numberLabel = new JLabel("Nombre de blobs : " + blobNumber_INIT);
+        numberLabel = new JLabel("Nombre de blobs : " + QUANT_BLOB_INI);
         numberLabel.setBounds(blobNumberSlider.getX() + 5, blobNumberSlider.getY() - 50, 200, 60);
 
         // Paramètrages des boutons d'informations sous chaque sliders
@@ -521,29 +513,29 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         exitButton.setContentAreaFilled(false);
 
         // Slider nombre de nourriture par jour
-        foodSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                2 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
+        foodSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                2 * affichageSliders.getHeight() / 10 - 100, WIDTH_SLIDER, HEIGHT_SLIDER);
         foodLabel.setBounds(foodSlider.getX() + 5, foodSlider.getY() - 50, 150, 60);
 
         // Mutation Chance Slider
-        variationChanceSlider = new JSlider(JSlider.HORIZONTAL, variationChance_MIN, variationChance_MAX,
-                variationChance_INIT);
+        variationChanceSlider = new JSlider(JSlider.HORIZONTAL, VARIATION_CHANCE_MIN, VARIATION_CHANCE_MAX,
+                VARIATION_CHANCE_INI);
         // Turn on labels at major tick marks.
         variationChanceSlider.setMajorTickSpacing(20);// espace minimal affiché sous le slider entre les valeurs
         variationChanceSlider.setMinorTickSpacing(10);// espace minimal entre les valeurs de vitesse
         variationChanceSlider.setPaintTicks(true);
         variationChanceSlider.setPaintLabels(true);
         variationChanceSlider.addChangeListener(this);
-        variationChanceSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                3 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
+        variationChanceSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                3 * affichageSliders.getHeight() / 10 - 100, WIDTH_SLIDER, HEIGHT_SLIDER);
         variationChanceSlider.setOpaque(false);
         variationChanceLabel = new JLabel("Chances de mutations : " + variationChanceSlider.getValue() + "%");
         variationChanceLabel.setBounds(variationChanceSlider.getX() + 5, variationChanceSlider.getY() - 50, 210, 60);
 
         // Mutation energy Slider
-        amplitudeVariationEnergySlider = new JSlider(JSlider.HORIZONTAL, amplitudeVariationEnergy_MIN,
-                amplitudeVariationEnergy_MAX,
-                amplitudeVariationEnergy_INIT);
+        amplitudeVariationEnergySlider = new JSlider(JSlider.HORIZONTAL, AMPLITUDE_VARIATION_ENERGY_MIN,
+                AMPLITUDE_VARIATION_ENERGY_MAX,
+                AMPLITUDE_VARIATION_ENERGY_INI);
         // Turn on labels at major tick marks.
         amplitudeVariationEnergySlider.setMajorTickSpacing(20);// espace minimal affiché sous le slider entre les
                                                                // valeurs
@@ -551,8 +543,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         amplitudeVariationEnergySlider.setPaintTicks(true);
         amplitudeVariationEnergySlider.setPaintLabels(true);
         amplitudeVariationEnergySlider.addChangeListener(this);
-        amplitudeVariationEnergySlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                4 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
+        amplitudeVariationEnergySlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                4 * affichageSliders.getHeight() / 10 - 100, WIDTH_SLIDER, HEIGHT_SLIDER);
         amplitudeVariationEnergySlider.setOpaque(false);
         amplitudeVariationEnergyLabel = new JLabel(
                 "Amplitude de variation de l'énergie à la mutation : " + amplitudeVariationEnergySlider.getValue());
@@ -560,9 +552,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
                 amplitudeVariationEnergySlider.getY() - 50, 500, 60);
 
         // Mutation Size Slider
-        amplitudeVariationSizeSlider = new JSlider(JSlider.HORIZONTAL, amplitudeVariationSize_MIN,
-                amplitudeVariationSize_MAX,
-                amplitudeVariationSize_INIT);
+        amplitudeVariationSizeSlider = new JSlider(JSlider.HORIZONTAL, AMPLITUDE_VARIATION_SIZE_MIN,
+                AMPLITUDE_VARIATION_SIZE_MAX,
+                AMPLITUDE_VARIATION_SIZE_INIT);
         // Turn on labels at major tick marks.
         amplitudeVariationSizeSlider.setMajorTickSpacing(20);// espace minimal affiché sous le slider entre les
                                                              // valeurs
@@ -571,8 +563,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         amplitudeVariationSizeSlider.setPaintTicks(true);
         amplitudeVariationSizeSlider.setPaintLabels(true);
         amplitudeVariationSizeSlider.addChangeListener(this);
-        amplitudeVariationSizeSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                5 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
+        amplitudeVariationSizeSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                5 * affichageSliders.getHeight() / 10 - 100, WIDTH_SLIDER, HEIGHT_SLIDER);
         amplitudeVariationSizeSlider.setOpaque(false);
         amplitudeVariationSizeLabel = new JLabel(
                 "Amplitude de variation de la taille des blobs à la mutation : "
@@ -581,9 +573,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
                 amplitudeVariationSizeSlider.getY() - 50, 500, 60);
 
         // Mutation Size Slider
-        amplitudeVariationSpeedSlider = new JSlider(JSlider.HORIZONTAL, amplitudeVariationSpeed_MIN,
-                amplitudeVariationSpeed_MAX,
-                amplitudeVariationSpeed_INIT);
+        amplitudeVariationSpeedSlider = new JSlider(JSlider.HORIZONTAL, AMPLITUDE_VARIATION_SPEED_MIN,
+                AMPLITUDE_VARIATION_SPEED_MAX,
+                AMPLITUDE_VARIATION_SPEED_INI);
         // Turn on labels at major tick marks.
         amplitudeVariationSpeedSlider.setMajorTickSpacing(200);// espace minimal affiché sous le slider entre les
                                                                // valeurs
@@ -591,8 +583,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         amplitudeVariationSpeedSlider.setPaintTicks(true);
         amplitudeVariationSpeedSlider.setPaintLabels(true);
         amplitudeVariationSpeedSlider.addChangeListener(this);
-        amplitudeVariationSpeedSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                6 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
+        amplitudeVariationSpeedSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                6 * affichageSliders.getHeight() / 10 - 100, WIDTH_SLIDER, HEIGHT_SLIDER);
         amplitudeVariationSpeedSlider.setOpaque(false);
         amplitudeVariationSpeedLabel = new JLabel(
                 "Amplitude de variation de la vitesse des blobs à la mutation : "
@@ -601,9 +593,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
                 amplitudeVariationSpeedSlider.getY() - 50, 500, 60);
 
         // Mutation Size Slider
-        amplitudeVariationViewSlider = new JSlider(JSlider.HORIZONTAL, amplitudeVariationView_MIN,
-                amplitudeVariationView_MAX,
-                amplitudeVariationView_INIT);
+        amplitudeVariationViewSlider = new JSlider(JSlider.HORIZONTAL, AMPLITUDE_VARIATION_VIEW_RANGE_MIN,
+                AMPLITUDE_VARIATION_VIEW_RANGE_MAX,
+                AMPLITUDE_VARIATION_VIEW_RANGE_INI);
         // Turn on labels at major tick marks.
         amplitudeVariationViewSlider.setMajorTickSpacing(10);// espace minimal affiché sous le slider entre les
         // valeurs
@@ -611,8 +603,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         amplitudeVariationViewSlider.setPaintTicks(true);
         amplitudeVariationViewSlider.setPaintLabels(true);
         amplitudeVariationViewSlider.addChangeListener(this);
-        amplitudeVariationViewSlider.setBounds(affichageSliders.getWidth() / 2 - widthSlider / 2,
-                7 * affichageSliders.getHeight() / 10 - 100, widthSlider, heightSlider);
+        amplitudeVariationViewSlider.setBounds(affichageSliders.getWidth() / 2 - WIDTH_SLIDER / 2,
+                7 * affichageSliders.getHeight() / 10 - 100, WIDTH_SLIDER, HEIGHT_SLIDER);
         amplitudeVariationViewSlider.setOpaque(false);
         amplitudeVariationViewLabel = new JLabel(
                 "Amplitude de variation du rayon de vison des blobs à la mutation : "
@@ -620,29 +612,32 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         amplitudeVariationViewLabel.setBounds(amplitudeVariationViewSlider.getX() + 5,
                 amplitudeVariationViewSlider.getY() - 50, 500, 60);
 
-                
         iamplitudeVariationEnergy = new JButton(new ImageIcon("./Images/info.png"));
-        iamplitudeVariationEnergy.setBounds(amplitudeVariationEnergyLabel.getX() - 50, amplitudeVariationEnergyLabel.getY()+25, 30, 30);
+        iamplitudeVariationEnergy.setBounds(amplitudeVariationEnergyLabel.getX() - 50,
+                amplitudeVariationEnergyLabel.getY() + 25, 30, 30);
         iamplitudeVariationEnergy.addActionListener(this);
 
         iamplitudeVariationSize = new JButton(new ImageIcon("./Images/info.png"));
-        iamplitudeVariationSize.setBounds(amplitudeVariationSizeLabel.getX() - 50, amplitudeVariationSizeLabel.getY()+25, 30, 30);
+        iamplitudeVariationSize.setBounds(amplitudeVariationSizeLabel.getX() - 50,
+                amplitudeVariationSizeLabel.getY() + 25, 30, 30);
         iamplitudeVariationSize.addActionListener(this);
 
         iamplitudeVariationSpeed = new JButton(new ImageIcon("./Images/info.png"));
-        iamplitudeVariationSpeed.setBounds(amplitudeVariationSpeedLabel.getX() - 50, amplitudeVariationSpeedLabel.getY()+25, 30, 30);
+        iamplitudeVariationSpeed.setBounds(amplitudeVariationSpeedLabel.getX() - 50,
+                amplitudeVariationSpeedLabel.getY() + 25, 30, 30);
         iamplitudeVariationSpeed.addActionListener(this);
 
         iamplitudeVariationView = new JButton(new ImageIcon("./Images/info.png"));
-        iamplitudeVariationView.setBounds(amplitudeVariationViewLabel.getX() - 50, amplitudeVariationViewLabel.getY()+25, 30, 30);
+        iamplitudeVariationView.setBounds(amplitudeVariationViewLabel.getX() - 50,
+                amplitudeVariationViewLabel.getY() + 25, 30, 30);
         iamplitudeVariationView.addActionListener(this);
 
         ivariationChance = new JButton(new ImageIcon("./Images/info.png"));
-        ivariationChance.setBounds(variationChanceLabel.getX() - 50, variationChanceLabel.getY() +25, 30, 30);
+        ivariationChance.setBounds(variationChanceLabel.getX() - 50, variationChanceLabel.getY() + 25, 30, 30);
         ivariationChance.addActionListener(this);
 
         iFood = new JButton(new ImageIcon("./Images/info.png"));
-        iFood.setBounds(foodLabel.getX() - 50, foodLabel.getY() +25, 30, 30);
+        iFood.setBounds(foodLabel.getX() - 50, foodLabel.getY() + 25, 30, 30);
         iFood.addActionListener(this);
 
         // add et remove
@@ -782,7 +777,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.eatBlob();
 
         }
-        if (minute == day * dayDuration) { // ce qui se passe à la fin de la daynée
+        if (minute == day * DAY_DURATION) { // ce qui se passe à la fin de la daynée
             map.whipeBlobs();
             map.resetFood();
             map.newGeneration();
@@ -809,7 +804,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
                                                                                                                  // Pendu)
         }
         if (e.getSource() == iBlobNumber) {
-            JOptionPane.showMessageDialog(null, "Permet d'ajuster le nombre de blobs initialement présents sur la carte");
+            JOptionPane.showMessageDialog(null,
+                    "Permet d'ajuster le nombre de blobs initialement présents sur la carte");
         }
         if (e.getSource() == iBlobSize) {
             JOptionPane.showMessageDialog(null, "Permet d'ajuster la taille initiale des blobs sur la carte");
@@ -891,11 +887,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.amplitudeVariationView = amplitudeVariationViewSlider.getValue();
         }
     }
-    
-    public static void main(String[] args) { 
 
-        App plop = new App ();
-    } 
+    public static void main(String[] args) {
+
+        App plop = new App();
+    }
 }
-    
-
