@@ -5,7 +5,14 @@ import java.util.Collections;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Map contient le paint de la carte et où les blobs et la nourriture sont
+ * stockés
+ * sous forme de tableaux et les principales méthodes utiles
+ * au déroulement de la simulation
+ */
 public class Map extends JPanel {
+
     // variables du terrain
     public int width;
     public int height;
@@ -23,7 +30,7 @@ public class Map extends JPanel {
     public double WANDERING_STRENGTH_FORCE = 2;
 
     // Coefs de variation
-    public double amplitudeVariationSize ;
+    public double amplitudeVariationSize;
     public double amplitudeVariationSpeed;
     public double amplitudeVariationEnergy;
     public double amplitudeVariationView;
@@ -37,6 +44,9 @@ public class Map extends JPanel {
     private Image dbImage;
     private Graphics dbg;
 
+    /**
+     * Constructeur
+     */
     public Map(int w, int h) {
         width = w; // largeur de la map
         height = h; // hauteur de la map
@@ -48,6 +58,9 @@ public class Map extends JPanel {
 
     }
 
+    /**
+     * initialise des objets food aléatoirement
+     */
     public void iniFood() {
         for (int i = 0; i < initFoodNumber; i++) {
             foods.add(new Food(Math.random() * (width - 2.5 * wallWidth) + wallWidth,
@@ -55,6 +68,10 @@ public class Map extends JPanel {
         }
     }
 
+    /**
+     * initialise des blob aléatoirement sur les bords de la carte pour le début de
+     * la simulation
+     */
     public void iniBlob() {
         for (int i = 0; i < initBlobNumber; i++) {
             blobs.add(new Blob(blobIniSpeed, blobIniSize, blobIniView, energyIni));
@@ -80,7 +97,10 @@ public class Map extends JPanel {
         }
     }
 
-    public int testBord(Blob unBlob) { // vérifie si le blob détecte les murs de la map
+    /**
+     * vérifie si le blob détecte les murs de la carte
+     */
+    public int testBord(Blob unBlob) {
         if (new Vect(wallWidth, unBlob.pos_y).distance(unBlob.pos_x,
                 unBlob.pos_y) <= 10 && unBlob.wallBounce == true) {
             return -1; /// mur de gauche
@@ -98,6 +118,10 @@ public class Map extends JPanel {
         }
     }
 
+    /**
+     * vérifie si le blob détecte une nourriture et si oui, renvoie un vecteur pour
+     * les attirer vers la nourriture
+     */
     public Vect attractFood(Blob unBlob) {
 
         int index = -1;
@@ -126,7 +150,11 @@ public class Map extends JPanel {
         }
     }
 
-    public Vect testBlobTarget(Blob unBlob) { // vérifie si le blob détecte un blob plus petit
+    /**
+     * vérifie si le blob détecte un blob plus petit et si oui, renvoie un vecteur
+     * pour l'attirer vers le blob
+     */
+    public Vect testBlobTarget(Blob unBlob) {
         ArrayList<Blob> blobTarget = new ArrayList<Blob>();
         for (Blob e : blobs) {
             if (new Vect(unBlob.pos_x, unBlob.pos_y).distance(e.pos_x,
@@ -152,6 +180,10 @@ public class Map extends JPanel {
         }
     }
 
+    /**
+     * vérifie si le blob détecte un blob plus gros et si oui, renvoie un vecteur
+     * pour le repousser du le blob
+     */
     public Vect testBlobPredator(Blob unBlob) { // vérifie si le blob détecte un blob plus grand
         ArrayList<Blob> blobPredator = new ArrayList<Blob>();
         boolean test = false;
@@ -178,6 +210,9 @@ public class Map extends JPanel {
         }
     }
 
+    /**
+     * permet au blob d'en manger un autre
+     */
     public void eatBlob() {
         ArrayList<Blob> blobsEaten = new ArrayList<>();
 
@@ -200,6 +235,9 @@ public class Map extends JPanel {
         }
     }
 
+    /**
+     * supprime les blobs qui ne sont pas sur les bords de la carte
+     */
     public void whipeBlobs() {
 
         ArrayList<Blob> blobsToRemove = new ArrayList<>();
@@ -218,6 +256,9 @@ public class Map extends JPanel {
         }
     }
 
+    /**
+     * supprime le nourritures et les initialise à nouveau
+     */
     public void resetFood() {
         ArrayList<Food> foodsToRemove = new ArrayList<>();
 
@@ -231,11 +272,19 @@ public class Map extends JPanel {
         iniFood();
     }
 
+    /**
+     * détecte si un blob est sur les bords de la carte
+     */
     public boolean isSafe(Blob unBlob) {
         return (unBlob.pos_x < wallWidth || unBlob.pos_x > (width - wallWidth)
                 || unBlob.pos_y < wallHeight || unBlob.pos_y > (height - wallHeight));
     }
 
+    /**
+     * déplace un blob en fonction de son emplacement (sur les bords de la carte ou
+     * pas) et des forces qui peuvent lui être appliquées (attiré par la nourriture,
+     * fuit un blob ou repoussé par un mur...)
+     */
     public void moveBlobs(Blob unBlob) {
         if (unBlob.foodB == 1 && unBlob.energy >= unBlob.energyIni / 3 || unBlob.foodB == 0) { // déplacement des blobs
                                                                                                // qui ont moins de 2
@@ -324,6 +373,10 @@ public class Map extends JPanel {
 
     }
 
+    /**
+     * Crée un blob à partir d'un autre (dupplication) avec des différences selon
+     * les coeffs de muation
+     */
     public Blob newBlob(Blob parent) {
         double size = parent.size;
         if (Math.random() < chanceVariation) {
@@ -344,6 +397,9 @@ public class Map extends JPanel {
         return new Blob(speed, size, viewRange, energyIni);
     }
 
+    /**
+     * Dupplique tous les blobs qui ont mangé 2 nourritures
+     */
     public void newGeneration() {
         ArrayList<Blob> blobsTemp = new ArrayList<Blob>();
         for (Blob el : blobs) {
@@ -361,8 +417,12 @@ public class Map extends JPanel {
         }
     }
 
+    /**
+     * Crée un image de la carte et apelle les draw de blob et food pour les
+     * afficher
+     */
     public void paintComponent(Graphics g) {
-        g.setColor(new Color (40,155,93)); // la map ext
+        g.setColor(new Color(40, 155, 93)); // la map ext
         g.fillRect(0, 0, width, height);
         g.setColor(Color.green); // la map int
         g.fillRect(wallWidth, wallHeight, width - 2 * wallWidth, height - 2 * wallWidth);
@@ -376,6 +436,10 @@ public class Map extends JPanel {
         }
     }
 
+    /**
+     * apelle paintComponent pour avoir une image complète de la carte et de tous
+     * les éléments en une seule fois et ne pas avoir de problème de scintillement
+     */
     public void paint(Graphics g) {
         dbImage = createImage(width, height);
         dbg = dbImage.getGraphics();

@@ -5,6 +5,9 @@ import java.awt.event.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * App contient le main, l’IHM et le actionPerformed qui fait appel aux autres classes pour que le programme se déroule.
+ */
 public class App extends JFrame implements ActionListener, ChangeListener {
 
     // temps
@@ -18,7 +21,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public int mapWidth;
     public int mapHeight;
 
-    // IHM
+    // IHM sauf sliders
     public JButton startButton;
     public JButton backButton;
     public JButton exitButton;
@@ -136,6 +139,9 @@ public class App extends JFrame implements ActionListener, ChangeListener {
     public JLabel amplitudeVariationViewLabel;
     public JLabel variationChanceLabel;
 
+    /**
+     * Constructeur 
+     */
     public App() {
         width = 1920;
         height = 1080;
@@ -698,7 +704,8 @@ public class App extends JFrame implements ActionListener, ChangeListener {
         ecranSet();
     }
 
-    public void actionPerformed(java.awt.event.ActionEvent e) { // tout ce qui se passe chaque x ms
+   @Override
+    public void actionPerformed(java.awt.event.ActionEvent e) { 
 
         if (e.getSource() == backButton) {
             ecranCreateMap();
@@ -789,6 +796,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             map.eatBlob();
 
         }
+        
         if (minute == day * DAY_DURATION) { // ce qui se passe à la fin de la daynée
             map.whipeBlobs();
             map.resetFood();
@@ -799,6 +807,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
             day++;
             daysCount.setText("Day " + day);
         }
+
         if (e.getSource() == iSpeed) {
             JOptionPane.showMessageDialog(null, "Permet d'ajuster la vitesse à laquelle se déplacent les blobs");// Réutilisation
                                                                                                                  // d'une
@@ -856,6 +865,7 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     }
 
+    @Override
     public void stateChanged(ChangeEvent e) {
 
         JSlider source = (JSlider) e.getSource();
@@ -902,6 +912,6 @@ public class App extends JFrame implements ActionListener, ChangeListener {
 
     public static void main(String[] args) {
 
-        App plop = new App();
+        App app = new App();
     }
 }

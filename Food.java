@@ -1,24 +1,26 @@
 import java.awt.*;
 
+/**
+ * Objet nourriture, stocke une position et une taille
+ */
 public class Food {
     public double pos_x;
     public double pos_y;
-    public double size;
+    public final int SIZE = 5;
 
-    public Food(double x, double y, double size) {
-        this.size = size;
-        pos_x = x;
-        pos_y = y;
-    }
-
+    /**
+     * Constructeur
+     */
     public Food(double x, double y) {
-        size = 5.0;
         pos_x = x;
         pos_y = y;
     }
 
-    public void draw(Graphics g, Color c) { // dessine la nourriture
+    /**
+     * Dessine des cercles pour l'affichage de la nourriture
+     */
+    public void draw(Graphics g, Color c) { 
         g.setColor(c);
-        g.fillOval((int) (pos_x), (int) (pos_y), (int) size, (int) size);
+        g.fillOval((int) (pos_x), (int) (pos_y), SIZE, SIZE);
     }
 }

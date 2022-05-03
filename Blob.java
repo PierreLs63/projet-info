@@ -29,7 +29,10 @@ public class Blob {
     public int predatorRepulsionForce;
     public int targetAttrationForce;
 
-    public Blob(double sp, double si, double vr,double en) {
+    /**
+     * Constructeur
+     */
+    public Blob(double sp, double si, double vr, double en) {
         speed = sp;
         size = si;
         viewRange = vr;
@@ -37,7 +40,10 @@ public class Blob {
         color = definedColor();
     }
 
-    public void VectSpeed() { // calcul la nouvelle direction et vitesse du blob
+    /**
+     * calcul la nouvelle direction et vitesse du blob
+     */
+    public void VectSpeed() {
         movement();
         computeNewVitesse();
         speedV.x = newSpeedV.x;
@@ -46,7 +52,10 @@ public class Blob {
 
     }
 
-    public void VectSpeed(Vect newForce, int newForceStrength) { // calcul la nouvelle direction et vitesse du blob
+    /**
+     * calcul la nouvelle direction et vitesse du blob
+     */
+    public void VectSpeed(Vect newForce, int newForceStrength) {
         movement();
         computeNewVitesse(newForce, newForceStrength);
         speedV.x = newSpeedV.x;
@@ -55,12 +64,19 @@ public class Blob {
 
     }
 
-    public void movement() { // fait se déplacer le blob
+    /**
+     * fait se déplacer le blob
+     */
+    public void movement() {
         pos_x += speedV.x;
         pos_y += speedV.y;
     }
 
-    public void computeNewVitesse() { // calcul la nouvelle vitesse du blob
+    /**
+     * calcul la nouvelle vitesse du blob si il n'a pas de force spécifiques qui lui
+     * sont aplliquées
+     */
+    public void computeNewVitesse() {
         computeWanderingForce();
         newSpeedV = (speedV.times(STEERING_STRENGTH)).vectAdd(wanderingForceV.times(wanderingStrength));
         newSpeedV.normalize();
@@ -68,6 +84,10 @@ public class Blob {
 
     }
 
+    /**
+     * calcul la nouvelle vitesse du blob si il a une force spécifiques qui lui est
+     * aplliquée
+     */
     public void computeNewVitesse(Vect newForce, int newForceStrength) {
         computeWanderingForce();
         newSpeedV = (speedV.times(STEERING_STRENGTH))
@@ -77,8 +97,11 @@ public class Blob {
 
     }
 
-    public void computeWanderingForce() { // calcul la force aléatoire qui s'aplique au blob pour le faire se déplacer
-                                          // aléatoirement dans l'espace
+    /**
+     * calcul la force aléatoire qui s'aplique au blob pour le faire se déplacer
+     * aléatoirement dans l'espace
+     */
+    public void computeWanderingForce() {
         orientation += Math.PI / 2;
         wanderingForceV.x += (Math.random() - 0.5) * Math.cos(orientation);
         wanderingForceV.y += (Math.random() - 0.5) * Math.sin(orientation);
@@ -86,29 +109,40 @@ public class Blob {
 
     }
 
-    public void draw(Graphics g, Color c) { // dessine un blob
-        color=definedColor();
+    /**
+     * dessine un blob
+     */
+    public void draw(Graphics g, Color c) { 
+        color = definedColor();
         g.setColor(c);
-        //definedColor();
-        g.fillOval((int) (pos_x), (int) (pos_y), (int) (size*(Math.sin(energy*0.025)+7)/8), (int) (size*(Math.sin(energy*0.025)+7)/8));
+        // definedColor();
+        g.fillOval((int) (pos_x), (int) (pos_y), (int) (size * (Math.sin(energy * 0.025) + 7) / 8),
+                (int) (size * (Math.sin(energy * 0.025) + 7) / 8));
     }
 
+    /**
+     * définie la couleur du blob en fonction de ses caractéristiques (vitesse, taille, rayon de vision)
+     */
     public Color definedColor() {
         int r = (int) Math.round(speed) * 10;
         int g = (int) Math.round(size) * 15;
         int b = (int) Math.round(viewRange) * 10;
         if (r >= 254) {
             r = 254;
-        }if (g >= 254) {
+        }
+        if (g >= 254) {
             g = 254;
-        }if (b >= 254) {
+        }
+        if (b >= 254) {
             b = 254;
         }
         if (r < 0) {
             r = 0;
-        }if (g <0) {
+        }
+        if (g < 0) {
             g = 0;
-        }if (b < 0) {
+        }
+        if (b < 0) {
             b = 0;
         }
         return new Color(r, g, b);
